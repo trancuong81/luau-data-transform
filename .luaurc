@@ -1,0 +1,8 @@
+{
+  "languageMode": "strict",
+  "aliases": {
+    "lib": "./lib",
+    "test": "./test",
+    "proto": "./proto"
+  }
+}
