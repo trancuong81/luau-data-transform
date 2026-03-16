@@ -38,7 +38,10 @@ function WriteBufMethods.ensure(self: any, bytes: number)
 end
 
 function WriteBufMethods.tostring(self: any): string
-	return buffer.tostring(self.buf, 0, self.pos)
+	if self.pos == 0 then
+		return ""
+	end
+	return buffer.readstring(self.buf, 0, self.pos)
 end
 
 Wire.WriteBuf = {}
