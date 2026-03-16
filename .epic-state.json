@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "name": "luau-data-transform",
+  "goal": "Port the OCaml data-transformation pipeline to Luau, running on the Lune standalone runtime. Copy protobuf schemas as the source of truth, hand-write Luau type definitions with JSON serialization, reimplement all transform utils and field mappings in idiomatic Luau, port all 26 tests, and implement pure-Luau binary protobuf encode/decode.",
+  "createdAt": "2026-03-16T00:00:00Z",
+  "executionMode": "interactive",
+  "epicFile": "./specs/luau-data-transform/epic.md",
+  "defaultEngine": "superpowers",
+  "specs": [
+    {
+      "name": "project-setup",
+      "engine": "superpowers",
+      "goal": "Initialize the Luau project with Lune runtime, directory structure, tooling configuration, and proto schema files copied from the OCaml repo. Establish build/run/test conventions.",
+      "acceptanceCriteria": [
+        "Lune is installed and lune run executes a hello-world .luau script successfully",
+        "Directory structure created: lib/, test/, test/fixtures/, proto/, proto/tables/, bin/",
+        "All .proto files and .json constants files copied verbatim from ocaml-data-transform/proto/ into proto/",
+        "Test fixtures (values.json, transformed_values.json) copied verbatim into test/fixtures/",
+        "A .luaurc or Lune config file is set up for module resolution",
+        "--!strict mode is used in all .luau files",
+        "A minimal test runner script exists (lune run test) that runs a single passing placeholder test and reports results",
+        ".gitignore configured appropriately",
+        "README.md documents setup prerequisites, how to run, and how to test"
+      ],
+      "dependencies": [],
+      "status": "active",
+      "activatedAt": "2026-03-16T00:00:00Z",
+      "completedAt": null,
+      "branch": "feat/project-setup",
+      "mergeResult": null,
+      "worktree": null,
+      "terminal": null
+    },
+    {
+      "name": "types-and-schema",
+      "engine": "superpowers",
+      "goal": "Define all protobuf-equivalent Luau types and implement schema loading from JSON constants files. Port schema.ml functionality.",
+      "acceptanceCriteria": [
+        "Luau export type definitions for all 6 simple types and 15 compound types",
+        "Luau export type for TableSchema, FieldGroup, SingleFieldType",
+        "Luau export type for source-table and target-table specific types",
+        "Constructor/make functions for each type",
+        "load_data_type_constants() function that reads proto/data_types_constants.json",
+        "load_source_table_schema() and load_target_table_schema() functions",
+        "JSON encode/decode functions for SourceTableFieldsMap and TargetTableFieldsMap",
+        "3 schema tests ported",
+        "5 protobuf tests ported as JSON round-trip tests"
+      ],
+      "dependencies": ["project-setup"],
+      "status": "pending",
+      "activatedAt": null,
+      "completedAt": null,
+      "branch": null,
+      "mergeResult": null,
+      "worktree": null,
+      "terminal": null
+    },
+    {
+      "name": "transform-engine",
+      "engine": "superpowers",
+      "goal": "Port json_path, transform_utils, mappings, example_mappings, CLI entry point, and integration test. Core data transformation logic.",
+      "acceptanceCriteria": [
+        "lib/json_path.luau ported with getPath, setPath, getString, getStringOrEmpty, getStringList",
+        "4 json_path tests ported",
+        "lib/transform_utils.luau ported with identity, groupBy, mergeBy, mapValues, deepMerge",
+        "6 transform_utils tests ported",
+        "lib/mappings.luau ported with textboxMapping, checkboxMapping, customMapping, applyMapping, transformAll",
+        "2 mappings tests ported",
+        "lib/example_mappings.luau ported with splitName and transform (6 field mappings)",
+        "15 example_mappings tests ported",
+        "bin/main.luau CLI entry point",
+        "1 integration test ported"
+      ],
+      "dependencies": ["types-and-schema"],
+      "status": "pending",
+      "activatedAt": null,
+      "completedAt": null,
+      "branch": null,
+      "mergeResult": null,
+      "worktree": null,
+      "terminal": null
+    },
+    {
+      "name": "protobuf-binary",
+      "engine": "superpowers",
+      "goal": "Implement pure-Luau protobuf binary wire format encoding and decoding. Add binary round-trip tests.",
+      "acceptanceCriteria": [
+        "lib/pb/wire.luau with varint, zigzag, fixed32/64 encode/decode",
+        "lib/pb/encoder.luau for protobuf message encoding",
+        "lib/pb/decoder.luau for protobuf message decoding",
+        "lib/pb/schema_registry.luau for proto schema loading and dispatch",
+        "Binary round-trip tests for StringType, MultipleCheckboxType, AddressType, TableSchema",
+        "JSON-then-binary interop test"
+      ],
+      "dependencies": ["types-and-schema"],
+      "status": "pending",
+      "activatedAt": null,
+      "completedAt": null,
+      "branch": null,
+      "mergeResult": null,
+      "worktree": null,
+      "terminal": null
+    }
+  ],
+  "parallel": {
+    "enabled": true,
+    "maxConcurrent": 3,
+    "activeCount": 1
+  },
+  "contracts": [
+    {
+      "spec": "project-setup",
+      "exports": "Project directory layout convention, module require paths, Lune runtime, test runner invocation pattern",
+      "consumedBy": ["types-and-schema", "transform-engine", "protobuf-binary"]
+    },
+    {
+      "spec": "types-and-schema",
+      "exports": "lib/data_types.luau, lib/table_schema.luau, lib/source_table.luau, lib/target_table.luau, lib/schema.luau",
+      "consumedBy": ["transform-engine", "protobuf-binary"]
+    },
+    {
+      "spec": "transform-engine",
+      "exports": "lib/json_path.luau, lib/transform_utils.luau, lib/mappings.luau, lib/example_mappings.luau, bin/main.luau CLI",
+      "consumedBy": []
+    },
+    {
+      "spec": "protobuf-binary",
+      "exports": "lib/pb/wire.luau, lib/pb/encoder.luau, lib/pb/decoder.luau, lib/pb/schema_registry.luau",
+      "consumedBy": []
+    }
+  ]
+}
