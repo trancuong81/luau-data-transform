@@ -52,13 +52,15 @@ Growable buffer for encoding. Wraps a `buffer` with a write cursor and auto-resi
 
 | Function | Purpose |
 |----------|---------|
-| `encodeVarint(wb: WriteBuf, value: number)` | Unsigned varint (7 bits per byte, MSB continuation) |
-| `encodeZigzag(n: number) -> number` | Signed → unsigned: `bit32.bxor(bit32.lshift(n, 1), bit32.arshift(n, 31))` |
-| `encodeFixed32(wb: WriteBuf, value: number)` | 4 bytes little-endian |
-| `encodeFixed64(wb: WriteBuf, value: number)` | 8 bytes little-endian via `buffer.writef64` |
+| `encodeVarint(wb: WriteBuf, value: number)` | Unsigned varint (7 bits per byte, MSB continuation). Limited to 32-bit values — sufficient for all field tags and `int32` fields in the current schema. |
 | `encodeTag(wb: WriteBuf, fieldNumber: number, wireType: number)` | `encodeVarint(wb, bit32.bor(bit32.lshift(fieldNumber, 3), wireType))` |
 | `encodeString(wb: WriteBuf, str: string)` | Length-prefixed UTF-8 |
 | `encodeDouble(wb: WriteBuf, value: number)` | IEEE 754 64-bit little-endian via `buffer.writef64` |
+| `encodeFixed32(wb: WriteBuf, value: number)` | 4 bytes little-endian |
+| `encodeBool(wb: WriteBuf, value: boolean)` | Varint 0 or 1 |
+| `encodeInt32(wb: WriteBuf, value: number)` | Standard varint encoding (not zigzag). Used for `int32` proto fields (`decimal_places`, `start_idx`, `end_idx`). |
+
+**Not included (unused by current schema):** `encodeZigzag` (only needed for `sint32`/`sint64`, which no proto field uses), `encodeFixed64` for integers (only `double` uses wire type 1).
 
 ### Decoding Functions
 
@@ -66,14 +68,14 @@ All take `(buf: buffer, offset: number)` and return `(value, newOffset: number)`
 
 | Function | Purpose |
 |----------|---------|
-| `decodeVarint(buf, offset) -> (number, number)` | Read unsigned varint |
-| `decodeZigzag(n: number) -> number` | Unsigned → signed |
-| `decodeFixed32(buf, offset) -> (number, number)` | Read 4 bytes little-endian |
-| `decodeFixed64(buf, offset) -> (number, number)` | Read 8 bytes little-endian |
+| `decodeVarint(buf, offset) -> (number, number)` | Read unsigned varint (32-bit) |
 | `decodeTag(buf, offset) -> (fieldNumber: number, wireType: number, newOffset: number)` | Parse field tag |
 | `decodeString(buf, offset) -> (string, number)` | Read length-prefixed string |
-| `decodeDouble(buf, offset) -> (number, number)` | Read IEEE 754 64-bit |
-| `skipField(buf, offset, wireType) -> number` | Skip unknown field |
+| `decodeDouble(buf, offset) -> (number, number)` | Read IEEE 754 64-bit via `buffer.readf64` |
+| `decodeFixed32(buf, offset) -> (number, number)` | Read 4 bytes little-endian |
+| `decodeBool(buf, offset) -> (boolean, number)` | Read varint, coerce to boolean |
+| `decodeInt32(buf, offset) -> (number, number)` | Read varint as signed int32 |
+| `skipField(buf, offset, wireType) -> number` | Skip unknown field by wire type |
 
 ### Design Decisions
 
@@ -81,6 +83,8 @@ All take `(buf: buffer, offset: number)` and return `(value, newOffset: number)`
 - **Stateless offset-passing**: All functions take `(buf, offset)` and return `newOffset`. No internal cursor state — simpler to reason about and compose.
 - **WriteBuf for encoding**: Protobuf messages have variable length (varints, nested messages). A growable buffer avoids pre-calculating sizes.
 - **Double encoding**: Uses `buffer.writef64`/`buffer.readf64` which gives IEEE 754 little-endian directly — matching protobuf's `Bits64` wire type for `double` fields.
+- **32-bit varint only**: `bit32` operates on 32-bit unsigned integers. The current proto schema only uses `int32`, `bool`, `string`, `double`, and nested messages — no `int64`/`uint64`/`fixed64` integer fields. If 64-bit integer fields are added later, the varint codec would need a multi-word approach.
+- **No zigzag encoding**: The proto files use `int32` (not `sint32`), so standard varint encoding is correct. Small non-negative values (decimal places, array indices) encode efficiently as-is.
 
 ## Module 2: Encoder (`lib/pb/encoder.luau`)
 
@@ -114,12 +118,47 @@ SubFields encoders: `encodePbPhoneFaxSubFields`, `encodePbDateTimeSubFields`, `e
 
 Wrapper encoders: `encodePbPhoneFaxType`, ..., `encodePbServiceContactPointType` (each a one-liner calling the shared helper)
 
-**Union types:**
-- `encodePbNonCustomFieldValue(wb, value)` — Inspects `typeId`, maps to field number (1-21), encodes as nested message
-- `encodePbSingleFieldType(wb, value)` — Inspects `value.typeId` if present, maps to field number (1-22), encodes value as nested + label as field 23
+**Union types (oneof dispatch):**
+
+The proto `oneof` field number is determined by `typeId`. Many typeId values map to the same proto field number. The mapping reuses the existing dispatch tables from `data_types.luau`:
+
+| typeId values | Proto type | Oneof field # |
+|--------------|------------|---------------|
+| String, Ssn, Ein, Aba, Itin, Swift, Iban, Giin, UsZip, Email, PhoneFaxString, IsoCountryCode, IsoCurrencyCode, CountryString, StateProvince, City, NumberAndStreet, PostalZipCode, MoneyString, DateTimeString, TimeZoneOffset | `StringType` | 1 |
+| Integer, Float, Percentage, Year | `NumberType` | 2 |
+| Boolean | `BooleanType` | 3 |
+| ShareClass, TransactionType, SubscriptionStatus | `EnumType` | 4 |
+| MultipleCheckbox | `MultipleCheckboxType` | 5 |
+| RadioGroup | `RadioGroupType` | 6 |
+| PhoneFax | `PhoneFaxType` | 7 |
+| DateTime | `DateTimeType` | 8 |
+| Money | `MoneyType` | 9 |
+| Address | `AddressType` | 10 |
+| IndividualName | `IndividualNameType` | 11 |
+| Country | `CountryType` | 12 |
+| BaseContact | `BaseContactType` | 13 |
+| SubmissionContact | `SubmissionContactType` | 14 |
+| Signatory | `SignatoryType` | 15 |
+| BankInfo | `BankInfoType` | 16 |
+| BankAccountInfo | `BankAccountInfoType` | 17 |
+| WireInstructions | `WireInstructionsType` | 18 |
+| BrokerageFirm | `BrokerageFirmType` | 19 |
+| BrokerageAccount | `BrokerageAccountType` | 20 |
+| ServiceContactPoint | `ServiceContactPointType` | 21 |
+
+For `SingleFieldType`, field 22 = `CustomCompoundType`, and field 23 = `label` (not part of oneof).
+
+**Encoding functions:**
+
+- `encodePbNonCustomFieldValue(wb, value)` — Reads `value.typeId`, looks up proto field number from mapping above, encodes value as nested message at that field number. Fields 1-21.
+
+- `encodePbSingleFieldType(wb, sft)` — The Luau type is `{ value: FieldValue?, label: string }`. Encoding flow:
+  1. If `sft.value ~= nil`: read `sft.value.typeId`, look up field number (1-22), encode the inner FieldValue as a nested message at that field number
+  2. If `sft.label ~= ""`: encode label as string at field 23
+  Note: the dispatch logic differs from `NonCustomFieldValue` because the value is wrapped in a `.value` field, not the top-level table.
 
 **Custom compound:**
-- `encodePbCustomCompoundType(wb, value)` — Fields: 1=typeId, 2=map<string, NonCustomFieldValue>, 3=subFieldKeysInOrder(repeated), 4=label
+- `encodePbCustomCompoundType(wb, value)` — Fields: 1=typeId, 2=map<string, NonCustomFieldValue>, 3=subFieldKeysInOrder(repeated), 4=label. Each map entry wraps its FieldValue via `encodePbNonCustomFieldValue` to determine the oneof variant.
 
 **Table schema:**
 - `encodePbFieldGroup(wb, value)` — Fields: 1=label, 2=startIdx(varint), 3=endIdx(varint)
@@ -243,8 +282,8 @@ Create a TableSchema with `map<string, SingleFieldType>` containing multiple ent
 
 ### Test 5: JSON-then-binary interop
 
-1. Load `test/fixtures/values.json` using `fs.readFile` + `serde.decode`
-2. Decode JSON into typed Luau SourceTableFieldsMap via existing `decodeJsonSourceTableFieldsMap`
+1. Load `test/fixtures/values.json` using `fs.readFile` + `serde.decode` (file uses camelCase keys)
+2. Decode JSON into typed Luau SourceTableFieldsMap via existing `decodeJsonSourceTableFieldsMap` (direct decode path, no `camelcaseKeys` needed since fixture is already camelCase)
 3. Encode to protobuf binary via `SchemaRegistry.encode("SourceTableFieldsMap", data)`
 4. Decode binary back via `SchemaRegistry.decode("SourceTableFieldsMap", bytes)`
 5. Verify decoded result equals original with `toEqual`
@@ -259,6 +298,23 @@ All field numbers are sequential from 1, defined in the `.proto` files in `proto
 - **NonCustomFieldValue oneof**: Fields 1-21 map to type variants
 - **TableSchema**: 1=fieldsMap(map), 2=fieldKeysInOrder, 3=label, 4=groups
 - **Map entries**: implicit message with 1=key, 2=value
+
+## Default Value Semantics and Round-Trip Fidelity
+
+Proto3 omits default values from the wire: empty strings, 0, false, and empty arrays are not encoded. On decode, the `make*` constructors fill in these defaults.
+
+**Known lossy case:** For optional string fields like `StringType.regex` (typed as `string?` in Luau), the values `nil` and `""` are indistinguishable after a binary round-trip — both are omitted on the wire, both decode as `nil` (the constructor default). The JSON codec preserves this distinction (only omits `nil`, not `""`). In practice, the codebase never uses `regex = ""` — values are either `nil` or a real regex pattern — so this is acceptable.
+
+## Map Encoding Order
+
+Protobuf maps have no guaranteed wire order, and Luau table iteration order for string keys is non-deterministic. Binary output for map fields is therefore non-deterministic. Test assertions must compare decoded values (via `toEqual`), not raw bytes.
+
+## Error Handling
+
+- **Wire format errors** (truncated buffers, invalid varints, unexpected end of data): `error()` immediately with a descriptive message. Binary corruption is hard to diagnose silently.
+- **Unknown field numbers**: silently skipped per proto3 semantics (forward compatibility).
+- **Unknown typeId in oneof dispatch**: `error()` with the unrecognized typeId value.
+- **Type mismatches** (e.g., expected varint, got length-delimited): `error()` with field number and expected vs actual wire type.
 
 ## Non-Goals
 
