@@ -37,7 +37,7 @@ Low-level protobuf wire format operations using Luau's `buffer` library and `bit
 VARINT = 0            -- int32, int64, bool, enum
 FIXED64 = 1           -- double, fixed64
 LENGTH_DELIMITED = 2  -- string, bytes, nested messages, repeated, maps
-FIXED32 = 3           -- float, fixed32
+FIXED32 = 5           -- float, fixed32
 ```
 
 ### WriteBuf
@@ -169,6 +169,8 @@ For `SingleFieldType`, field 22 = `CustomCompoundType`, and field 23 = `label` (
 - `encodePbSourceTableFieldsMap`, `encodePbSourceTableSchema`
 - `encodePbTargetTableFieldsMap`, `encodePbTargetTableSchema`
 
+Note: `SourceTableFieldsMap` and `TargetTableFieldsMap` are encoded as **proto messages with fixed field numbers** (field 1=lpSignatory, field 2=asaFullname..., etc.), NOT as `map<string, SingleFieldType>`. The generic `TableSchema.fieldsMap` uses a proto `map<>` (dynamic keys), but the source/target field maps have statically typed fields with known field numbers from the .proto definitions.
+
 ### Public API
 
 ```lua
@@ -265,7 +267,7 @@ Encode to binary via `SchemaRegistry.encode("StringType", data)`, decode back vi
 ### Test 2: MultipleCheckboxType binary round-trip
 
 Create with:
-- typeId = "MultipleCheckboxType"
+- typeId = "MultipleCheckbox"
 - selectedKeys = {"key1", "key2", "key3"}
 - allOptionKeysInOrder = {"key1", "key2", "key3"}
 - allOptionLabelsInOrder = {"Label 1", "Label 2", "Label 3"}
@@ -303,7 +305,12 @@ All field numbers are sequential from 1, defined in the `.proto` files in `proto
 
 Proto3 omits default values from the wire: empty strings, 0, false, and empty arrays are not encoded. On decode, the `make*` constructors fill in these defaults.
 
-**Known lossy case:** For optional string fields like `StringType.regex` (typed as `string?` in Luau), the values `nil` and `""` are indistinguishable after a binary round-trip — both are omitted on the wire, both decode as `nil` (the constructor default). The JSON codec preserves this distinction (only omits `nil`, not `""`). In practice, the codebase never uses `regex = ""` — values are either `nil` or a real regex pattern — so this is acceptable.
+**Known lossy cases:** Proto3 default-value omission means `nil` and the default value become indistinguishable after binary round-trip. Affected fields:
+
+- **Optional string fields** (`string?` in Luau): `nil` and `""` merge. Applies to: `StringType.regex`, all compound wrapper `.label` fields (PhoneFaxType, AddressType, etc.), `LpSignatoryType.label`, `W9Type.label`, `CustomCompoundType.label`.
+- **Optional number fields** (`number?` in Luau): `nil` and `0` merge. Applies to: `NumberType.minValue`, `NumberType.maxValue`.
+
+The JSON codec preserves this distinction (only omits `nil`, not `""`/`0`). In practice, the codebase never uses empty-string labels or `minValue = 0` / `maxValue = 0` as meaningful values — optional fields are either `nil` or populated with real data — so this is acceptable.
 
 ## Map Encoding Order
 
