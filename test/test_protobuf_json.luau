@@ -43,4 +43,24 @@ T.describe("json roundtrip", function()
 		T.expect(decoded.selectedKeys[1]).toBe("opt1")
 		T.expect(decoded.selectedKeys[2]).toBe("opt3")
 	end)
+
+	T.it("AddressType roundtrip", function()
+		local cityField = DataTypes.makeStringType({ typeId = "City", value = "Springfield" })
+		local subFields = DataTypes.makeAddressSubFields({ city = cityField })
+		local original = DataTypes.makeAddressType({
+			typeId = "Address",
+			valueSubFields = subFields,
+			subFieldKeysInOrder = {
+				"numberAndStreet", "city", "stateProvince",
+				"country", "postalZipCode", "fullAddress",
+			},
+		})
+		local json = DataTypes.encodeJsonAddressType(original)
+		local decoded = DataTypes.decodeJsonAddressType(json)
+		T.expect(decoded.typeId).toBe("Address")
+		T.expect(decoded.valueSubFields).toBeTruthy()
+		local decodedCity = (decoded.valueSubFields :: any).city
+		T.expect(decodedCity.value).toBe("Springfield")
+		T.expect(#decoded.subFieldKeysInOrder).toBe(6)
+	end)
 end)
