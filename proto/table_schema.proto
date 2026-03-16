@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package ocaml_data_transform;
+
+import "data_types.proto";
+
+// SingleFieldType — represents one field in a table schema.
+// The value is one of the defined data types.
+message SingleFieldType {
+  oneof value {
+    // Simple types
+    StringType string_type = 1;
+    NumberType number_type = 2;
+    BooleanType boolean_type = 3;
+    EnumType enum_type = 4;
+    MultipleCheckboxType multiple_checkbox_type = 5;
+    RadioGroupType radio_group_type = 6;
+    // Named compound types
+    PhoneFaxType phone_fax_type = 7;
+    DateTimeType date_time_type = 8;
+    MoneyType money_type = 9;
+    AddressType address_type = 10;
+    IndividualNameType individual_name_type = 11;
+    CountryType country_type = 12;
+    BaseContactType base_contact_type = 13;
+    SubmissionContactType submission_contact_type = 14;
+    SignatoryType signatory_type = 15;
+    BankInfoType bank_info_type = 16;
+    BankAccountInfoType bank_account_info_type = 17;
+    WireInstructionsType wire_instructions_type = 18;
+    BrokerageFirmType brokerage_firm_type = 19;
+    BrokerageAccountType brokerage_account_type = 20;
+    ServiceContactPointType service_contact_point_type = 21;
+    // Flexible compound
+    CustomCompoundType custom_compound_type = 22;
+  }
+  string label = 23;
+}
+
+// Group of fields within a table
+message FieldGroup {
+  string label = 1;
+  int32 start_idx = 2;
+  int32 end_idx = 3;
+}
+
+// TableSchema — the top-level table structure
+message TableSchema {
+  map<string, SingleFieldType> fields_map = 1;
+  repeated string field_keys_in_order = 2;
+  string label = 3;
+  repeated FieldGroup groups = 4;
+}

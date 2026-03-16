@@ -1,0 +1,380 @@
+syntax = "proto3";
+
+package ocaml_data_transform;
+
+// === Simple Types (structurally merged) ===
+
+// Covers 21 CUE types: String, Ssn, Ein, Aba, Itin, Swift, Iban, Giin,
+// UsZip, Email, PhoneFaxString, IsoCountryCode, IsoCurrencyCode,
+// CountryString, StateProvince, City, NumberAndStreet, PostalZipCode,
+// MoneyString, DateTimeString, TimeZoneOffset
+message StringType {
+  string type_id = 1;
+  string value = 2;
+  string regex = 3;
+  repeated string format_patterns = 4;
+}
+
+// Covers 4 CUE types: Integer, Float, Percentage, Year
+message NumberType {
+  string type_id = 1;
+  double value = 2;
+  int32 decimal_places = 3;
+  double min_value = 4;
+  double max_value = 5;
+}
+
+message BooleanType {
+  string type_id = 1;
+  bool value = 2;
+}
+
+// Covers 3 CUE types: ShareClass, TransactionType, SubscriptionStatus
+message EnumType {
+  string type_id = 1;
+  string value = 2;
+  repeated string options = 3;
+}
+
+message MultipleCheckboxType {
+  string type_id = 1;
+  repeated string selected_keys = 2;
+  repeated string all_option_keys_in_order = 3;
+  repeated string all_option_labels_in_order = 4;
+}
+
+message RadioGroupType {
+  string type_id = 1;
+  string selected_key = 2;
+  repeated string all_option_keys_in_order = 3;
+  repeated string all_option_labels_in_order = 4;
+}
+
+// === Compound Types (SubFields + wrapper pattern) ===
+
+// PhoneFax — CUE line 117
+message PhoneFaxSubFields {
+  StringType country_code = 1;
+  StringType area_code = 2;
+  StringType subscriber_number = 3;
+}
+
+message PhoneFaxType {
+  string type_id = 1;
+  PhoneFaxSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// DateTime — CUE line 146
+message DateTimeSubFields {
+  NumberType epoch_ms = 1;
+  StringType zone_offset = 2;
+}
+
+message DateTimeType {
+  string type_id = 1;
+  DateTimeSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// Money — CUE line 213
+message MoneySubFields {
+  NumberType amount = 1;
+  StringType iso_currency_code = 2;
+}
+
+message MoneyType {
+  string type_id = 1;
+  MoneySubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// Address — CUE line 325
+message AddressSubFields {
+  StringType number_and_street = 1;
+  StringType city = 2;
+  StringType state_province = 3;
+  StringType country = 4;
+  StringType postal_zip_code = 5;
+  StringType full_address = 6;
+}
+
+message AddressType {
+  string type_id = 1;
+  AddressSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// IndividualName — CUE line 340
+message IndividualNameSubFields {
+  StringType prefix_name = 1;
+  StringType first_name = 2;
+  StringType middle_name = 3;
+  StringType last_name = 4;
+  StringType suffix_name = 5;
+  StringType full_name = 6;
+  StringType preferred_name = 7;
+  StringType job_title = 8;
+}
+
+message IndividualNameType {
+  string type_id = 1;
+  IndividualNameSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// Country — CUE line 278
+message CountrySubFields {
+  StringType country_name = 1;
+  StringType iso_country_code = 2;
+}
+
+message CountryType {
+  string type_id = 1;
+  CountrySubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// BaseContact — CUE line 358
+message BaseContactSubFields {
+  StringType prefix_name = 1;
+  StringType first_name = 2;
+  StringType middle_name = 3;
+  StringType last_name = 4;
+  StringType suffix_name = 5;
+  StringType full_name = 6;
+  StringType preferred_name = 7;
+  StringType job_title = 8;
+  StringType email = 9;
+  StringType phone = 10;
+  StringType fax = 11;
+}
+
+message BaseContactType {
+  string type_id = 1;
+  BaseContactSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// SubmissionContact — CUE line 378 (largest compound, 33 subfields)
+message SubmissionContactSubFields {
+  StringType prefix_name = 1;
+  StringType first_name = 2;
+  StringType middle_name = 3;
+  StringType last_name = 4;
+  StringType suffix_name = 5;
+  StringType full_name = 6;
+  StringType preferred_name = 7;
+  StringType job_title = 8;
+  StringType email = 9;
+  StringType phone = 10;
+  StringType fax = 11;
+  MultipleCheckboxType type_of_correspondences = 12;
+  MultipleCheckboxType contact_types = 13;
+  MultipleCheckboxType contact_roles = 14;
+  StringType custom_id = 15;
+  StringType address_number_and_street = 16;
+  StringType address_city = 17;
+  StringType address_state_province = 18;
+  StringType address_country = 19;
+  StringType address_postal_zip_code = 20;
+  StringType address_full_address = 21;
+  StringType relationship_with_primary = 22;
+  StringType occupation = 23;
+  StringType company_name = 24;
+  StringType company_address_number_and_street = 25;
+  StringType company_address_city = 26;
+  StringType company_address_state_province = 27;
+  StringType company_address_country = 28;
+  StringType company_address_postal_zip_code = 29;
+  StringType company_address_full_address = 30;
+  StringType specified_company_org_unit = 31;
+  StringType individual_email = 32;
+  StringType individual_phone = 33;
+  StringType individual_fax = 34;
+}
+
+message SubmissionContactType {
+  string type_id = 1;
+  SubmissionContactSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// Signatory — CUE line 421
+message SignatorySubFields {
+  StringType number_and_street = 1;
+  StringType city = 2;
+  StringType state_province = 3;
+  StringType country = 4;
+  StringType postal_zip_code = 5;
+  StringType full_address = 6;
+  StringType name = 7;
+  StringType date = 8;
+  StringType title = 9;
+  StringType phone = 10;
+  StringType email = 11;
+  StringType signer_role = 12;
+}
+
+message SignatoryType {
+  string type_id = 1;
+  SignatorySubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// BankInfo — CUE line 443
+message BankInfoSubFields {
+  StringType bank_name = 1;
+  StringType bank_location = 2;
+  StringType aba = 3;
+  StringType swift = 4;
+}
+
+message BankInfoType {
+  string type_id = 1;
+  BankInfoSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// BankAccountInfo — CUE line 456
+message BankAccountInfoSubFields {
+  StringType bank_name = 1;
+  StringType bank_location = 2;
+  StringType aba = 3;
+  StringType swift = 4;
+  StringType account_name = 5;
+  StringType account_number = 6;
+  StringType iban = 7;
+  StringType further_credit_name = 8;
+  StringType further_credit_account = 9;
+  StringType correspondent_bank_account = 10;
+}
+
+message BankAccountInfoType {
+  string type_id = 1;
+  BankAccountInfoSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// WireInstructions — CUE line 475
+message WireInstructionsSubFields {
+  StringType bank_name = 1;
+  StringType bank_location = 2;
+  StringType aba = 3;
+  StringType swift = 4;
+  StringType account_name = 5;
+  StringType account_number = 6;
+  StringType iban = 7;
+  StringType further_credit_name = 8;
+  StringType further_credit_account = 9;
+  StringType correspondent_bank_account = 10;
+  StringType attention = 11;
+}
+
+message WireInstructionsType {
+  string type_id = 1;
+  WireInstructionsSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// BrokerageFirm — CUE line 495
+message BrokerageFirmSubFields {
+  StringType firm_name = 1;
+  StringType firm_office_branch_location = 2;
+}
+
+message BrokerageFirmType {
+  string type_id = 1;
+  BrokerageFirmSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// BrokerageAccount — CUE line 506
+message BrokerageAccountSubFields {
+  StringType firm_name = 1;
+  StringType firm_office_branch_location = 2;
+  StringType dtc_number = 3;
+  StringType crest_participant_id = 4;
+  StringType bic_code = 5;
+  StringType beneficiary_account_number = 6;
+  StringType beneficiary_account_name = 7;
+  StringType intermediary_account_name = 8;
+  StringType intermediary_account_number = 9;
+  StringType intermediary_bic_code = 10;
+  StringType securities_settlement_instructions = 11;
+  StringType attention = 12;
+}
+
+message BrokerageAccountType {
+  string type_id = 1;
+  BrokerageAccountSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// ServiceContactPoint — CUE line 527
+message ServiceContactPointSubFields {
+  StringType name = 1;
+  StringType office_branch_location = 2;
+  StringType phone = 3;
+  StringType email = 4;
+}
+
+message ServiceContactPointType {
+  string type_id = 1;
+  ServiceContactPointSubFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// === CustomCompoundType ===
+// Flexible compound with arbitrary subfields.
+// Sub-field values can be any type EXCEPT CustomCompoundType (no nesting).
+
+message NonCustomFieldValue {
+  oneof value {
+    // Simple types
+    StringType string_type = 1;
+    NumberType number_type = 2;
+    BooleanType boolean_type = 3;
+    EnumType enum_type = 4;
+    MultipleCheckboxType multiple_checkbox_type = 5;
+    RadioGroupType radio_group_type = 6;
+    // Named compound types
+    PhoneFaxType phone_fax_type = 7;
+    DateTimeType date_time_type = 8;
+    MoneyType money_type = 9;
+    AddressType address_type = 10;
+    IndividualNameType individual_name_type = 11;
+    CountryType country_type = 12;
+    BaseContactType base_contact_type = 13;
+    SubmissionContactType submission_contact_type = 14;
+    SignatoryType signatory_type = 15;
+    BankInfoType bank_info_type = 16;
+    BankAccountInfoType bank_account_info_type = 17;
+    WireInstructionsType wire_instructions_type = 18;
+    BrokerageFirmType brokerage_firm_type = 19;
+    BrokerageAccountType brokerage_account_type = 20;
+    ServiceContactPointType service_contact_point_type = 21;
+  }
+}
+
+message CustomCompoundType {
+  string type_id = 1;
+  map<string, NonCustomFieldValue> value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}

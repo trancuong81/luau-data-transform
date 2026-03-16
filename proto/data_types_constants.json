@@ -1,0 +1,196 @@
+{
+  "String": {
+    "typeId": "String"
+  },
+  "Ssn": {
+    "typeId": "Ssn",
+    "regex": "^(0\\d[1-9]|0[1-9]\\d|6\\d[0-57-9]|6[0-57-9]\\d|[1-57-8]\\d{2})-?(\\d[1-9]|[1-9]\\d)-?(\\d{3}[1-9]|\\d{2}[1-9]\\d|\\d[1-9]\\d{2}|[1-9]\\d{3})$",
+    "formatPatterns": ["000-00-0000"]
+  },
+  "Ein": {
+    "typeId": "Ein",
+    "regex": "^(0[1-6]|1[0-6]|2[0-7]|[35]\\d|[468][0-8]|7[1-7]|9[0-58-9])-?\\d{7}$",
+    "formatPatterns": ["00-0000000"]
+  },
+  "Aba": {
+    "typeId": "Aba",
+    "regex": "^(0[0-9]|1[0-2]|2[1-9]|3[0-2]|6[1-9]|7[0-2]|80)\\d{7}$",
+    "formatPatterns": ["000000000"]
+  },
+  "Itin": {
+    "typeId": "Itin",
+    "regex": "^9\\d{2}-?(5\\d|6[0-5]|9[0-2]|9[4-9])-?\\d{4}$",
+    "formatPatterns": ["000-00-0000"]
+  },
+  "Swift": {
+    "typeId": "Swift",
+    "regex": "^([a-zA-Z]){4}([a-zA-Z]){2}([0-9a-zA-Z]){2}([0-9a-zA-Z]{3})?$",
+    "formatPatterns": ["aaaaaa**", "aaaaaa*****"]
+  },
+  "Iban": {
+    "typeId": "Iban",
+    "regex": "^[a-zA-Z]{2}\\s?[0-9]{2}.*"
+  },
+  "Giin": {
+    "typeId": "Giin",
+    "regex": "^[A-NP-Z0-9]{6}\\.[A-NP-Z0-9]{5}\\.[A-Z]{2}\\.\\d{3}$",
+    "formatPatterns": ["000000.00000.XX.000"]
+  },
+  "UsZip": {
+    "typeId": "UsZip",
+    "regex": "^\\d{5}(-\\d{4})?$",
+    "formatPatterns": ["00000", "00000-0000"]
+  },
+  "Email": {
+    "typeId": "Email",
+    "regex": "\\b([a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+)@([a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)+)\\b"
+  },
+  "PhoneFaxString": {
+    "typeId": "PhoneFaxString",
+    "regex": "^\\+?[\\(\\)\\d\\s-+]+$"
+  },
+  "DateTimeString": {
+    "typeId": "DateTimeString"
+  },
+  "TimeZoneOffset": {
+    "typeId": "TimeZoneOffset"
+  },
+  "Boolean": {
+    "typeId": "Boolean"
+  },
+  "Integer": {
+    "typeId": "Integer"
+  },
+  "Float": {
+    "typeId": "Float"
+  },
+  "Percentage": {
+    "typeId": "Percentage",
+    "min": 0,
+    "max": 100
+  },
+  "Year": {
+    "typeId": "Year"
+  },
+  "MoneyString": {
+    "typeId": "MoneyString"
+  },
+  "IsoCurrencyCode": {
+    "typeId": "IsoCurrencyCode",
+    "regex": "^[A-Z]{3}$"
+  },
+  "IsoCountryCode": {
+    "typeId": "IsoCountryCode",
+    "regex": "^[A-Z]{2}$"
+  },
+  "CountryString": {
+    "typeId": "CountryString"
+  },
+  "StateProvince": {
+    "typeId": "StateProvince"
+  },
+  "City": {
+    "typeId": "City"
+  },
+  "NumberAndStreet": {
+    "typeId": "NumberAndStreet"
+  },
+  "PostalZipCode": {
+    "typeId": "PostalZipCode"
+  },
+  "ShareClass": {
+    "typeId": "ShareClass",
+    "options": ["Class A", "Class B", "Class C"]
+  },
+  "TransactionType": {
+    "typeId": "TransactionType",
+    "options": [
+      "Fundraise", "Fundraise - SPV / Co-investment",
+      "Employee investment / Employee scheme", "Indication of Interest",
+      "Binding commitment form", "MSL/MFN", "AML/KYC collection",
+      "Investor communications", "Friends and Family raises",
+      "Wire instructions", "Carried interest",
+      "Additional subscription for specific investors after subscription",
+      "SPV", "Co-investment", "Additional investment", "Additional forms",
+      "LP transfer", "DDQ", "Tax form", "Voting & consent", "Capital bidding"
+    ]
+  },
+  "SubscriptionStatus": {
+    "typeId": "SubscriptionStatus",
+    "options": [
+      "Not Started", "In Progress", "Change In Progress", "Form Filled",
+      "Pending Review", "Form Reviewed", "Pending Signature",
+      "Pending Submission", "Pending Approval", "Submitted",
+      "Countersigned", "Complete", "Removed", "Unknown"
+    ]
+  },
+  "MultipleCheckbox": {
+    "typeId": "MultipleCheckbox"
+  },
+  "RadioGroup": {
+    "typeId": "RadioGroup"
+  },
+  "PhoneFax": {
+    "typeId": "PhoneFax",
+    "subFieldKeysInOrder": ["countryCode", "areaCode", "subscriberNumber"]
+  },
+  "DateTime": {
+    "typeId": "DateTime",
+    "subFieldKeysInOrder": ["epochMs", "zoneOffset"]
+  },
+  "Money": {
+    "typeId": "Money",
+    "subFieldKeysInOrder": ["amount", "isoCurrencyCode"]
+  },
+  "Address": {
+    "typeId": "Address",
+    "subFieldKeysInOrder": ["numberAndStreet", "city", "stateProvince", "country", "postalZipCode", "fullAddress"]
+  },
+  "IndividualName": {
+    "typeId": "IndividualName",
+    "subFieldKeysInOrder": ["prefixName", "firstName", "middleName", "lastName", "suffixName", "fullName", "preferredName", "jobTitle"]
+  },
+  "Country": {
+    "typeId": "Country",
+    "subFieldKeysInOrder": ["countryName", "isoCountryCode"]
+  },
+  "BaseContact": {
+    "typeId": "BaseContact",
+    "subFieldKeysInOrder": ["prefixName", "firstName", "middleName", "lastName", "suffixName", "fullName", "preferredName", "jobTitle", "email", "phone", "fax"]
+  },
+  "SubmissionContact": {
+    "typeId": "SubmissionContact",
+    "subFieldKeysInOrder": ["prefixName", "firstName", "middleName", "lastName", "suffixName", "fullName", "preferredName", "jobTitle", "email", "phone", "fax", "typeOfCorrespondences", "contactTypes", "contactRoles", "customId", "addressNumberAndStreet", "addressCity", "addressStateProvince", "addressCountry", "addressPostalZipCode", "addressFullAddress", "relationshipWithPrimary", "occupation", "companyName", "companyAddressNumberAndStreet", "companyAddressCity", "companyAddressStateProvince", "companyAddressCountry", "companyAddressPostalZipCode", "companyAddressFullAddress", "specifiedCompanyOrgUnit", "individualEmail", "individualPhone", "individualFax"]
+  },
+  "Signatory": {
+    "typeId": "Signatory",
+    "subFieldKeysInOrder": ["numberAndStreet", "city", "stateProvince", "country", "postalZipCode", "fullAddress", "name", "date", "title", "phone", "email", "signerRole"]
+  },
+  "BankInfo": {
+    "typeId": "BankInfo",
+    "subFieldKeysInOrder": ["bankName", "bankLocation", "aba", "swift"]
+  },
+  "BankAccountInfo": {
+    "typeId": "BankAccountInfo",
+    "subFieldKeysInOrder": ["bankName", "bankLocation", "aba", "swift", "accountName", "accountNumber", "iban", "furtherCreditName", "furtherCreditAccount", "correspondentBankAccount"]
+  },
+  "WireInstructions": {
+    "typeId": "WireInstructions",
+    "subFieldKeysInOrder": ["bankName", "bankLocation", "aba", "swift", "accountName", "accountNumber", "iban", "furtherCreditName", "furtherCreditAccount", "correspondentBankAccount", "attention"]
+  },
+  "BrokerageFirm": {
+    "typeId": "BrokerageFirm",
+    "subFieldKeysInOrder": ["firmName", "firmOfficeBranchLocation"]
+  },
+  "BrokerageAccount": {
+    "typeId": "BrokerageAccount",
+    "subFieldKeysInOrder": ["firmName", "firmOfficeBranchLocation", "dtcNumber", "crestParticipantId", "bicCode", "beneficiaryAccountNumber", "beneficiaryAccountName", "intermediaryAccountName", "intermediaryAccountNumber", "intermediaryBicCode", "securitiesSettlementInstructions", "attention"]
+  },
+  "ServiceContactPoint": {
+    "typeId": "ServiceContactPoint",
+    "subFieldKeysInOrder": ["name", "officeBranchLocation", "phone", "email"]
+  },
+  "CustomCompoundType": {
+    "typeId": "CustomCompoundType"
+  }
+}

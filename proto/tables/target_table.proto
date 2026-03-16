@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package ocaml_data_transform;
+
+import "data_types.proto";
+
+// Target table fields map — typed field structure
+message TargetTableFieldsMap {
+  MoneyType sf_agreement_null_commitment_c = 1;
+  StringType sf_account_subscription_investor_name = 2;
+  RadioGroupType sf_account_subscription_investor_wlc_publicly_listed_on_a_stock_exchange_c = 3;
+  MultipleCheckboxType sf_agreement_null_wlc_international_supplements_c = 4;
+  StringType sf_agreement_null_signer_first_name = 5;
+  StringType sf_agreement_null_signer_middle_name = 6;
+  StringType sf_agreement_null_signer_last_name = 7;
+  RadioGroupType sf_tax_form_w9_us_tin_type_c = 8;
+}
+
+// Target table schema
+message TargetTableSchema {
+  TargetTableFieldsMap fields_map = 1;
+  repeated string field_keys_in_order = 2;
+  string label = 3;
+}

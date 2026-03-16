@@ -1,0 +1,70 @@
+{
+  "lpSignatory": {
+    "typeId": "CustomCompound",
+    "valueSubFields": {
+      "asaCommitmentAmount": {
+        "typeId": "String",
+        "value": "75,000,000"
+      },
+      "individualSubscribernameSignaturepage": {
+        "typeId": "String",
+        "value": ""
+      },
+      "entityAuthorizednameSignaturepage": {
+        "typeId": "String",
+        "value": "Catherine L Ziobro"
+      }
+    },
+    "subFieldKeysInOrder": [
+      "asa_commitment_amount",
+      "individual_subscribername_signaturepage",
+      "entity_authorizedname_signaturepage"
+    ]
+  },
+  "asaFullnameInvestornameAmlquestionnaire": {
+    "typeId": "String",
+    "value": ""
+  },
+  "asaFullnameInvestornameGeneralinfo1": {
+    "typeId": "String",
+    "value": "The Lincoln National Life Insurance Company"
+  },
+  "luxsentityRegulatedstatusPart2Duediligencequestionnaire": {
+    "typeId": "MultipleCheckbox",
+    "selectedKeys": [
+      "yes_luxsentity_regulatedstatus_part2_duediligencequestionnaire"
+    ]
+  },
+  "indiInternationalsupplementsPart1Duediligencequestionnaire": {
+    "typeId": "MultipleCheckbox",
+    "selectedKeys": []
+  },
+  "entityInternationalsupplementsPart1Duediligencequestionnaire": {
+    "typeId": "MultipleCheckbox",
+    "selectedKeys": [
+      "none_entity_internationalsupplements_part1_duediligencequestionnaire"
+    ]
+  },
+  "w9": {
+    "typeId": "CustomCompound",
+    "valueSubFields": {
+      "w9PartiSsn1": {
+        "typeId": "String",
+        "value": ""
+      },
+      "w9PartiEin1": {
+        "typeId": "String",
+        "value": ""
+      },
+      "w9Line2": {
+        "typeId": "String",
+        "value": ""
+      }
+    },
+    "subFieldKeysInOrder": [
+      "w9_parti_ssn1",
+      "w9_parti_ein1",
+      "w9_line2"
+    ]
+  }
+}

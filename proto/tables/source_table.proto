@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package ocaml_data_transform;
+
+import "data_types.proto";
+
+// Explicit sub-fields for lp_signatory (CustomCompound instance)
+message LpSignatoryFields {
+  StringType asa_commitment_amount = 1;
+  StringType individual_subscribername_signaturepage = 2;
+  StringType entity_authorizedname_signaturepage = 3;
+}
+
+message LpSignatoryType {
+  string type_id = 1;
+  LpSignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// Explicit sub-fields for w9 (CustomCompound instance)
+message W9Fields {
+  StringType w9_parti_ssn1 = 1;
+  StringType w9_parti_ein1 = 2;
+  StringType w9_line2 = 3;
+}
+
+message W9Type {
+  string type_id = 1;
+  W9Fields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+
+// Source table fields map — typed field structure
+message SourceTableFieldsMap {
+  LpSignatoryType lp_signatory = 1;
+  StringType asa_fullname_investorname_amlquestionnaire = 2;
+  StringType asa_fullname_investorname_generalinfo1 = 3;
+  MultipleCheckboxType luxsentity_regulatedstatus_part2_duediligencequestionnaire = 4;
+  MultipleCheckboxType indi_internationalsupplements_part1_duediligencequestionnaire = 5;
+  MultipleCheckboxType entity_internationalsupplements_part1_duediligencequestionnaire = 6;
+  W9Type w9 = 7;
+}
+
+// Source table schema
+message SourceTableSchema {
+  SourceTableFieldsMap fields_map = 1;
+  repeated string field_keys_in_order = 2;
+  string label = 3;
+}

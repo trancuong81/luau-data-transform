@@ -1,0 +1,91 @@
+{
+  "fields_map": {
+    "lp_signatory": {
+      "type_id": "CustomCompound",
+      "value_sub_fields": {
+        "asa_commitment_amount": { "type_id": "String" },
+        "individual_subscribername_signaturepage": { "type_id": "String" },
+        "entity_authorizedname_signaturepage": { "type_id": "String" }
+      },
+      "sub_field_keys_in_order": [
+        "asa_commitment_amount",
+        "individual_subscribername_signaturepage",
+        "entity_authorizedname_signaturepage"
+      ]
+    },
+    "asa_fullname_investorname_amlquestionnaire": { "type_id": "String" },
+    "asa_fullname_investorname_generalinfo1": { "type_id": "String" },
+    "luxsentity_regulatedstatus_part2_duediligencequestionnaire": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "yes_luxsentity_regulatedstatus_part2_duediligencequestionnaire",
+        "no_luxsentity_regulatedstatus_part2_duediligencequestionnaire"
+      ],
+      "all_option_labels_in_order": [
+        "Yes",
+        "No"
+      ]
+    },
+    "indi_internationalsupplements_part1_duediligencequestionnaire": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "eea_indi_internationalsupplements_part1_duediligencequestionnaire",
+        "uk_indi_internationalsupplements_part1_duediligencequestionnaire",
+        "swiss_indi_internationalsupplements_part1_duediligencequestionnaire",
+        "canada_indi_internationalsupplements_part1_duediligencequestionnaire",
+        "japan_indi_internationalsupplements_part1_duediligencequestionnaire",
+        "none_indi_internationalsupplements_part1_duediligencequestionnaire"
+      ],
+      "all_option_labels_in_order": [
+        "EEA investor",
+        "United Kingdom investor",
+        "Swiss investor",
+        "Canadian investor",
+        "Japanese investor",
+        "None of the above"
+      ]
+    },
+    "entity_internationalsupplements_part1_duediligencequestionnaire": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "eea_entity_internationalsupplements_part1_duediligencequestionnaire",
+        "uk_entity_internationalsupplements_part1_duediligencequestionnaire",
+        "swiss_entity_internationalsupplements_part1_duediligencequestionnaire",
+        "canada_entity_internationalsupplements_part1_duediligencequestionnaire",
+        "japan_entity_internationalsupplements_part1_duediligencequestionnaire",
+        "none_entity_internationalsupplements_part1_duediligencequestionnaire"
+      ],
+      "all_option_labels_in_order": [
+        "EEA investor",
+        "United Kingdom investor",
+        "Swiss investor",
+        "Canadian investor",
+        "Japanese investor",
+        "None of the above"
+      ]
+    },
+    "w9": {
+      "type_id": "CustomCompound",
+      "value_sub_fields": {
+        "w9_parti_ssn1": { "type_id": "String" },
+        "w9_parti_ein1": { "type_id": "String" },
+        "w9_line2": { "type_id": "String" }
+      },
+      "sub_field_keys_in_order": [
+        "w9_parti_ssn1",
+        "w9_parti_ein1",
+        "w9_line2"
+      ]
+    }
+  },
+  "field_keys_in_order": [
+    "lp_signatory",
+    "asa_fullname_investorname_amlquestionnaire",
+    "asa_fullname_investorname_generalinfo1",
+    "luxsentity_regulatedstatus_part2_duediligencequestionnaire",
+    "indi_internationalsupplements_part1_duediligencequestionnaire",
+    "entity_internationalsupplements_part1_duediligencequestionnaire",
+    "w9"
+  ],
+  "label": "subdoc"
+}

@@ -1,0 +1,41 @@
+{
+  "sfAgreementNullCommitmentC": {
+    "typeId": "Money",
+    "valueSubFields": {
+      "amount": {
+        "typeId": "Number",
+        "value": 75000000.0
+      }
+    }
+  },
+  "sfAccountSubscriptionInvestorName": {
+    "typeId": "String",
+    "value": "The Lincoln National Life Insurance Company"
+  },
+  "sfAccountSubscriptionInvestorWlcPubliclyListedOnAStockExchangeC": {
+    "typeId": "RadioGroup",
+    "selectedKey": "true"
+  },
+  "sfAgreementNullWlcInternationalSupplementsC": {
+    "typeId": "MultipleCheckbox",
+    "selectedKeys": [
+      "No Supplement"
+    ]
+  },
+  "sfAgreementNullSignerFirstName": {
+    "typeId": "String",
+    "value": "Catherine"
+  },
+  "sfAgreementNullSignerMiddleName": {
+    "typeId": "String",
+    "value": "L"
+  },
+  "sfAgreementNullSignerLastName": {
+    "typeId": "String",
+    "value": "Ziobro"
+  },
+  "sfTaxFormW9UsTinTypeC": {
+    "typeId": "RadioGroup",
+    "selectedKey": "EIN"
+  }
+}

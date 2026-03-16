@@ -1,0 +1,55 @@
+{
+  "fields_map": {
+    "sf_agreement_null_commitment_c": {
+      "type_id": "Money"
+    },
+    "sf_account_subscription_investor_name": {
+      "type_id": "String"
+    },
+    "sf_account_subscription_investor_wlc_publicly_listed_on_a_stock_exchange_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_agreement_null_wlc_international_supplements_c": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "European Economic Area - Supplement",
+        "United Kingdom - Supplement",
+        "Swiss - Supplement",
+        "Canadian - Supplement",
+        "Japanese - Supplement",
+        "No Supplement"
+      ]
+    },
+    "sf_agreement_null_signer_first_name": {
+      "type_id": "String"
+    },
+    "sf_agreement_null_signer_middle_name": {
+      "type_id": "String"
+    },
+    "sf_agreement_null_signer_last_name": {
+      "type_id": "String"
+    },
+    "sf_tax_form_w9_us_tin_type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "SSN",
+        "EIN"
+      ]
+    }
+  },
+  "field_keys_in_order": [
+    "sf_Agreement_null_Commitment_c",
+    "sf_Account_SubscriptionInvestor_Name",
+    "sf_Account_SubscriptionInvestor_WLC_Publicly_Listed_On_A_Stock_Exchange_c",
+    "sf_Agreement_null_WLC_International_Supplements_c",
+    "sf_Agreement_null_Signer_FirstName",
+    "sf_Agreement_null_Signer_MiddleName",
+    "sf_Agreement_null_Signer_LastName",
+    "sf_TaxForm_W9_US_TIN_Type_c"
+  ],
+  "label": "target"
+}
