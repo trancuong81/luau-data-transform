@@ -135,4 +135,15 @@ function TargetTable.decodeJsonTargetTableSchema(json: {[string]: any}): TargetT
 	}
 end
 
+function TargetTable.encodeJsonTargetTableSchema(schema: TargetTableSchema): {[string]: any}
+	local result: {[string]: any} = {
+		fieldKeysInOrder = schema.fieldKeysInOrder,
+		label = schema.label,
+	}
+	if schema.fieldsMap ~= nil then
+		result.fieldsMap = TargetTable.encodeJsonTargetTableFieldsMap(schema.fieldsMap)
+	end
+	return result
+end
+
 return TargetTable

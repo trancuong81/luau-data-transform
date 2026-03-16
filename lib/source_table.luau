@@ -278,4 +278,15 @@ function SourceTable.decodeJsonSourceTableSchema(json: {[string]: any}): SourceT
 	}
 end
 
+function SourceTable.encodeJsonSourceTableSchema(schema: SourceTableSchema): {[string]: any}
+	local result: {[string]: any} = {
+		fieldKeysInOrder = schema.fieldKeysInOrder,
+		label = schema.label,
+	}
+	if schema.fieldsMap ~= nil then
+		result.fieldsMap = SourceTable.encodeJsonSourceTableFieldsMap(schema.fieldsMap)
+	end
+	return result
+end
+
 return SourceTable
