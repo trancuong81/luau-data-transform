@@ -23,11 +23,11 @@
         "README.md documents setup prerequisites, how to run, and how to test"
       ],
       "dependencies": [],
-      "status": "active",
+      "status": "completed",
       "activatedAt": "2026-03-16T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-03-16T07:30:00Z",
       "branch": "feat/project-setup",
-      "mergeResult": null,
+      "mergeResult": "kept",
       "worktree": null,
       "terminal": null
     },
@@ -47,11 +47,11 @@
         "5 protobuf tests ported as JSON round-trip tests"
       ],
       "dependencies": ["project-setup"],
-      "status": "pending",
-      "activatedAt": null,
-      "completedAt": null,
-      "branch": null,
-      "mergeResult": null,
+      "status": "completed",
+      "activatedAt": "2026-03-16T07:30:00Z",
+      "completedAt": "2026-03-16T09:00:00Z",
+      "branch": "feat/types-and-schema",
+      "mergeResult": "kept",
       "worktree": null,
       "terminal": null
     },
@@ -72,11 +72,11 @@
         "1 integration test ported"
       ],
       "dependencies": ["types-and-schema"],
-      "status": "pending",
-      "activatedAt": null,
-      "completedAt": null,
-      "branch": null,
-      "mergeResult": null,
+      "status": "completed",
+      "activatedAt": "2026-03-16T09:00:00Z",
+      "completedAt": "2026-03-17T10:00:00Z",
+      "branch": "feat/transform-engine",
+      "mergeResult": "merged",
       "worktree": null,
       "terminal": null
     },
@@ -93,11 +93,11 @@
         "JSON-then-binary interop test"
       ],
       "dependencies": ["types-and-schema"],
-      "status": "pending",
-      "activatedAt": null,
-      "completedAt": null,
-      "branch": null,
-      "mergeResult": null,
+      "status": "completed",
+      "activatedAt": "2026-03-16T09:00:00Z",
+      "completedAt": "2026-03-17T12:00:00Z",
+      "branch": "feat/protobuf-binary",
+      "mergeResult": "merged",
       "worktree": null,
       "terminal": null
     }
@@ -105,7 +105,7 @@
   "parallel": {
     "enabled": true,
     "maxConcurrent": 3,
-    "activeCount": 1
+    "activeCount": 0
   },
   "contracts": [
     {
