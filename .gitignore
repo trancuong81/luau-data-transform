@@ -1,6 +1,7 @@
 .DS_Store
 docs/
 lune-packages/
+specs/
 *.luau.lock
 .current-spec
 .epic-state.json
