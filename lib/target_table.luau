@@ -3,10 +3,6 @@ local DataTypes = require("@lib/data_types")
 
 local TargetTable = {}
 
--- ============================================================
--- Type Definitions
--- ============================================================
-
 export type TargetTableFieldsMap = {
 	sfAgreementNullCommitmentC: DataTypes.MoneyType?,
 	sfAccountSubscriptionInvestorName: DataTypes.StringType?,
@@ -23,10 +19,6 @@ export type TargetTableSchema = {
 	fieldKeysInOrder: {string},
 	label: string,
 }
-
--- ============================================================
--- Constructors
--- ============================================================
 
 function TargetTable.makeTargetTableFieldsMap(config: {
 	sfAgreementNullCommitmentC: DataTypes.MoneyType?,
@@ -64,34 +56,6 @@ function TargetTable.makeTargetTableSchema(config: {
 	}
 end
 
--- ============================================================
--- JSON Encode/Decode
--- ============================================================
-
-local function decodeOptionalStringType(json: any): DataTypes.StringType?
-	if json == nil then return nil end
-	return DataTypes.decodeJsonStringType(json)
-end
-local function encodeOptionalStringType(v: DataTypes.StringType?): {[string]: any}?
-	if v == nil then return nil end
-	return DataTypes.encodeJsonStringType(v)
-end
-local function decodeOptionalMultipleCheckbox(json: any): DataTypes.MultipleCheckboxType?
-	if json == nil then return nil end
-	return DataTypes.decodeJsonMultipleCheckboxType(json)
-end
-local function encodeOptionalMultipleCheckbox(v: DataTypes.MultipleCheckboxType?): {[string]: any}?
-	if v == nil then return nil end
-	return DataTypes.encodeJsonMultipleCheckboxType(v)
-end
-local function decodeOptionalRadioGroup(json: any): DataTypes.RadioGroupType?
-	if json == nil then return nil end
-	return DataTypes.decodeJsonRadioGroupType(json)
-end
-local function encodeOptionalRadioGroup(v: DataTypes.RadioGroupType?): {[string]: any}?
-	if v == nil then return nil end
-	return DataTypes.encodeJsonRadioGroupType(v)
-end
 local function decodeOptionalMoneyType(json: any): DataTypes.MoneyType?
 	if json == nil then return nil end
 	return DataTypes.decodeJsonMoneyType(json)
@@ -100,38 +64,54 @@ local function encodeOptionalMoneyType(v: DataTypes.MoneyType?): {[string]: any}
 	if v == nil then return nil end
 	return DataTypes.encodeJsonMoneyType(v)
 end
-
-function TargetTable.decodeJsonTargetTableFieldsMap(json: {[string]: any}): TargetTableFieldsMap
-	return {
-		sfAgreementNullCommitmentC = decodeOptionalMoneyType(json.sfAgreementNullCommitmentC),
-		sfAccountSubscriptionInvestorName = decodeOptionalStringType(json.sfAccountSubscriptionInvestorName),
-		sfAccountSubscriptionInvestorWlcPubliclyListedOnAStockExchangeC = decodeOptionalRadioGroup(json.sfAccountSubscriptionInvestorWlcPubliclyListedOnAStockExchangeC),
-		sfAgreementNullWlcInternationalSupplementsC = decodeOptionalMultipleCheckbox(json.sfAgreementNullWlcInternationalSupplementsC),
-		sfAgreementNullSignerFirstName = decodeOptionalStringType(json.sfAgreementNullSignerFirstName),
-		sfAgreementNullSignerMiddleName = decodeOptionalStringType(json.sfAgreementNullSignerMiddleName),
-		sfAgreementNullSignerLastName = decodeOptionalStringType(json.sfAgreementNullSignerLastName),
-		sfTaxFormW9UsTinTypeC = decodeOptionalRadioGroup(json.sfTaxFormW9UsTinTypeC),
-	}
+local function decodeOptionalMultipleCheckboxType(json: any): DataTypes.MultipleCheckboxType?
+	if json == nil then return nil end
+	return DataTypes.decodeJsonMultipleCheckboxType(json)
+end
+local function encodeOptionalMultipleCheckboxType(v: DataTypes.MultipleCheckboxType?): {[string]: any}?
+	if v == nil then return nil end
+	return DataTypes.encodeJsonMultipleCheckboxType(v)
+end
+local function decodeOptionalRadioGroupType(json: any): DataTypes.RadioGroupType?
+	if json == nil then return nil end
+	return DataTypes.decodeJsonRadioGroupType(json)
+end
+local function encodeOptionalRadioGroupType(v: DataTypes.RadioGroupType?): {[string]: any}?
+	if v == nil then return nil end
+	return DataTypes.encodeJsonRadioGroupType(v)
+end
+local function decodeOptionalStringType(json: any): DataTypes.StringType?
+	if json == nil then return nil end
+	return DataTypes.decodeJsonStringType(json)
+end
+local function encodeOptionalStringType(v: DataTypes.StringType?): {[string]: any}?
+	if v == nil then return nil end
+	return DataTypes.encodeJsonStringType(v)
 end
 
 function TargetTable.encodeJsonTargetTableFieldsMap(fm: TargetTableFieldsMap): {[string]: any}
 	local result: {[string]: any} = {}
 	result.sfAgreementNullCommitmentC = encodeOptionalMoneyType(fm.sfAgreementNullCommitmentC)
 	result.sfAccountSubscriptionInvestorName = encodeOptionalStringType(fm.sfAccountSubscriptionInvestorName)
-	result.sfAccountSubscriptionInvestorWlcPubliclyListedOnAStockExchangeC = encodeOptionalRadioGroup(fm.sfAccountSubscriptionInvestorWlcPubliclyListedOnAStockExchangeC)
-	result.sfAgreementNullWlcInternationalSupplementsC = encodeOptionalMultipleCheckbox(fm.sfAgreementNullWlcInternationalSupplementsC)
+	result.sfAccountSubscriptionInvestorWlcPubliclyListedOnAStockExchangeC = encodeOptionalRadioGroupType(fm.sfAccountSubscriptionInvestorWlcPubliclyListedOnAStockExchangeC)
+	result.sfAgreementNullWlcInternationalSupplementsC = encodeOptionalMultipleCheckboxType(fm.sfAgreementNullWlcInternationalSupplementsC)
 	result.sfAgreementNullSignerFirstName = encodeOptionalStringType(fm.sfAgreementNullSignerFirstName)
 	result.sfAgreementNullSignerMiddleName = encodeOptionalStringType(fm.sfAgreementNullSignerMiddleName)
 	result.sfAgreementNullSignerLastName = encodeOptionalStringType(fm.sfAgreementNullSignerLastName)
-	result.sfTaxFormW9UsTinTypeC = encodeOptionalRadioGroup(fm.sfTaxFormW9UsTinTypeC)
+	result.sfTaxFormW9UsTinTypeC = encodeOptionalRadioGroupType(fm.sfTaxFormW9UsTinTypeC)
 	return result
 end
 
-function TargetTable.decodeJsonTargetTableSchema(json: {[string]: any}): TargetTableSchema
+function TargetTable.decodeJsonTargetTableFieldsMap(json: {[string]: any}): TargetTableFieldsMap
 	return {
-		fieldsMap = if json.fieldsMap then TargetTable.decodeJsonTargetTableFieldsMap(json.fieldsMap) else nil,
-		fieldKeysInOrder = json.fieldKeysInOrder or {},
-		label = json.label or "",
+		sfAgreementNullCommitmentC = decodeOptionalMoneyType(json.sfAgreementNullCommitmentC),
+		sfAccountSubscriptionInvestorName = decodeOptionalStringType(json.sfAccountSubscriptionInvestorName),
+		sfAccountSubscriptionInvestorWlcPubliclyListedOnAStockExchangeC = decodeOptionalRadioGroupType(json.sfAccountSubscriptionInvestorWlcPubliclyListedOnAStockExchangeC),
+		sfAgreementNullWlcInternationalSupplementsC = decodeOptionalMultipleCheckboxType(json.sfAgreementNullWlcInternationalSupplementsC),
+		sfAgreementNullSignerFirstName = decodeOptionalStringType(json.sfAgreementNullSignerFirstName),
+		sfAgreementNullSignerMiddleName = decodeOptionalStringType(json.sfAgreementNullSignerMiddleName),
+		sfAgreementNullSignerLastName = decodeOptionalStringType(json.sfAgreementNullSignerLastName),
+		sfTaxFormW9UsTinTypeC = decodeOptionalRadioGroupType(json.sfTaxFormW9UsTinTypeC),
 	}
 end
 
@@ -144,6 +124,14 @@ function TargetTable.encodeJsonTargetTableSchema(schema: TargetTableSchema): {[s
 		result.fieldsMap = TargetTable.encodeJsonTargetTableFieldsMap(schema.fieldsMap)
 	end
 	return result
+end
+
+function TargetTable.decodeJsonTargetTableSchema(json: {[string]: any}): TargetTableSchema
+	return {
+		fieldsMap = if json.fieldsMap then TargetTable.decodeJsonTargetTableFieldsMap(json.fieldsMap) else nil,
+		fieldKeysInOrder = json.fieldKeysInOrder or {},
+		label = json.label or "",
+	}
 end
 
 return TargetTable

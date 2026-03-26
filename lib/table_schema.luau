@@ -3,10 +3,6 @@ local DataTypes = require("@lib/data_types")
 
 local TableSchema = {}
 
--- ============================================================
--- Type Definitions
--- ============================================================
-
 export type SingleFieldType = {
 	value: DataTypes.FieldValue?,
 	label: string,
@@ -24,10 +20,6 @@ export type TableSchema = {
 	label: string,
 	groups: {FieldGroup},
 }
-
--- ============================================================
--- Constructors
--- ============================================================
 
 function TableSchema.makeSingleFieldType(config: {
 	value: DataTypes.FieldValue?,
@@ -68,10 +60,6 @@ function TableSchema.makeTableSchema(config: {
 	}
 end
 
--- ============================================================
--- JSON Encode/Decode
--- ============================================================
-
 function TableSchema.encodeJsonSingleFieldType(sft: SingleFieldType): {[string]: any}
 	local result: {[string]: any} = { label = sft.label }
 	if sft.value ~= nil then
@@ -81,13 +69,9 @@ function TableSchema.encodeJsonSingleFieldType(sft: SingleFieldType): {[string]:
 end
 
 function TableSchema.decodeJsonSingleFieldType(json: {[string]: any}): SingleFieldType
-	local value: DataTypes.FieldValue? = nil
-	if json.value ~= nil then
-		value = DataTypes.decodeFieldValueByTypeId(json.value)
-	end
 	return {
-		value = value,
 		label = json.label or "",
+		value = if json.value ~= nil then DataTypes.decodeFieldValueByTypeId(json.value) else nil,
 	}
 end
 
@@ -96,13 +80,9 @@ function TableSchema.encodeJsonTableSchema(ts: TableSchema): {[string]: any}
 	for key, sft in ts.fieldsMap do
 		fieldsMapEncoded[key] = TableSchema.encodeJsonSingleFieldType(sft)
 	end
-	local groupsEncoded: {{[string]: any}} = {}
+	local groupsEncoded: {any} = {}
 	for _, g in ts.groups do
-		table.insert(groupsEncoded, {
-			label = g.label,
-			startIdx = g.startIdx,
-			endIdx = g.endIdx,
-		})
+		table.insert(groupsEncoded, { label = g.label, startIdx = g.startIdx, endIdx = g.endIdx })
 	end
 	return {
 		fieldsMap = fieldsMapEncoded,
@@ -115,15 +95,15 @@ end
 function TableSchema.decodeJsonTableSchema(json: {[string]: any}): TableSchema
 	local fieldsMap: {[string]: SingleFieldType} = {}
 	if json.fieldsMap ~= nil then
-		for key, value in json.fieldsMap :: {[string]: any} do
-			fieldsMap[key] = TableSchema.decodeJsonSingleFieldType(value)
+		for key, sft in json.fieldsMap :: {[string]: any} do
+			fieldsMap[key] = TableSchema.decodeJsonSingleFieldType(sft)
 		end
 	end
 	local groups: {FieldGroup} = {}
 	if json.groups ~= nil then
 		for _, g in json.groups :: {{[string]: any}} do
 			table.insert(groups, {
-				label = g.label or "",
+			label = g.label or "",
 				startIdx = g.startIdx or 0,
 				endIdx = g.endIdx or 0,
 			})

@@ -1,8 +1,6 @@
 --!strict
 local DataTypes = {}
 
--- Simple Type Definitions (6)
-
 export type StringType = {
 	typeId: string,
 	value: string,
@@ -42,8 +40,6 @@ export type RadioGroupType = {
 	allOptionKeysInOrder: {string},
 	allOptionLabelsInOrder: {string},
 }
-
--- Simple Type Constructors
 
 function DataTypes.makeStringType(config: {
 	typeId: string?,
@@ -131,18 +127,14 @@ function DataTypes.makeRadioGroupType(config: {
 	}
 end
 
--- Simple Type JSON Encode/Decode
-
-function DataTypes.encodeJsonStringType(st: StringType): {[string]: any}
+function DataTypes.encodeJsonStringType(s: StringType): {[string]: any}
 	local result: {[string]: any} = {
-		typeId = st.typeId,
-		value = st.value,
+		typeId = s.typeId,
+		value = s.value,
+		formatPatterns = s.formatPatterns,
 	}
-	if st.regex ~= nil then
-		result.regex = st.regex
-	end
-	if #st.formatPatterns > 0 then
-		result.formatPatterns = st.formatPatterns
+	if s.regex ~= nil then
+		result.regex = s.regex
 	end
 	return result
 end
@@ -156,17 +148,17 @@ function DataTypes.decodeJsonStringType(json: {[string]: any}): StringType
 	}
 end
 
-function DataTypes.encodeJsonNumberType(nt: NumberType): {[string]: any}
+function DataTypes.encodeJsonNumberType(n: NumberType): {[string]: any}
 	local result: {[string]: any} = {
-		typeId = nt.typeId,
-		value = nt.value,
-		decimalPlaces = nt.decimalPlaces,
+		typeId = n.typeId,
+		value = n.value,
+		decimalPlaces = n.decimalPlaces,
 	}
-	if nt.minValue ~= nil then
-		result.minValue = nt.minValue
+	if n.minValue ~= nil then
+		result.minValue = n.minValue
 	end
-	if nt.maxValue ~= nil then
-		result.maxValue = nt.maxValue
+	if n.maxValue ~= nil then
+		result.maxValue = n.maxValue
 	end
 	return result
 end
@@ -181,10 +173,10 @@ function DataTypes.decodeJsonNumberType(json: {[string]: any}): NumberType
 	}
 end
 
-function DataTypes.encodeJsonBooleanType(bt: BooleanType): {[string]: any}
+function DataTypes.encodeJsonBooleanType(b: BooleanType): {[string]: any}
 	return {
-		typeId = bt.typeId,
-		value = bt.value,
+		typeId = b.typeId,
+		value = b.value,
 	}
 end
 
@@ -195,11 +187,11 @@ function DataTypes.decodeJsonBooleanType(json: {[string]: any}): BooleanType
 	}
 end
 
-function DataTypes.encodeJsonEnumType(et: EnumType): {[string]: any}
+function DataTypes.encodeJsonEnumType(e: EnumType): {[string]: any}
 	return {
-		typeId = et.typeId,
-		value = et.value,
-		options = et.options,
+		typeId = e.typeId,
+		value = e.value,
+		options = e.options,
 	}
 end
 
@@ -211,12 +203,12 @@ function DataTypes.decodeJsonEnumType(json: {[string]: any}): EnumType
 	}
 end
 
-function DataTypes.encodeJsonMultipleCheckboxType(mc: MultipleCheckboxType): {[string]: any}
+function DataTypes.encodeJsonMultipleCheckboxType(m: MultipleCheckboxType): {[string]: any}
 	return {
-		typeId = mc.typeId,
-		selectedKeys = mc.selectedKeys,
-		allOptionKeysInOrder = mc.allOptionKeysInOrder,
-		allOptionLabelsInOrder = mc.allOptionLabelsInOrder,
+		typeId = m.typeId,
+		selectedKeys = m.selectedKeys,
+		allOptionKeysInOrder = m.allOptionKeysInOrder,
+		allOptionLabelsInOrder = m.allOptionLabelsInOrder,
 	}
 end
 
@@ -229,12 +221,12 @@ function DataTypes.decodeJsonMultipleCheckboxType(json: {[string]: any}): Multip
 	}
 end
 
-function DataTypes.encodeJsonRadioGroupType(rg: RadioGroupType): {[string]: any}
+function DataTypes.encodeJsonRadioGroupType(r: RadioGroupType): {[string]: any}
 	return {
-		typeId = rg.typeId,
-		selectedKey = rg.selectedKey,
-		allOptionKeysInOrder = rg.allOptionKeysInOrder,
-		allOptionLabelsInOrder = rg.allOptionLabelsInOrder,
+		typeId = r.typeId,
+		selectedKey = r.selectedKey,
+		allOptionKeysInOrder = r.allOptionKeysInOrder,
+		allOptionLabelsInOrder = r.allOptionLabelsInOrder,
 	}
 end
 
@@ -247,21 +239,11 @@ function DataTypes.decodeJsonRadioGroupType(json: {[string]: any}): RadioGroupTy
 	}
 end
 
--- ============================================================
--- FieldValue type alias (duck-typed union on typeId)
--- ============================================================
-
 export type FieldValue = {
 	typeId: string,
 	[string]: any,
 }
 
--- ============================================================
--- Compound Type Definitions (15)
--- Each has SubFields + wrapper Type
--- ============================================================
-
--- Helper: encode/decode a StringType sub-field if present
 local function encodeOptionalStringField(field: StringType?): {[string]: any}?
 	if field == nil then
 		return nil
@@ -304,237 +286,6 @@ local function decodeOptionalMultipleCheckboxField(json: any): MultipleCheckboxT
 	return DataTypes.decodeJsonMultipleCheckboxType(json)
 end
 
--- 1. PhoneFaxType
-export type PhoneFaxSubFields = {
-	countryCode: StringType?,
-	areaCode: StringType?,
-	subscriberNumber: StringType?,
-}
-export type PhoneFaxType = {
-	typeId: string,
-	valueSubFields: PhoneFaxSubFields?,
-	subFieldKeysInOrder: {string},
-	label: string?,
-}
-
-function DataTypes.makePhoneFaxSubFields(config: {
-	countryCode: StringType?,
-	areaCode: StringType?,
-	subscriberNumber: StringType?,
-}?): PhoneFaxSubFields
-	local c = config or {}
-	return {
-		countryCode = c.countryCode,
-		areaCode = c.areaCode,
-		subscriberNumber = c.subscriberNumber,
-	}
-end
-
-function DataTypes.makePhoneFaxType(config: {
-	typeId: string?,
-	valueSubFields: PhoneFaxSubFields?,
-	subFieldKeysInOrder: {string}?,
-	label: string?,
-}?): PhoneFaxType
-	local c = config or {}
-	return {
-		typeId = c.typeId or "",
-		valueSubFields = c.valueSubFields,
-		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
-		label = c.label,
-	}
-end
-
-function DataTypes.encodeJsonPhoneFaxSubFields(sf: PhoneFaxSubFields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.countryCode = encodeOptionalStringField(sf.countryCode)
-	result.areaCode = encodeOptionalStringField(sf.areaCode)
-	result.subscriberNumber = encodeOptionalStringField(sf.subscriberNumber)
-	return result
-end
-
-function DataTypes.decodeJsonPhoneFaxSubFields(json: {[string]: any}): PhoneFaxSubFields
-	return {
-		countryCode = decodeOptionalStringField(json.countryCode),
-		areaCode = decodeOptionalStringField(json.areaCode),
-		subscriberNumber = decodeOptionalStringField(json.subscriberNumber),
-	}
-end
-
-function DataTypes.encodeJsonPhoneFaxType(t: PhoneFaxType): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then
-		result.label = t.label
-	end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonPhoneFaxSubFields(t.valueSubFields)
-	end
-	return result
-end
-
-function DataTypes.decodeJsonPhoneFaxType(json: {[string]: any}): PhoneFaxType
-	return {
-		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonPhoneFaxSubFields(json.valueSubFields) else nil,
-		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
-		label = json.label,
-	}
-end
-
--- 2. DateTimeType
-export type DateTimeSubFields = {
-	epochMs: NumberType?,
-	zoneOffset: StringType?,
-}
-export type DateTimeType = {
-	typeId: string,
-	valueSubFields: DateTimeSubFields?,
-	subFieldKeysInOrder: {string},
-	label: string?,
-}
-
-function DataTypes.makeDateTimeSubFields(config: {
-	epochMs: NumberType?,
-	zoneOffset: StringType?,
-}?): DateTimeSubFields
-	local c = config or {}
-	return {
-		epochMs = c.epochMs,
-		zoneOffset = c.zoneOffset,
-	}
-end
-
-function DataTypes.makeDateTimeType(config: {
-	typeId: string?,
-	valueSubFields: DateTimeSubFields?,
-	subFieldKeysInOrder: {string}?,
-	label: string?,
-}?): DateTimeType
-	local c = config or {}
-	return {
-		typeId = c.typeId or "",
-		valueSubFields = c.valueSubFields,
-		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
-		label = c.label,
-	}
-end
-
-function DataTypes.encodeJsonDateTimeSubFields(sf: DateTimeSubFields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.epochMs = encodeOptionalNumberField(sf.epochMs)
-	result.zoneOffset = encodeOptionalStringField(sf.zoneOffset)
-	return result
-end
-
-function DataTypes.decodeJsonDateTimeSubFields(json: {[string]: any}): DateTimeSubFields
-	return {
-		epochMs = decodeOptionalNumberField(json.epochMs),
-		zoneOffset = decodeOptionalStringField(json.zoneOffset),
-	}
-end
-
-function DataTypes.encodeJsonDateTimeType(t: DateTimeType): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then
-		result.label = t.label
-	end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonDateTimeSubFields(t.valueSubFields)
-	end
-	return result
-end
-
-function DataTypes.decodeJsonDateTimeType(json: {[string]: any}): DateTimeType
-	return {
-		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonDateTimeSubFields(json.valueSubFields) else nil,
-		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
-		label = json.label,
-	}
-end
-
--- 3. MoneyType
-export type MoneySubFields = {
-	amount: NumberType?,
-	isoCurrencyCode: StringType?,
-}
-export type MoneyType = {
-	typeId: string,
-	valueSubFields: MoneySubFields?,
-	subFieldKeysInOrder: {string},
-	label: string?,
-}
-
-function DataTypes.makeMoneySubFields(config: {
-	amount: NumberType?,
-	isoCurrencyCode: StringType?,
-}?): MoneySubFields
-	local c = config or {}
-	return {
-		amount = c.amount,
-		isoCurrencyCode = c.isoCurrencyCode,
-	}
-end
-
-function DataTypes.makeMoneyType(config: {
-	typeId: string?,
-	valueSubFields: MoneySubFields?,
-	subFieldKeysInOrder: {string}?,
-	label: string?,
-}?): MoneyType
-	local c = config or {}
-	return {
-		typeId = c.typeId or "",
-		valueSubFields = c.valueSubFields,
-		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
-		label = c.label,
-	}
-end
-
-function DataTypes.encodeJsonMoneySubFields(sf: MoneySubFields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.amount = encodeOptionalNumberField(sf.amount)
-	result.isoCurrencyCode = encodeOptionalStringField(sf.isoCurrencyCode)
-	return result
-end
-
-function DataTypes.decodeJsonMoneySubFields(json: {[string]: any}): MoneySubFields
-	return {
-		amount = decodeOptionalNumberField(json.amount),
-		isoCurrencyCode = decodeOptionalStringField(json.isoCurrencyCode),
-	}
-end
-
-function DataTypes.encodeJsonMoneyType(t: MoneyType): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then
-		result.label = t.label
-	end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonMoneySubFields(t.valueSubFields)
-	end
-	return result
-end
-
-function DataTypes.decodeJsonMoneyType(json: {[string]: any}): MoneyType
-	return {
-		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonMoneySubFields(json.valueSubFields) else nil,
-		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
-		label = json.label,
-	}
-end
-
--- 4. AddressType
 export type AddressSubFields = {
 	numberAndStreet: StringType?,
 	city: StringType?,
@@ -629,53 +380,58 @@ function DataTypes.decodeJsonAddressType(json: {[string]: any}): AddressType
 	}
 end
 
--- 5. IndividualNameType
-export type IndividualNameSubFields = {
-	prefixName: StringType?,
-	firstName: StringType?,
-	middleName: StringType?,
-	lastName: StringType?,
-	suffixName: StringType?,
-	fullName: StringType?,
-	preferredName: StringType?,
-	jobTitle: StringType?,
+export type BankAccountInfoSubFields = {
+	bankName: StringType?,
+	bankLocation: StringType?,
+	aba: StringType?,
+	swift: StringType?,
+	accountName: StringType?,
+	accountNumber: StringType?,
+	iban: StringType?,
+	furtherCreditName: StringType?,
+	furtherCreditAccount: StringType?,
+	correspondentBankAccount: StringType?,
 }
-export type IndividualNameType = {
+export type BankAccountInfoType = {
 	typeId: string,
-	valueSubFields: IndividualNameSubFields?,
+	valueSubFields: BankAccountInfoSubFields?,
 	subFieldKeysInOrder: {string},
 	label: string?,
 }
 
-function DataTypes.makeIndividualNameSubFields(config: {
-	prefixName: StringType?,
-	firstName: StringType?,
-	middleName: StringType?,
-	lastName: StringType?,
-	suffixName: StringType?,
-	fullName: StringType?,
-	preferredName: StringType?,
-	jobTitle: StringType?,
-}?): IndividualNameSubFields
+function DataTypes.makeBankAccountInfoSubFields(config: {
+	bankName: StringType?,
+	bankLocation: StringType?,
+	aba: StringType?,
+	swift: StringType?,
+	accountName: StringType?,
+	accountNumber: StringType?,
+	iban: StringType?,
+	furtherCreditName: StringType?,
+	furtherCreditAccount: StringType?,
+	correspondentBankAccount: StringType?,
+}?): BankAccountInfoSubFields
 	local c = config or {}
 	return {
-		prefixName = c.prefixName,
-		firstName = c.firstName,
-		middleName = c.middleName,
-		lastName = c.lastName,
-		suffixName = c.suffixName,
-		fullName = c.fullName,
-		preferredName = c.preferredName,
-		jobTitle = c.jobTitle,
+		bankName = c.bankName,
+		bankLocation = c.bankLocation,
+		aba = c.aba,
+		swift = c.swift,
+		accountName = c.accountName,
+		accountNumber = c.accountNumber,
+		iban = c.iban,
+		furtherCreditName = c.furtherCreditName,
+		furtherCreditAccount = c.furtherCreditAccount,
+		correspondentBankAccount = c.correspondentBankAccount,
 	}
 end
 
-function DataTypes.makeIndividualNameType(config: {
+function DataTypes.makeBankAccountInfoType(config: {
 	typeId: string?,
-	valueSubFields: IndividualNameSubFields?,
+	valueSubFields: BankAccountInfoSubFields?,
 	subFieldKeysInOrder: {string}?,
 	label: string?,
-}?): IndividualNameType
+}?): BankAccountInfoType
 	local c = config or {}
 	return {
 		typeId = c.typeId or "",
@@ -685,33 +441,37 @@ function DataTypes.makeIndividualNameType(config: {
 	}
 end
 
-function DataTypes.encodeJsonIndividualNameSubFields(sf: IndividualNameSubFields): {[string]: any}
+function DataTypes.encodeJsonBankAccountInfoSubFields(sf: BankAccountInfoSubFields): {[string]: any}
 	local result: {[string]: any} = {}
-	result.prefixName = encodeOptionalStringField(sf.prefixName)
-	result.firstName = encodeOptionalStringField(sf.firstName)
-	result.middleName = encodeOptionalStringField(sf.middleName)
-	result.lastName = encodeOptionalStringField(sf.lastName)
-	result.suffixName = encodeOptionalStringField(sf.suffixName)
-	result.fullName = encodeOptionalStringField(sf.fullName)
-	result.preferredName = encodeOptionalStringField(sf.preferredName)
-	result.jobTitle = encodeOptionalStringField(sf.jobTitle)
+	result.bankName = encodeOptionalStringField(sf.bankName)
+	result.bankLocation = encodeOptionalStringField(sf.bankLocation)
+	result.aba = encodeOptionalStringField(sf.aba)
+	result.swift = encodeOptionalStringField(sf.swift)
+	result.accountName = encodeOptionalStringField(sf.accountName)
+	result.accountNumber = encodeOptionalStringField(sf.accountNumber)
+	result.iban = encodeOptionalStringField(sf.iban)
+	result.furtherCreditName = encodeOptionalStringField(sf.furtherCreditName)
+	result.furtherCreditAccount = encodeOptionalStringField(sf.furtherCreditAccount)
+	result.correspondentBankAccount = encodeOptionalStringField(sf.correspondentBankAccount)
 	return result
 end
 
-function DataTypes.decodeJsonIndividualNameSubFields(json: {[string]: any}): IndividualNameSubFields
+function DataTypes.decodeJsonBankAccountInfoSubFields(json: {[string]: any}): BankAccountInfoSubFields
 	return {
-		prefixName = decodeOptionalStringField(json.prefixName),
-		firstName = decodeOptionalStringField(json.firstName),
-		middleName = decodeOptionalStringField(json.middleName),
-		lastName = decodeOptionalStringField(json.lastName),
-		suffixName = decodeOptionalStringField(json.suffixName),
-		fullName = decodeOptionalStringField(json.fullName),
-		preferredName = decodeOptionalStringField(json.preferredName),
-		jobTitle = decodeOptionalStringField(json.jobTitle),
+		bankName = decodeOptionalStringField(json.bankName),
+		bankLocation = decodeOptionalStringField(json.bankLocation),
+		aba = decodeOptionalStringField(json.aba),
+		swift = decodeOptionalStringField(json.swift),
+		accountName = decodeOptionalStringField(json.accountName),
+		accountNumber = decodeOptionalStringField(json.accountNumber),
+		iban = decodeOptionalStringField(json.iban),
+		furtherCreditName = decodeOptionalStringField(json.furtherCreditName),
+		furtherCreditAccount = decodeOptionalStringField(json.furtherCreditAccount),
+		correspondentBankAccount = decodeOptionalStringField(json.correspondentBankAccount),
 	}
 end
 
-function DataTypes.encodeJsonIndividualNameType(t: IndividualNameType): {[string]: any}
+function DataTypes.encodeJsonBankAccountInfoType(t: BankAccountInfoType): {[string]: any}
 	local result: {[string]: any} = {
 		typeId = t.typeId,
 		subFieldKeysInOrder = t.subFieldKeysInOrder,
@@ -720,49 +480,54 @@ function DataTypes.encodeJsonIndividualNameType(t: IndividualNameType): {[string
 		result.label = t.label
 	end
 	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonIndividualNameSubFields(t.valueSubFields)
+		result.valueSubFields = DataTypes.encodeJsonBankAccountInfoSubFields(t.valueSubFields)
 	end
 	return result
 end
 
-function DataTypes.decodeJsonIndividualNameType(json: {[string]: any}): IndividualNameType
+function DataTypes.decodeJsonBankAccountInfoType(json: {[string]: any}): BankAccountInfoType
 	return {
 		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonIndividualNameSubFields(json.valueSubFields) else nil,
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonBankAccountInfoSubFields(json.valueSubFields) else nil,
 		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
 		label = json.label,
 	}
 end
 
--- 6. CountryType
-export type CountrySubFields = {
-	countryName: StringType?,
-	isoCountryCode: StringType?,
+export type BankInfoSubFields = {
+	bankName: StringType?,
+	bankLocation: StringType?,
+	aba: StringType?,
+	swift: StringType?,
 }
-export type CountryType = {
+export type BankInfoType = {
 	typeId: string,
-	valueSubFields: CountrySubFields?,
+	valueSubFields: BankInfoSubFields?,
 	subFieldKeysInOrder: {string},
 	label: string?,
 }
 
-function DataTypes.makeCountrySubFields(config: {
-	countryName: StringType?,
-	isoCountryCode: StringType?,
-}?): CountrySubFields
+function DataTypes.makeBankInfoSubFields(config: {
+	bankName: StringType?,
+	bankLocation: StringType?,
+	aba: StringType?,
+	swift: StringType?,
+}?): BankInfoSubFields
 	local c = config or {}
 	return {
-		countryName = c.countryName,
-		isoCountryCode = c.isoCountryCode,
+		bankName = c.bankName,
+		bankLocation = c.bankLocation,
+		aba = c.aba,
+		swift = c.swift,
 	}
 end
 
-function DataTypes.makeCountryType(config: {
+function DataTypes.makeBankInfoType(config: {
 	typeId: string?,
-	valueSubFields: CountrySubFields?,
+	valueSubFields: BankInfoSubFields?,
 	subFieldKeysInOrder: {string}?,
 	label: string?,
-}?): CountryType
+}?): BankInfoType
 	local c = config or {}
 	return {
 		typeId = c.typeId or "",
@@ -772,21 +537,25 @@ function DataTypes.makeCountryType(config: {
 	}
 end
 
-function DataTypes.encodeJsonCountrySubFields(sf: CountrySubFields): {[string]: any}
+function DataTypes.encodeJsonBankInfoSubFields(sf: BankInfoSubFields): {[string]: any}
 	local result: {[string]: any} = {}
-	result.countryName = encodeOptionalStringField(sf.countryName)
-	result.isoCountryCode = encodeOptionalStringField(sf.isoCountryCode)
+	result.bankName = encodeOptionalStringField(sf.bankName)
+	result.bankLocation = encodeOptionalStringField(sf.bankLocation)
+	result.aba = encodeOptionalStringField(sf.aba)
+	result.swift = encodeOptionalStringField(sf.swift)
 	return result
 end
 
-function DataTypes.decodeJsonCountrySubFields(json: {[string]: any}): CountrySubFields
+function DataTypes.decodeJsonBankInfoSubFields(json: {[string]: any}): BankInfoSubFields
 	return {
-		countryName = decodeOptionalStringField(json.countryName),
-		isoCountryCode = decodeOptionalStringField(json.isoCountryCode),
+		bankName = decodeOptionalStringField(json.bankName),
+		bankLocation = decodeOptionalStringField(json.bankLocation),
+		aba = decodeOptionalStringField(json.aba),
+		swift = decodeOptionalStringField(json.swift),
 	}
 end
 
-function DataTypes.encodeJsonCountryType(t: CountryType): {[string]: any}
+function DataTypes.encodeJsonBankInfoType(t: BankInfoType): {[string]: any}
 	local result: {[string]: any} = {
 		typeId = t.typeId,
 		subFieldKeysInOrder = t.subFieldKeysInOrder,
@@ -795,21 +564,20 @@ function DataTypes.encodeJsonCountryType(t: CountryType): {[string]: any}
 		result.label = t.label
 	end
 	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonCountrySubFields(t.valueSubFields)
+		result.valueSubFields = DataTypes.encodeJsonBankInfoSubFields(t.valueSubFields)
 	end
 	return result
 end
 
-function DataTypes.decodeJsonCountryType(json: {[string]: any}): CountryType
+function DataTypes.decodeJsonBankInfoType(json: {[string]: any}): BankInfoType
 	return {
 		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonCountrySubFields(json.valueSubFields) else nil,
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonBankInfoSubFields(json.valueSubFields) else nil,
 		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
 		label = json.label,
 	}
 end
 
--- 7. BaseContactType
 export type BaseContactSubFields = {
 	prefixName: StringType?,
 	firstName: StringType?,
@@ -929,7 +697,817 @@ function DataTypes.decodeJsonBaseContactType(json: {[string]: any}): BaseContact
 	}
 end
 
--- 8. SubmissionContactType
+export type BrokerageAccountSubFields = {
+	firmName: StringType?,
+	firmOfficeBranchLocation: StringType?,
+	dtcNumber: StringType?,
+	crestParticipantId: StringType?,
+	bicCode: StringType?,
+	beneficiaryAccountNumber: StringType?,
+	beneficiaryAccountName: StringType?,
+	intermediaryAccountName: StringType?,
+	intermediaryAccountNumber: StringType?,
+	intermediaryBicCode: StringType?,
+	securitiesSettlementInstructions: StringType?,
+	attention: StringType?,
+}
+export type BrokerageAccountType = {
+	typeId: string,
+	valueSubFields: BrokerageAccountSubFields?,
+	subFieldKeysInOrder: {string},
+	label: string?,
+}
+
+function DataTypes.makeBrokerageAccountSubFields(config: {
+	firmName: StringType?,
+	firmOfficeBranchLocation: StringType?,
+	dtcNumber: StringType?,
+	crestParticipantId: StringType?,
+	bicCode: StringType?,
+	beneficiaryAccountNumber: StringType?,
+	beneficiaryAccountName: StringType?,
+	intermediaryAccountName: StringType?,
+	intermediaryAccountNumber: StringType?,
+	intermediaryBicCode: StringType?,
+	securitiesSettlementInstructions: StringType?,
+	attention: StringType?,
+}?): BrokerageAccountSubFields
+	local c = config or {}
+	return {
+		firmName = c.firmName,
+		firmOfficeBranchLocation = c.firmOfficeBranchLocation,
+		dtcNumber = c.dtcNumber,
+		crestParticipantId = c.crestParticipantId,
+		bicCode = c.bicCode,
+		beneficiaryAccountNumber = c.beneficiaryAccountNumber,
+		beneficiaryAccountName = c.beneficiaryAccountName,
+		intermediaryAccountName = c.intermediaryAccountName,
+		intermediaryAccountNumber = c.intermediaryAccountNumber,
+		intermediaryBicCode = c.intermediaryBicCode,
+		securitiesSettlementInstructions = c.securitiesSettlementInstructions,
+		attention = c.attention,
+	}
+end
+
+function DataTypes.makeBrokerageAccountType(config: {
+	typeId: string?,
+	valueSubFields: BrokerageAccountSubFields?,
+	subFieldKeysInOrder: {string}?,
+	label: string?,
+}?): BrokerageAccountType
+	local c = config or {}
+	return {
+		typeId = c.typeId or "",
+		valueSubFields = c.valueSubFields,
+		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
+		label = c.label,
+	}
+end
+
+function DataTypes.encodeJsonBrokerageAccountSubFields(sf: BrokerageAccountSubFields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.firmName = encodeOptionalStringField(sf.firmName)
+	result.firmOfficeBranchLocation = encodeOptionalStringField(sf.firmOfficeBranchLocation)
+	result.dtcNumber = encodeOptionalStringField(sf.dtcNumber)
+	result.crestParticipantId = encodeOptionalStringField(sf.crestParticipantId)
+	result.bicCode = encodeOptionalStringField(sf.bicCode)
+	result.beneficiaryAccountNumber = encodeOptionalStringField(sf.beneficiaryAccountNumber)
+	result.beneficiaryAccountName = encodeOptionalStringField(sf.beneficiaryAccountName)
+	result.intermediaryAccountName = encodeOptionalStringField(sf.intermediaryAccountName)
+	result.intermediaryAccountNumber = encodeOptionalStringField(sf.intermediaryAccountNumber)
+	result.intermediaryBicCode = encodeOptionalStringField(sf.intermediaryBicCode)
+	result.securitiesSettlementInstructions = encodeOptionalStringField(sf.securitiesSettlementInstructions)
+	result.attention = encodeOptionalStringField(sf.attention)
+	return result
+end
+
+function DataTypes.decodeJsonBrokerageAccountSubFields(json: {[string]: any}): BrokerageAccountSubFields
+	return {
+		firmName = decodeOptionalStringField(json.firmName),
+		firmOfficeBranchLocation = decodeOptionalStringField(json.firmOfficeBranchLocation),
+		dtcNumber = decodeOptionalStringField(json.dtcNumber),
+		crestParticipantId = decodeOptionalStringField(json.crestParticipantId),
+		bicCode = decodeOptionalStringField(json.bicCode),
+		beneficiaryAccountNumber = decodeOptionalStringField(json.beneficiaryAccountNumber),
+		beneficiaryAccountName = decodeOptionalStringField(json.beneficiaryAccountName),
+		intermediaryAccountName = decodeOptionalStringField(json.intermediaryAccountName),
+		intermediaryAccountNumber = decodeOptionalStringField(json.intermediaryAccountNumber),
+		intermediaryBicCode = decodeOptionalStringField(json.intermediaryBicCode),
+		securitiesSettlementInstructions = decodeOptionalStringField(json.securitiesSettlementInstructions),
+		attention = decodeOptionalStringField(json.attention),
+	}
+end
+
+function DataTypes.encodeJsonBrokerageAccountType(t: BrokerageAccountType): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = DataTypes.encodeJsonBrokerageAccountSubFields(t.valueSubFields)
+	end
+	return result
+end
+
+function DataTypes.decodeJsonBrokerageAccountType(json: {[string]: any}): BrokerageAccountType
+	return {
+		typeId = json.typeId or "",
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonBrokerageAccountSubFields(json.valueSubFields) else nil,
+		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
+		label = json.label,
+	}
+end
+
+export type BrokerageFirmSubFields = {
+	firmName: StringType?,
+	firmOfficeBranchLocation: StringType?,
+}
+export type BrokerageFirmType = {
+	typeId: string,
+	valueSubFields: BrokerageFirmSubFields?,
+	subFieldKeysInOrder: {string},
+	label: string?,
+}
+
+function DataTypes.makeBrokerageFirmSubFields(config: {
+	firmName: StringType?,
+	firmOfficeBranchLocation: StringType?,
+}?): BrokerageFirmSubFields
+	local c = config or {}
+	return {
+		firmName = c.firmName,
+		firmOfficeBranchLocation = c.firmOfficeBranchLocation,
+	}
+end
+
+function DataTypes.makeBrokerageFirmType(config: {
+	typeId: string?,
+	valueSubFields: BrokerageFirmSubFields?,
+	subFieldKeysInOrder: {string}?,
+	label: string?,
+}?): BrokerageFirmType
+	local c = config or {}
+	return {
+		typeId = c.typeId or "",
+		valueSubFields = c.valueSubFields,
+		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
+		label = c.label,
+	}
+end
+
+function DataTypes.encodeJsonBrokerageFirmSubFields(sf: BrokerageFirmSubFields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.firmName = encodeOptionalStringField(sf.firmName)
+	result.firmOfficeBranchLocation = encodeOptionalStringField(sf.firmOfficeBranchLocation)
+	return result
+end
+
+function DataTypes.decodeJsonBrokerageFirmSubFields(json: {[string]: any}): BrokerageFirmSubFields
+	return {
+		firmName = decodeOptionalStringField(json.firmName),
+		firmOfficeBranchLocation = decodeOptionalStringField(json.firmOfficeBranchLocation),
+	}
+end
+
+function DataTypes.encodeJsonBrokerageFirmType(t: BrokerageFirmType): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = DataTypes.encodeJsonBrokerageFirmSubFields(t.valueSubFields)
+	end
+	return result
+end
+
+function DataTypes.decodeJsonBrokerageFirmType(json: {[string]: any}): BrokerageFirmType
+	return {
+		typeId = json.typeId or "",
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonBrokerageFirmSubFields(json.valueSubFields) else nil,
+		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
+		label = json.label,
+	}
+end
+
+export type CountrySubFields = {
+	countryName: StringType?,
+	isoCountryCode: StringType?,
+}
+export type CountryType = {
+	typeId: string,
+	valueSubFields: CountrySubFields?,
+	subFieldKeysInOrder: {string},
+	label: string?,
+}
+
+function DataTypes.makeCountrySubFields(config: {
+	countryName: StringType?,
+	isoCountryCode: StringType?,
+}?): CountrySubFields
+	local c = config or {}
+	return {
+		countryName = c.countryName,
+		isoCountryCode = c.isoCountryCode,
+	}
+end
+
+function DataTypes.makeCountryType(config: {
+	typeId: string?,
+	valueSubFields: CountrySubFields?,
+	subFieldKeysInOrder: {string}?,
+	label: string?,
+}?): CountryType
+	local c = config or {}
+	return {
+		typeId = c.typeId or "",
+		valueSubFields = c.valueSubFields,
+		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
+		label = c.label,
+	}
+end
+
+function DataTypes.encodeJsonCountrySubFields(sf: CountrySubFields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.countryName = encodeOptionalStringField(sf.countryName)
+	result.isoCountryCode = encodeOptionalStringField(sf.isoCountryCode)
+	return result
+end
+
+function DataTypes.decodeJsonCountrySubFields(json: {[string]: any}): CountrySubFields
+	return {
+		countryName = decodeOptionalStringField(json.countryName),
+		isoCountryCode = decodeOptionalStringField(json.isoCountryCode),
+	}
+end
+
+function DataTypes.encodeJsonCountryType(t: CountryType): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = DataTypes.encodeJsonCountrySubFields(t.valueSubFields)
+	end
+	return result
+end
+
+function DataTypes.decodeJsonCountryType(json: {[string]: any}): CountryType
+	return {
+		typeId = json.typeId or "",
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonCountrySubFields(json.valueSubFields) else nil,
+		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
+		label = json.label,
+	}
+end
+
+export type DateTimeSubFields = {
+	epochMs: NumberType?,
+	zoneOffset: StringType?,
+}
+export type DateTimeType = {
+	typeId: string,
+	valueSubFields: DateTimeSubFields?,
+	subFieldKeysInOrder: {string},
+	label: string?,
+}
+
+function DataTypes.makeDateTimeSubFields(config: {
+	epochMs: NumberType?,
+	zoneOffset: StringType?,
+}?): DateTimeSubFields
+	local c = config or {}
+	return {
+		epochMs = c.epochMs,
+		zoneOffset = c.zoneOffset,
+	}
+end
+
+function DataTypes.makeDateTimeType(config: {
+	typeId: string?,
+	valueSubFields: DateTimeSubFields?,
+	subFieldKeysInOrder: {string}?,
+	label: string?,
+}?): DateTimeType
+	local c = config or {}
+	return {
+		typeId = c.typeId or "",
+		valueSubFields = c.valueSubFields,
+		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
+		label = c.label,
+	}
+end
+
+function DataTypes.encodeJsonDateTimeSubFields(sf: DateTimeSubFields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.epochMs = encodeOptionalNumberField(sf.epochMs)
+	result.zoneOffset = encodeOptionalStringField(sf.zoneOffset)
+	return result
+end
+
+function DataTypes.decodeJsonDateTimeSubFields(json: {[string]: any}): DateTimeSubFields
+	return {
+		epochMs = decodeOptionalNumberField(json.epochMs),
+		zoneOffset = decodeOptionalStringField(json.zoneOffset),
+	}
+end
+
+function DataTypes.encodeJsonDateTimeType(t: DateTimeType): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = DataTypes.encodeJsonDateTimeSubFields(t.valueSubFields)
+	end
+	return result
+end
+
+function DataTypes.decodeJsonDateTimeType(json: {[string]: any}): DateTimeType
+	return {
+		typeId = json.typeId or "",
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonDateTimeSubFields(json.valueSubFields) else nil,
+		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
+		label = json.label,
+	}
+end
+
+export type IndividualNameSubFields = {
+	prefixName: StringType?,
+	firstName: StringType?,
+	middleName: StringType?,
+	lastName: StringType?,
+	suffixName: StringType?,
+	fullName: StringType?,
+	preferredName: StringType?,
+	jobTitle: StringType?,
+}
+export type IndividualNameType = {
+	typeId: string,
+	valueSubFields: IndividualNameSubFields?,
+	subFieldKeysInOrder: {string},
+	label: string?,
+}
+
+function DataTypes.makeIndividualNameSubFields(config: {
+	prefixName: StringType?,
+	firstName: StringType?,
+	middleName: StringType?,
+	lastName: StringType?,
+	suffixName: StringType?,
+	fullName: StringType?,
+	preferredName: StringType?,
+	jobTitle: StringType?,
+}?): IndividualNameSubFields
+	local c = config or {}
+	return {
+		prefixName = c.prefixName,
+		firstName = c.firstName,
+		middleName = c.middleName,
+		lastName = c.lastName,
+		suffixName = c.suffixName,
+		fullName = c.fullName,
+		preferredName = c.preferredName,
+		jobTitle = c.jobTitle,
+	}
+end
+
+function DataTypes.makeIndividualNameType(config: {
+	typeId: string?,
+	valueSubFields: IndividualNameSubFields?,
+	subFieldKeysInOrder: {string}?,
+	label: string?,
+}?): IndividualNameType
+	local c = config or {}
+	return {
+		typeId = c.typeId or "",
+		valueSubFields = c.valueSubFields,
+		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
+		label = c.label,
+	}
+end
+
+function DataTypes.encodeJsonIndividualNameSubFields(sf: IndividualNameSubFields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.prefixName = encodeOptionalStringField(sf.prefixName)
+	result.firstName = encodeOptionalStringField(sf.firstName)
+	result.middleName = encodeOptionalStringField(sf.middleName)
+	result.lastName = encodeOptionalStringField(sf.lastName)
+	result.suffixName = encodeOptionalStringField(sf.suffixName)
+	result.fullName = encodeOptionalStringField(sf.fullName)
+	result.preferredName = encodeOptionalStringField(sf.preferredName)
+	result.jobTitle = encodeOptionalStringField(sf.jobTitle)
+	return result
+end
+
+function DataTypes.decodeJsonIndividualNameSubFields(json: {[string]: any}): IndividualNameSubFields
+	return {
+		prefixName = decodeOptionalStringField(json.prefixName),
+		firstName = decodeOptionalStringField(json.firstName),
+		middleName = decodeOptionalStringField(json.middleName),
+		lastName = decodeOptionalStringField(json.lastName),
+		suffixName = decodeOptionalStringField(json.suffixName),
+		fullName = decodeOptionalStringField(json.fullName),
+		preferredName = decodeOptionalStringField(json.preferredName),
+		jobTitle = decodeOptionalStringField(json.jobTitle),
+	}
+end
+
+function DataTypes.encodeJsonIndividualNameType(t: IndividualNameType): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = DataTypes.encodeJsonIndividualNameSubFields(t.valueSubFields)
+	end
+	return result
+end
+
+function DataTypes.decodeJsonIndividualNameType(json: {[string]: any}): IndividualNameType
+	return {
+		typeId = json.typeId or "",
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonIndividualNameSubFields(json.valueSubFields) else nil,
+		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
+		label = json.label,
+	}
+end
+
+export type MoneySubFields = {
+	amount: NumberType?,
+	isoCurrencyCode: StringType?,
+}
+export type MoneyType = {
+	typeId: string,
+	valueSubFields: MoneySubFields?,
+	subFieldKeysInOrder: {string},
+	label: string?,
+}
+
+function DataTypes.makeMoneySubFields(config: {
+	amount: NumberType?,
+	isoCurrencyCode: StringType?,
+}?): MoneySubFields
+	local c = config or {}
+	return {
+		amount = c.amount,
+		isoCurrencyCode = c.isoCurrencyCode,
+	}
+end
+
+function DataTypes.makeMoneyType(config: {
+	typeId: string?,
+	valueSubFields: MoneySubFields?,
+	subFieldKeysInOrder: {string}?,
+	label: string?,
+}?): MoneyType
+	local c = config or {}
+	return {
+		typeId = c.typeId or "",
+		valueSubFields = c.valueSubFields,
+		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
+		label = c.label,
+	}
+end
+
+function DataTypes.encodeJsonMoneySubFields(sf: MoneySubFields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.amount = encodeOptionalNumberField(sf.amount)
+	result.isoCurrencyCode = encodeOptionalStringField(sf.isoCurrencyCode)
+	return result
+end
+
+function DataTypes.decodeJsonMoneySubFields(json: {[string]: any}): MoneySubFields
+	return {
+		amount = decodeOptionalNumberField(json.amount),
+		isoCurrencyCode = decodeOptionalStringField(json.isoCurrencyCode),
+	}
+end
+
+function DataTypes.encodeJsonMoneyType(t: MoneyType): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = DataTypes.encodeJsonMoneySubFields(t.valueSubFields)
+	end
+	return result
+end
+
+function DataTypes.decodeJsonMoneyType(json: {[string]: any}): MoneyType
+	return {
+		typeId = json.typeId or "",
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonMoneySubFields(json.valueSubFields) else nil,
+		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
+		label = json.label,
+	}
+end
+
+export type PhoneFaxSubFields = {
+	countryCode: StringType?,
+	areaCode: StringType?,
+	subscriberNumber: StringType?,
+}
+export type PhoneFaxType = {
+	typeId: string,
+	valueSubFields: PhoneFaxSubFields?,
+	subFieldKeysInOrder: {string},
+	label: string?,
+}
+
+function DataTypes.makePhoneFaxSubFields(config: {
+	countryCode: StringType?,
+	areaCode: StringType?,
+	subscriberNumber: StringType?,
+}?): PhoneFaxSubFields
+	local c = config or {}
+	return {
+		countryCode = c.countryCode,
+		areaCode = c.areaCode,
+		subscriberNumber = c.subscriberNumber,
+	}
+end
+
+function DataTypes.makePhoneFaxType(config: {
+	typeId: string?,
+	valueSubFields: PhoneFaxSubFields?,
+	subFieldKeysInOrder: {string}?,
+	label: string?,
+}?): PhoneFaxType
+	local c = config or {}
+	return {
+		typeId = c.typeId or "",
+		valueSubFields = c.valueSubFields,
+		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
+		label = c.label,
+	}
+end
+
+function DataTypes.encodeJsonPhoneFaxSubFields(sf: PhoneFaxSubFields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.countryCode = encodeOptionalStringField(sf.countryCode)
+	result.areaCode = encodeOptionalStringField(sf.areaCode)
+	result.subscriberNumber = encodeOptionalStringField(sf.subscriberNumber)
+	return result
+end
+
+function DataTypes.decodeJsonPhoneFaxSubFields(json: {[string]: any}): PhoneFaxSubFields
+	return {
+		countryCode = decodeOptionalStringField(json.countryCode),
+		areaCode = decodeOptionalStringField(json.areaCode),
+		subscriberNumber = decodeOptionalStringField(json.subscriberNumber),
+	}
+end
+
+function DataTypes.encodeJsonPhoneFaxType(t: PhoneFaxType): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = DataTypes.encodeJsonPhoneFaxSubFields(t.valueSubFields)
+	end
+	return result
+end
+
+function DataTypes.decodeJsonPhoneFaxType(json: {[string]: any}): PhoneFaxType
+	return {
+		typeId = json.typeId or "",
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonPhoneFaxSubFields(json.valueSubFields) else nil,
+		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
+		label = json.label,
+	}
+end
+
+export type ServiceContactPointSubFields = {
+	name: StringType?,
+	officeBranchLocation: StringType?,
+	phone: StringType?,
+	email: StringType?,
+}
+export type ServiceContactPointType = {
+	typeId: string,
+	valueSubFields: ServiceContactPointSubFields?,
+	subFieldKeysInOrder: {string},
+	label: string?,
+}
+
+function DataTypes.makeServiceContactPointSubFields(config: {
+	name: StringType?,
+	officeBranchLocation: StringType?,
+	phone: StringType?,
+	email: StringType?,
+}?): ServiceContactPointSubFields
+	local c = config or {}
+	return {
+		name = c.name,
+		officeBranchLocation = c.officeBranchLocation,
+		phone = c.phone,
+		email = c.email,
+	}
+end
+
+function DataTypes.makeServiceContactPointType(config: {
+	typeId: string?,
+	valueSubFields: ServiceContactPointSubFields?,
+	subFieldKeysInOrder: {string}?,
+	label: string?,
+}?): ServiceContactPointType
+	local c = config or {}
+	return {
+		typeId = c.typeId or "",
+		valueSubFields = c.valueSubFields,
+		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
+		label = c.label,
+	}
+end
+
+function DataTypes.encodeJsonServiceContactPointSubFields(sf: ServiceContactPointSubFields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.name = encodeOptionalStringField(sf.name)
+	result.officeBranchLocation = encodeOptionalStringField(sf.officeBranchLocation)
+	result.phone = encodeOptionalStringField(sf.phone)
+	result.email = encodeOptionalStringField(sf.email)
+	return result
+end
+
+function DataTypes.decodeJsonServiceContactPointSubFields(json: {[string]: any}): ServiceContactPointSubFields
+	return {
+		name = decodeOptionalStringField(json.name),
+		officeBranchLocation = decodeOptionalStringField(json.officeBranchLocation),
+		phone = decodeOptionalStringField(json.phone),
+		email = decodeOptionalStringField(json.email),
+	}
+end
+
+function DataTypes.encodeJsonServiceContactPointType(t: ServiceContactPointType): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = DataTypes.encodeJsonServiceContactPointSubFields(t.valueSubFields)
+	end
+	return result
+end
+
+function DataTypes.decodeJsonServiceContactPointType(json: {[string]: any}): ServiceContactPointType
+	return {
+		typeId = json.typeId or "",
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonServiceContactPointSubFields(json.valueSubFields) else nil,
+		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
+		label = json.label,
+	}
+end
+
+export type SignatorySubFields = {
+	numberAndStreet: StringType?,
+	city: StringType?,
+	stateProvince: StringType?,
+	country: StringType?,
+	postalZipCode: StringType?,
+	fullAddress: StringType?,
+	name: StringType?,
+	date: StringType?,
+	title: StringType?,
+	phone: StringType?,
+	email: StringType?,
+	signerRole: StringType?,
+}
+export type SignatoryType = {
+	typeId: string,
+	valueSubFields: SignatorySubFields?,
+	subFieldKeysInOrder: {string},
+	label: string?,
+}
+
+function DataTypes.makeSignatorySubFields(config: {
+	numberAndStreet: StringType?,
+	city: StringType?,
+	stateProvince: StringType?,
+	country: StringType?,
+	postalZipCode: StringType?,
+	fullAddress: StringType?,
+	name: StringType?,
+	date: StringType?,
+	title: StringType?,
+	phone: StringType?,
+	email: StringType?,
+	signerRole: StringType?,
+}?): SignatorySubFields
+	local c = config or {}
+	return {
+		numberAndStreet = c.numberAndStreet,
+		city = c.city,
+		stateProvince = c.stateProvince,
+		country = c.country,
+		postalZipCode = c.postalZipCode,
+		fullAddress = c.fullAddress,
+		name = c.name,
+		date = c.date,
+		title = c.title,
+		phone = c.phone,
+		email = c.email,
+		signerRole = c.signerRole,
+	}
+end
+
+function DataTypes.makeSignatoryType(config: {
+	typeId: string?,
+	valueSubFields: SignatorySubFields?,
+	subFieldKeysInOrder: {string}?,
+	label: string?,
+}?): SignatoryType
+	local c = config or {}
+	return {
+		typeId = c.typeId or "",
+		valueSubFields = c.valueSubFields,
+		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
+		label = c.label,
+	}
+end
+
+function DataTypes.encodeJsonSignatorySubFields(sf: SignatorySubFields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.numberAndStreet = encodeOptionalStringField(sf.numberAndStreet)
+	result.city = encodeOptionalStringField(sf.city)
+	result.stateProvince = encodeOptionalStringField(sf.stateProvince)
+	result.country = encodeOptionalStringField(sf.country)
+	result.postalZipCode = encodeOptionalStringField(sf.postalZipCode)
+	result.fullAddress = encodeOptionalStringField(sf.fullAddress)
+	result.name = encodeOptionalStringField(sf.name)
+	result.date = encodeOptionalStringField(sf.date)
+	result.title = encodeOptionalStringField(sf.title)
+	result.phone = encodeOptionalStringField(sf.phone)
+	result.email = encodeOptionalStringField(sf.email)
+	result.signerRole = encodeOptionalStringField(sf.signerRole)
+	return result
+end
+
+function DataTypes.decodeJsonSignatorySubFields(json: {[string]: any}): SignatorySubFields
+	return {
+		numberAndStreet = decodeOptionalStringField(json.numberAndStreet),
+		city = decodeOptionalStringField(json.city),
+		stateProvince = decodeOptionalStringField(json.stateProvince),
+		country = decodeOptionalStringField(json.country),
+		postalZipCode = decodeOptionalStringField(json.postalZipCode),
+		fullAddress = decodeOptionalStringField(json.fullAddress),
+		name = decodeOptionalStringField(json.name),
+		date = decodeOptionalStringField(json.date),
+		title = decodeOptionalStringField(json.title),
+		phone = decodeOptionalStringField(json.phone),
+		email = decodeOptionalStringField(json.email),
+		signerRole = decodeOptionalStringField(json.signerRole),
+	}
+end
+
+function DataTypes.encodeJsonSignatoryType(t: SignatoryType): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = DataTypes.encodeJsonSignatorySubFields(t.valueSubFields)
+	end
+	return result
+end
+
+function DataTypes.decodeJsonSignatoryType(json: {[string]: any}): SignatoryType
+	return {
+		typeId = json.typeId or "",
+		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonSignatorySubFields(json.valueSubFields) else nil,
+		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
+		label = json.label,
+	}
+end
+
 export type SubmissionContactSubFields = {
 	prefixName: StringType?,
 	firstName: StringType?,
@@ -1164,332 +1742,6 @@ function DataTypes.decodeJsonSubmissionContactType(json: {[string]: any}): Submi
 	}
 end
 
--- 9. SignatoryType
-export type SignatorySubFields = {
-	numberAndStreet: StringType?,
-	city: StringType?,
-	stateProvince: StringType?,
-	country: StringType?,
-	postalZipCode: StringType?,
-	fullAddress: StringType?,
-	name: StringType?,
-	date: StringType?,
-	title: StringType?,
-	phone: StringType?,
-	email: StringType?,
-	signerRole: StringType?,
-}
-export type SignatoryType = {
-	typeId: string,
-	valueSubFields: SignatorySubFields?,
-	subFieldKeysInOrder: {string},
-	label: string?,
-}
-
-function DataTypes.makeSignatorySubFields(config: {
-	numberAndStreet: StringType?,
-	city: StringType?,
-	stateProvince: StringType?,
-	country: StringType?,
-	postalZipCode: StringType?,
-	fullAddress: StringType?,
-	name: StringType?,
-	date: StringType?,
-	title: StringType?,
-	phone: StringType?,
-	email: StringType?,
-	signerRole: StringType?,
-}?): SignatorySubFields
-	local c = config or {}
-	return {
-		numberAndStreet = c.numberAndStreet,
-		city = c.city,
-		stateProvince = c.stateProvince,
-		country = c.country,
-		postalZipCode = c.postalZipCode,
-		fullAddress = c.fullAddress,
-		name = c.name,
-		date = c.date,
-		title = c.title,
-		phone = c.phone,
-		email = c.email,
-		signerRole = c.signerRole,
-	}
-end
-
-function DataTypes.makeSignatoryType(config: {
-	typeId: string?,
-	valueSubFields: SignatorySubFields?,
-	subFieldKeysInOrder: {string}?,
-	label: string?,
-}?): SignatoryType
-	local c = config or {}
-	return {
-		typeId = c.typeId or "",
-		valueSubFields = c.valueSubFields,
-		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
-		label = c.label,
-	}
-end
-
-function DataTypes.encodeJsonSignatorySubFields(sf: SignatorySubFields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.numberAndStreet = encodeOptionalStringField(sf.numberAndStreet)
-	result.city = encodeOptionalStringField(sf.city)
-	result.stateProvince = encodeOptionalStringField(sf.stateProvince)
-	result.country = encodeOptionalStringField(sf.country)
-	result.postalZipCode = encodeOptionalStringField(sf.postalZipCode)
-	result.fullAddress = encodeOptionalStringField(sf.fullAddress)
-	result.name = encodeOptionalStringField(sf.name)
-	result.date = encodeOptionalStringField(sf.date)
-	result.title = encodeOptionalStringField(sf.title)
-	result.phone = encodeOptionalStringField(sf.phone)
-	result.email = encodeOptionalStringField(sf.email)
-	result.signerRole = encodeOptionalStringField(sf.signerRole)
-	return result
-end
-
-function DataTypes.decodeJsonSignatorySubFields(json: {[string]: any}): SignatorySubFields
-	return {
-		numberAndStreet = decodeOptionalStringField(json.numberAndStreet),
-		city = decodeOptionalStringField(json.city),
-		stateProvince = decodeOptionalStringField(json.stateProvince),
-		country = decodeOptionalStringField(json.country),
-		postalZipCode = decodeOptionalStringField(json.postalZipCode),
-		fullAddress = decodeOptionalStringField(json.fullAddress),
-		name = decodeOptionalStringField(json.name),
-		date = decodeOptionalStringField(json.date),
-		title = decodeOptionalStringField(json.title),
-		phone = decodeOptionalStringField(json.phone),
-		email = decodeOptionalStringField(json.email),
-		signerRole = decodeOptionalStringField(json.signerRole),
-	}
-end
-
-function DataTypes.encodeJsonSignatoryType(t: SignatoryType): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then
-		result.label = t.label
-	end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonSignatorySubFields(t.valueSubFields)
-	end
-	return result
-end
-
-function DataTypes.decodeJsonSignatoryType(json: {[string]: any}): SignatoryType
-	return {
-		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonSignatorySubFields(json.valueSubFields) else nil,
-		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
-		label = json.label,
-	}
-end
-
--- 10. BankInfoType
-export type BankInfoSubFields = {
-	bankName: StringType?,
-	bankLocation: StringType?,
-	aba: StringType?,
-	swift: StringType?,
-}
-export type BankInfoType = {
-	typeId: string,
-	valueSubFields: BankInfoSubFields?,
-	subFieldKeysInOrder: {string},
-	label: string?,
-}
-
-function DataTypes.makeBankInfoSubFields(config: {
-	bankName: StringType?,
-	bankLocation: StringType?,
-	aba: StringType?,
-	swift: StringType?,
-}?): BankInfoSubFields
-	local c = config or {}
-	return {
-		bankName = c.bankName,
-		bankLocation = c.bankLocation,
-		aba = c.aba,
-		swift = c.swift,
-	}
-end
-
-function DataTypes.makeBankInfoType(config: {
-	typeId: string?,
-	valueSubFields: BankInfoSubFields?,
-	subFieldKeysInOrder: {string}?,
-	label: string?,
-}?): BankInfoType
-	local c = config or {}
-	return {
-		typeId = c.typeId or "",
-		valueSubFields = c.valueSubFields,
-		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
-		label = c.label,
-	}
-end
-
-function DataTypes.encodeJsonBankInfoSubFields(sf: BankInfoSubFields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.bankName = encodeOptionalStringField(sf.bankName)
-	result.bankLocation = encodeOptionalStringField(sf.bankLocation)
-	result.aba = encodeOptionalStringField(sf.aba)
-	result.swift = encodeOptionalStringField(sf.swift)
-	return result
-end
-
-function DataTypes.decodeJsonBankInfoSubFields(json: {[string]: any}): BankInfoSubFields
-	return {
-		bankName = decodeOptionalStringField(json.bankName),
-		bankLocation = decodeOptionalStringField(json.bankLocation),
-		aba = decodeOptionalStringField(json.aba),
-		swift = decodeOptionalStringField(json.swift),
-	}
-end
-
-function DataTypes.encodeJsonBankInfoType(t: BankInfoType): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then
-		result.label = t.label
-	end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonBankInfoSubFields(t.valueSubFields)
-	end
-	return result
-end
-
-function DataTypes.decodeJsonBankInfoType(json: {[string]: any}): BankInfoType
-	return {
-		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonBankInfoSubFields(json.valueSubFields) else nil,
-		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
-		label = json.label,
-	}
-end
-
--- 11. BankAccountInfoType
-export type BankAccountInfoSubFields = {
-	bankName: StringType?,
-	bankLocation: StringType?,
-	aba: StringType?,
-	swift: StringType?,
-	accountName: StringType?,
-	accountNumber: StringType?,
-	iban: StringType?,
-	furtherCreditName: StringType?,
-	furtherCreditAccount: StringType?,
-	correspondentBankAccount: StringType?,
-}
-export type BankAccountInfoType = {
-	typeId: string,
-	valueSubFields: BankAccountInfoSubFields?,
-	subFieldKeysInOrder: {string},
-	label: string?,
-}
-
-function DataTypes.makeBankAccountInfoSubFields(config: {
-	bankName: StringType?,
-	bankLocation: StringType?,
-	aba: StringType?,
-	swift: StringType?,
-	accountName: StringType?,
-	accountNumber: StringType?,
-	iban: StringType?,
-	furtherCreditName: StringType?,
-	furtherCreditAccount: StringType?,
-	correspondentBankAccount: StringType?,
-}?): BankAccountInfoSubFields
-	local c = config or {}
-	return {
-		bankName = c.bankName,
-		bankLocation = c.bankLocation,
-		aba = c.aba,
-		swift = c.swift,
-		accountName = c.accountName,
-		accountNumber = c.accountNumber,
-		iban = c.iban,
-		furtherCreditName = c.furtherCreditName,
-		furtherCreditAccount = c.furtherCreditAccount,
-		correspondentBankAccount = c.correspondentBankAccount,
-	}
-end
-
-function DataTypes.makeBankAccountInfoType(config: {
-	typeId: string?,
-	valueSubFields: BankAccountInfoSubFields?,
-	subFieldKeysInOrder: {string}?,
-	label: string?,
-}?): BankAccountInfoType
-	local c = config or {}
-	return {
-		typeId = c.typeId or "",
-		valueSubFields = c.valueSubFields,
-		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
-		label = c.label,
-	}
-end
-
-function DataTypes.encodeJsonBankAccountInfoSubFields(sf: BankAccountInfoSubFields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.bankName = encodeOptionalStringField(sf.bankName)
-	result.bankLocation = encodeOptionalStringField(sf.bankLocation)
-	result.aba = encodeOptionalStringField(sf.aba)
-	result.swift = encodeOptionalStringField(sf.swift)
-	result.accountName = encodeOptionalStringField(sf.accountName)
-	result.accountNumber = encodeOptionalStringField(sf.accountNumber)
-	result.iban = encodeOptionalStringField(sf.iban)
-	result.furtherCreditName = encodeOptionalStringField(sf.furtherCreditName)
-	result.furtherCreditAccount = encodeOptionalStringField(sf.furtherCreditAccount)
-	result.correspondentBankAccount = encodeOptionalStringField(sf.correspondentBankAccount)
-	return result
-end
-
-function DataTypes.decodeJsonBankAccountInfoSubFields(json: {[string]: any}): BankAccountInfoSubFields
-	return {
-		bankName = decodeOptionalStringField(json.bankName),
-		bankLocation = decodeOptionalStringField(json.bankLocation),
-		aba = decodeOptionalStringField(json.aba),
-		swift = decodeOptionalStringField(json.swift),
-		accountName = decodeOptionalStringField(json.accountName),
-		accountNumber = decodeOptionalStringField(json.accountNumber),
-		iban = decodeOptionalStringField(json.iban),
-		furtherCreditName = decodeOptionalStringField(json.furtherCreditName),
-		furtherCreditAccount = decodeOptionalStringField(json.furtherCreditAccount),
-		correspondentBankAccount = decodeOptionalStringField(json.correspondentBankAccount),
-	}
-end
-
-function DataTypes.encodeJsonBankAccountInfoType(t: BankAccountInfoType): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then
-		result.label = t.label
-	end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonBankAccountInfoSubFields(t.valueSubFields)
-	end
-	return result
-end
-
-function DataTypes.decodeJsonBankAccountInfoType(json: {[string]: any}): BankAccountInfoType
-	return {
-		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonBankAccountInfoSubFields(json.valueSubFields) else nil,
-		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
-		label = json.label,
-	}
-end
-
--- 12. WireInstructionsType
 export type WireInstructionsSubFields = {
 	bankName: StringType?,
 	bankLocation: StringType?,
@@ -1609,295 +1861,6 @@ function DataTypes.decodeJsonWireInstructionsType(json: {[string]: any}): WireIn
 	}
 end
 
--- 13. BrokerageFirmType
-export type BrokerageFirmSubFields = {
-	firmName: StringType?,
-	firmOfficeBranchLocation: StringType?,
-}
-export type BrokerageFirmType = {
-	typeId: string,
-	valueSubFields: BrokerageFirmSubFields?,
-	subFieldKeysInOrder: {string},
-	label: string?,
-}
-
-function DataTypes.makeBrokerageFirmSubFields(config: {
-	firmName: StringType?,
-	firmOfficeBranchLocation: StringType?,
-}?): BrokerageFirmSubFields
-	local c = config or {}
-	return {
-		firmName = c.firmName,
-		firmOfficeBranchLocation = c.firmOfficeBranchLocation,
-	}
-end
-
-function DataTypes.makeBrokerageFirmType(config: {
-	typeId: string?,
-	valueSubFields: BrokerageFirmSubFields?,
-	subFieldKeysInOrder: {string}?,
-	label: string?,
-}?): BrokerageFirmType
-	local c = config or {}
-	return {
-		typeId = c.typeId or "",
-		valueSubFields = c.valueSubFields,
-		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
-		label = c.label,
-	}
-end
-
-function DataTypes.encodeJsonBrokerageFirmSubFields(sf: BrokerageFirmSubFields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.firmName = encodeOptionalStringField(sf.firmName)
-	result.firmOfficeBranchLocation = encodeOptionalStringField(sf.firmOfficeBranchLocation)
-	return result
-end
-
-function DataTypes.decodeJsonBrokerageFirmSubFields(json: {[string]: any}): BrokerageFirmSubFields
-	return {
-		firmName = decodeOptionalStringField(json.firmName),
-		firmOfficeBranchLocation = decodeOptionalStringField(json.firmOfficeBranchLocation),
-	}
-end
-
-function DataTypes.encodeJsonBrokerageFirmType(t: BrokerageFirmType): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then
-		result.label = t.label
-	end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonBrokerageFirmSubFields(t.valueSubFields)
-	end
-	return result
-end
-
-function DataTypes.decodeJsonBrokerageFirmType(json: {[string]: any}): BrokerageFirmType
-	return {
-		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonBrokerageFirmSubFields(json.valueSubFields) else nil,
-		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
-		label = json.label,
-	}
-end
-
--- 14. BrokerageAccountType
-export type BrokerageAccountSubFields = {
-	firmName: StringType?,
-	firmOfficeBranchLocation: StringType?,
-	dtcNumber: StringType?,
-	crestParticipantId: StringType?,
-	bicCode: StringType?,
-	beneficiaryAccountNumber: StringType?,
-	beneficiaryAccountName: StringType?,
-	intermediaryAccountName: StringType?,
-	intermediaryAccountNumber: StringType?,
-	intermediaryBicCode: StringType?,
-	securitiesSettlementInstructions: StringType?,
-	attention: StringType?,
-}
-export type BrokerageAccountType = {
-	typeId: string,
-	valueSubFields: BrokerageAccountSubFields?,
-	subFieldKeysInOrder: {string},
-	label: string?,
-}
-
-function DataTypes.makeBrokerageAccountSubFields(config: {
-	firmName: StringType?,
-	firmOfficeBranchLocation: StringType?,
-	dtcNumber: StringType?,
-	crestParticipantId: StringType?,
-	bicCode: StringType?,
-	beneficiaryAccountNumber: StringType?,
-	beneficiaryAccountName: StringType?,
-	intermediaryAccountName: StringType?,
-	intermediaryAccountNumber: StringType?,
-	intermediaryBicCode: StringType?,
-	securitiesSettlementInstructions: StringType?,
-	attention: StringType?,
-}?): BrokerageAccountSubFields
-	local c = config or {}
-	return {
-		firmName = c.firmName,
-		firmOfficeBranchLocation = c.firmOfficeBranchLocation,
-		dtcNumber = c.dtcNumber,
-		crestParticipantId = c.crestParticipantId,
-		bicCode = c.bicCode,
-		beneficiaryAccountNumber = c.beneficiaryAccountNumber,
-		beneficiaryAccountName = c.beneficiaryAccountName,
-		intermediaryAccountName = c.intermediaryAccountName,
-		intermediaryAccountNumber = c.intermediaryAccountNumber,
-		intermediaryBicCode = c.intermediaryBicCode,
-		securitiesSettlementInstructions = c.securitiesSettlementInstructions,
-		attention = c.attention,
-	}
-end
-
-function DataTypes.makeBrokerageAccountType(config: {
-	typeId: string?,
-	valueSubFields: BrokerageAccountSubFields?,
-	subFieldKeysInOrder: {string}?,
-	label: string?,
-}?): BrokerageAccountType
-	local c = config or {}
-	return {
-		typeId = c.typeId or "",
-		valueSubFields = c.valueSubFields,
-		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
-		label = c.label,
-	}
-end
-
-function DataTypes.encodeJsonBrokerageAccountSubFields(sf: BrokerageAccountSubFields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.firmName = encodeOptionalStringField(sf.firmName)
-	result.firmOfficeBranchLocation = encodeOptionalStringField(sf.firmOfficeBranchLocation)
-	result.dtcNumber = encodeOptionalStringField(sf.dtcNumber)
-	result.crestParticipantId = encodeOptionalStringField(sf.crestParticipantId)
-	result.bicCode = encodeOptionalStringField(sf.bicCode)
-	result.beneficiaryAccountNumber = encodeOptionalStringField(sf.beneficiaryAccountNumber)
-	result.beneficiaryAccountName = encodeOptionalStringField(sf.beneficiaryAccountName)
-	result.intermediaryAccountName = encodeOptionalStringField(sf.intermediaryAccountName)
-	result.intermediaryAccountNumber = encodeOptionalStringField(sf.intermediaryAccountNumber)
-	result.intermediaryBicCode = encodeOptionalStringField(sf.intermediaryBicCode)
-	result.securitiesSettlementInstructions = encodeOptionalStringField(sf.securitiesSettlementInstructions)
-	result.attention = encodeOptionalStringField(sf.attention)
-	return result
-end
-
-function DataTypes.decodeJsonBrokerageAccountSubFields(json: {[string]: any}): BrokerageAccountSubFields
-	return {
-		firmName = decodeOptionalStringField(json.firmName),
-		firmOfficeBranchLocation = decodeOptionalStringField(json.firmOfficeBranchLocation),
-		dtcNumber = decodeOptionalStringField(json.dtcNumber),
-		crestParticipantId = decodeOptionalStringField(json.crestParticipantId),
-		bicCode = decodeOptionalStringField(json.bicCode),
-		beneficiaryAccountNumber = decodeOptionalStringField(json.beneficiaryAccountNumber),
-		beneficiaryAccountName = decodeOptionalStringField(json.beneficiaryAccountName),
-		intermediaryAccountName = decodeOptionalStringField(json.intermediaryAccountName),
-		intermediaryAccountNumber = decodeOptionalStringField(json.intermediaryAccountNumber),
-		intermediaryBicCode = decodeOptionalStringField(json.intermediaryBicCode),
-		securitiesSettlementInstructions = decodeOptionalStringField(json.securitiesSettlementInstructions),
-		attention = decodeOptionalStringField(json.attention),
-	}
-end
-
-function DataTypes.encodeJsonBrokerageAccountType(t: BrokerageAccountType): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then
-		result.label = t.label
-	end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonBrokerageAccountSubFields(t.valueSubFields)
-	end
-	return result
-end
-
-function DataTypes.decodeJsonBrokerageAccountType(json: {[string]: any}): BrokerageAccountType
-	return {
-		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonBrokerageAccountSubFields(json.valueSubFields) else nil,
-		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
-		label = json.label,
-	}
-end
-
--- 15. ServiceContactPointType
-export type ServiceContactPointSubFields = {
-	name: StringType?,
-	officeBranchLocation: StringType?,
-	phone: StringType?,
-	email: StringType?,
-}
-export type ServiceContactPointType = {
-	typeId: string,
-	valueSubFields: ServiceContactPointSubFields?,
-	subFieldKeysInOrder: {string},
-	label: string?,
-}
-
-function DataTypes.makeServiceContactPointSubFields(config: {
-	name: StringType?,
-	officeBranchLocation: StringType?,
-	phone: StringType?,
-	email: StringType?,
-}?): ServiceContactPointSubFields
-	local c = config or {}
-	return {
-		name = c.name,
-		officeBranchLocation = c.officeBranchLocation,
-		phone = c.phone,
-		email = c.email,
-	}
-end
-
-function DataTypes.makeServiceContactPointType(config: {
-	typeId: string?,
-	valueSubFields: ServiceContactPointSubFields?,
-	subFieldKeysInOrder: {string}?,
-	label: string?,
-}?): ServiceContactPointType
-	local c = config or {}
-	return {
-		typeId = c.typeId or "",
-		valueSubFields = c.valueSubFields,
-		subFieldKeysInOrder = c.subFieldKeysInOrder or {},
-		label = c.label,
-	}
-end
-
-function DataTypes.encodeJsonServiceContactPointSubFields(sf: ServiceContactPointSubFields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.name = encodeOptionalStringField(sf.name)
-	result.officeBranchLocation = encodeOptionalStringField(sf.officeBranchLocation)
-	result.phone = encodeOptionalStringField(sf.phone)
-	result.email = encodeOptionalStringField(sf.email)
-	return result
-end
-
-function DataTypes.decodeJsonServiceContactPointSubFields(json: {[string]: any}): ServiceContactPointSubFields
-	return {
-		name = decodeOptionalStringField(json.name),
-		officeBranchLocation = decodeOptionalStringField(json.officeBranchLocation),
-		phone = decodeOptionalStringField(json.phone),
-		email = decodeOptionalStringField(json.email),
-	}
-end
-
-function DataTypes.encodeJsonServiceContactPointType(t: ServiceContactPointType): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then
-		result.label = t.label
-	end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = DataTypes.encodeJsonServiceContactPointSubFields(t.valueSubFields)
-	end
-	return result
-end
-
-function DataTypes.decodeJsonServiceContactPointType(json: {[string]: any}): ServiceContactPointType
-	return {
-		typeId = json.typeId or "",
-		valueSubFields = if json.valueSubFields then DataTypes.decodeJsonServiceContactPointSubFields(json.valueSubFields) else nil,
-		subFieldKeysInOrder = json.subFieldKeysInOrder or {},
-		label = json.label,
-	}
-end
-
--- ============================================================
--- CustomCompoundType
--- ============================================================
-
 export type CustomCompoundType = {
 	typeId: string,
 	valueSubFields: {[string]: FieldValue}?,
@@ -1920,47 +1883,59 @@ function DataTypes.makeCustomCompoundType(config: {
 	}
 end
 
--- ============================================================
--- typeId dispatch: decode any field value by its typeId
--- ============================================================
-
--- Set of typeIds that map to StringType
 local STRING_TYPE_IDS: {[string]: boolean} = {
-	String = true, Ssn = true, Ein = true, Aba = true, Itin = true,
-	Swift = true, Iban = true, Giin = true, UsZip = true, Email = true,
-	PhoneFaxString = true, IsoCountryCode = true, IsoCurrencyCode = true,
-	CountryString = true, StateProvince = true, City = true,
-	NumberAndStreet = true, PostalZipCode = true, MoneyString = true,
-	DateTimeString = true, TimeZoneOffset = true,
+	String = true,
+	Ssn = true,
+	Ein = true,
+	Aba = true,
+	Itin = true,
+	Swift = true,
+	Iban = true,
+	Giin = true,
+	UsZip = true,
+	Email = true,
+	PhoneFaxString = true,
+	IsoCountryCode = true,
+	IsoCurrencyCode = true,
+	CountryString = true,
+	StateProvince = true,
+	City = true,
+	NumberAndStreet = true,
+	PostalZipCode = true,
+	MoneyString = true,
+	DateTimeString = true,
+	TimeZoneOffset = true
 }
 
--- Set of typeIds that map to NumberType
 local NUMBER_TYPE_IDS: {[string]: boolean} = {
-	Integer = true, Float = true, Percentage = true, Year = true,
+	Integer = true,
+	Float = true,
+	Percentage = true,
+	Year = true
 }
 
--- Compound type typeId → codec function name mapping
 local COMPOUND_TYPE_CODECS: {[string]: {decode: string, encode: string}} = {
-	PhoneFax = { decode = "decodeJsonPhoneFaxType", encode = "encodeJsonPhoneFaxType" },
-	DateTime = { decode = "decodeJsonDateTimeType", encode = "encodeJsonDateTimeType" },
-	Money = { decode = "decodeJsonMoneyType", encode = "encodeJsonMoneyType" },
 	Address = { decode = "decodeJsonAddressType", encode = "encodeJsonAddressType" },
-	IndividualName = { decode = "decodeJsonIndividualNameType", encode = "encodeJsonIndividualNameType" },
-	Country = { decode = "decodeJsonCountryType", encode = "encodeJsonCountryType" },
-	BaseContact = { decode = "decodeJsonBaseContactType", encode = "encodeJsonBaseContactType" },
-	SubmissionContact = { decode = "decodeJsonSubmissionContactType", encode = "encodeJsonSubmissionContactType" },
-	Signatory = { decode = "decodeJsonSignatoryType", encode = "encodeJsonSignatoryType" },
-	BankInfo = { decode = "decodeJsonBankInfoType", encode = "encodeJsonBankInfoType" },
 	BankAccountInfo = { decode = "decodeJsonBankAccountInfoType", encode = "encodeJsonBankAccountInfoType" },
-	WireInstructions = { decode = "decodeJsonWireInstructionsType", encode = "encodeJsonWireInstructionsType" },
-	BrokerageFirm = { decode = "decodeJsonBrokerageFirmType", encode = "encodeJsonBrokerageFirmType" },
+	BankInfo = { decode = "decodeJsonBankInfoType", encode = "encodeJsonBankInfoType" },
+	BaseContact = { decode = "decodeJsonBaseContactType", encode = "encodeJsonBaseContactType" },
 	BrokerageAccount = { decode = "decodeJsonBrokerageAccountType", encode = "encodeJsonBrokerageAccountType" },
+	BrokerageFirm = { decode = "decodeJsonBrokerageFirmType", encode = "encodeJsonBrokerageFirmType" },
+	Country = { decode = "decodeJsonCountryType", encode = "encodeJsonCountryType" },
+	DateTime = { decode = "decodeJsonDateTimeType", encode = "encodeJsonDateTimeType" },
+	IndividualName = { decode = "decodeJsonIndividualNameType", encode = "encodeJsonIndividualNameType" },
+	Money = { decode = "decodeJsonMoneyType", encode = "encodeJsonMoneyType" },
+	PhoneFax = { decode = "decodeJsonPhoneFaxType", encode = "encodeJsonPhoneFaxType" },
 	ServiceContactPoint = { decode = "decodeJsonServiceContactPointType", encode = "encodeJsonServiceContactPointType" },
+	Signatory = { decode = "decodeJsonSignatoryType", encode = "encodeJsonSignatoryType" },
+	SubmissionContact = { decode = "decodeJsonSubmissionContactType", encode = "encodeJsonSubmissionContactType" },
+	WireInstructions = { decode = "decodeJsonWireInstructionsType", encode = "encodeJsonWireInstructionsType" },
 }
 
--- Set of typeIds that map to EnumType
 local ENUM_TYPE_IDS: {[string]: boolean} = {
-	ShareClass = true, TransactionType = true, SubscriptionStatus = true,
+	ShareClass = true,
+	TransactionType = true,
+	SubscriptionStatus = true
 }
 
 function DataTypes.decodeFieldValueByTypeId(json: {[string]: any}): FieldValue

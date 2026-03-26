@@ -3,10 +3,6 @@ local DataTypes = require("@lib/data_types")
 
 local SourceTable = {}
 
--- ============================================================
--- Source-specific compound types
--- ============================================================
-
 export type LpSignatoryFields = {
 	asaCommitmentAmount: DataTypes.StringType?,
 	individualSubscribernameSignaturepage: DataTypes.StringType?,
@@ -33,10 +29,6 @@ export type W9Type = {
 	label: string?,
 }
 
--- ============================================================
--- SourceTableFieldsMap and Schema
--- ============================================================
-
 export type SourceTableFieldsMap = {
 	lpSignatory: LpSignatoryType?,
 	asaFullnameInvestornameAmlquestionnaire: DataTypes.StringType?,
@@ -52,10 +44,6 @@ export type SourceTableSchema = {
 	fieldKeysInOrder: {string},
 	label: string,
 }
-
--- ============================================================
--- Constructors
--- ============================================================
 
 function SourceTable.makeLpSignatoryFields(config: {
 	asaCommitmentAmount: DataTypes.StringType?,
@@ -147,28 +135,29 @@ function SourceTable.makeSourceTableSchema(config: {
 	}
 end
 
--- ============================================================
--- JSON Encode/Decode
--- ============================================================
-
+local function decodeOptionalMultipleCheckboxType(json: any): DataTypes.MultipleCheckboxType?
+	if json == nil then return nil end
+	return DataTypes.decodeJsonMultipleCheckboxType(json)
+end
+local function encodeOptionalMultipleCheckboxType(v: DataTypes.MultipleCheckboxType?): {[string]: any}?
+	if v == nil then return nil end
+	return DataTypes.encodeJsonMultipleCheckboxType(v)
+end
 local function decodeOptionalStringType(json: any): DataTypes.StringType?
 	if json == nil then return nil end
 	return DataTypes.decodeJsonStringType(json)
 end
-
 local function encodeOptionalStringType(v: DataTypes.StringType?): {[string]: any}?
 	if v == nil then return nil end
 	return DataTypes.encodeJsonStringType(v)
 end
 
-local function decodeOptionalMultipleCheckbox(json: any): DataTypes.MultipleCheckboxType?
-	if json == nil then return nil end
-	return DataTypes.decodeJsonMultipleCheckboxType(json)
-end
-
-local function encodeOptionalMultipleCheckbox(v: DataTypes.MultipleCheckboxType?): {[string]: any}?
-	if v == nil then return nil end
-	return DataTypes.encodeJsonMultipleCheckboxType(v)
+function SourceTable.encodeJsonLpSignatoryFields(sf: LpSignatoryFields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.asaCommitmentAmount = encodeOptionalStringType(sf.asaCommitmentAmount)
+	result.individualSubscribernameSignaturepage = encodeOptionalStringType(sf.individualSubscribernameSignaturepage)
+	result.entityAuthorizednameSignaturepage = encodeOptionalStringType(sf.entityAuthorizednameSignaturepage)
+	return result
 end
 
 function SourceTable.decodeJsonLpSignatoryFields(json: {[string]: any}): LpSignatoryFields
@@ -179,11 +168,17 @@ function SourceTable.decodeJsonLpSignatoryFields(json: {[string]: any}): LpSigna
 	}
 end
 
-function SourceTable.encodeJsonLpSignatoryFields(sf: LpSignatoryFields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.asaCommitmentAmount = encodeOptionalStringType(sf.asaCommitmentAmount)
-	result.individualSubscribernameSignaturepage = encodeOptionalStringType(sf.individualSubscribernameSignaturepage)
-	result.entityAuthorizednameSignaturepage = encodeOptionalStringType(sf.entityAuthorizednameSignaturepage)
+function SourceTable.encodeJsonLpSignatoryType(t: LpSignatoryType): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = SourceTable.encodeJsonLpSignatoryFields(t.valueSubFields)
+	end
 	return result
 end
 
@@ -196,19 +191,14 @@ function SourceTable.decodeJsonLpSignatoryType(json: {[string]: any}): LpSignato
 	}
 end
 
-function SourceTable.encodeJsonLpSignatoryType(t: LpSignatoryType): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then result.label = t.label end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = SourceTable.encodeJsonLpSignatoryFields(t.valueSubFields)
-	end
+function SourceTable.encodeJsonW9Fields(sf: W9Fields): {[string]: any}
+	local result: {[string]: any} = {}
+	result.w9PartiSsn1 = encodeOptionalStringType(sf.w9PartiSsn1)
+	result.w9PartiEin1 = encodeOptionalStringType(sf.w9PartiEin1)
+	result.w9Line2 = encodeOptionalStringType(sf.w9Line2)
 	return result
 end
 
--- W9 codec: same pattern as LpSignatory
 function SourceTable.decodeJsonW9Fields(json: {[string]: any}): W9Fields
 	return {
 		w9PartiSsn1 = decodeOptionalStringType(json.w9PartiSsn1),
@@ -217,11 +207,17 @@ function SourceTable.decodeJsonW9Fields(json: {[string]: any}): W9Fields
 	}
 end
 
-function SourceTable.encodeJsonW9Fields(sf: W9Fields): {[string]: any}
-	local result: {[string]: any} = {}
-	result.w9PartiSsn1 = encodeOptionalStringType(sf.w9PartiSsn1)
-	result.w9PartiEin1 = encodeOptionalStringType(sf.w9PartiEin1)
-	result.w9Line2 = encodeOptionalStringType(sf.w9Line2)
+function SourceTable.encodeJsonW9Type(t: W9Type): {[string]: any}
+	local result: {[string]: any} = {
+		typeId = t.typeId,
+		subFieldKeysInOrder = t.subFieldKeysInOrder,
+	}
+	if t.label ~= nil then
+		result.label = t.label
+	end
+	if t.valueSubFields ~= nil then
+		result.valueSubFields = SourceTable.encodeJsonW9Fields(t.valueSubFields)
+	end
 	return result
 end
 
@@ -234,15 +230,15 @@ function SourceTable.decodeJsonW9Type(json: {[string]: any}): W9Type
 	}
 end
 
-function SourceTable.encodeJsonW9Type(t: W9Type): {[string]: any}
-	local result: {[string]: any} = {
-		typeId = t.typeId,
-		subFieldKeysInOrder = t.subFieldKeysInOrder,
-	}
-	if t.label ~= nil then result.label = t.label end
-	if t.valueSubFields ~= nil then
-		result.valueSubFields = SourceTable.encodeJsonW9Fields(t.valueSubFields)
-	end
+function SourceTable.encodeJsonSourceTableFieldsMap(fm: SourceTableFieldsMap): {[string]: any}
+	local result: {[string]: any} = {}
+	if fm.lpSignatory then result.lpSignatory = SourceTable.encodeJsonLpSignatoryType(fm.lpSignatory) end
+	result.asaFullnameInvestornameAmlquestionnaire = encodeOptionalStringType(fm.asaFullnameInvestornameAmlquestionnaire)
+	result.asaFullnameInvestornameGeneralinfo1 = encodeOptionalStringType(fm.asaFullnameInvestornameGeneralinfo1)
+	result.luxsentityRegulatedstatusPart2Duediligencequestionnaire = encodeOptionalMultipleCheckboxType(fm.luxsentityRegulatedstatusPart2Duediligencequestionnaire)
+	result.indiInternationalsupplementsPart1Duediligencequestionnaire = encodeOptionalMultipleCheckboxType(fm.indiInternationalsupplementsPart1Duediligencequestionnaire)
+	result.entityInternationalsupplementsPart1Duediligencequestionnaire = encodeOptionalMultipleCheckboxType(fm.entityInternationalsupplementsPart1Duediligencequestionnaire)
+	if fm.w9 then result.w9 = SourceTable.encodeJsonW9Type(fm.w9) end
 	return result
 end
 
@@ -251,30 +247,10 @@ function SourceTable.decodeJsonSourceTableFieldsMap(json: {[string]: any}): Sour
 		lpSignatory = if json.lpSignatory then SourceTable.decodeJsonLpSignatoryType(json.lpSignatory) else nil,
 		asaFullnameInvestornameAmlquestionnaire = decodeOptionalStringType(json.asaFullnameInvestornameAmlquestionnaire),
 		asaFullnameInvestornameGeneralinfo1 = decodeOptionalStringType(json.asaFullnameInvestornameGeneralinfo1),
-		luxsentityRegulatedstatusPart2Duediligencequestionnaire = decodeOptionalMultipleCheckbox(json.luxsentityRegulatedstatusPart2Duediligencequestionnaire),
-		indiInternationalsupplementsPart1Duediligencequestionnaire = decodeOptionalMultipleCheckbox(json.indiInternationalsupplementsPart1Duediligencequestionnaire),
-		entityInternationalsupplementsPart1Duediligencequestionnaire = decodeOptionalMultipleCheckbox(json.entityInternationalsupplementsPart1Duediligencequestionnaire),
+		luxsentityRegulatedstatusPart2Duediligencequestionnaire = decodeOptionalMultipleCheckboxType(json.luxsentityRegulatedstatusPart2Duediligencequestionnaire),
+		indiInternationalsupplementsPart1Duediligencequestionnaire = decodeOptionalMultipleCheckboxType(json.indiInternationalsupplementsPart1Duediligencequestionnaire),
+		entityInternationalsupplementsPart1Duediligencequestionnaire = decodeOptionalMultipleCheckboxType(json.entityInternationalsupplementsPart1Duediligencequestionnaire),
 		w9 = if json.w9 then SourceTable.decodeJsonW9Type(json.w9) else nil,
-	}
-end
-
-function SourceTable.encodeJsonSourceTableFieldsMap(fm: SourceTableFieldsMap): {[string]: any}
-	local result: {[string]: any} = {}
-	if fm.lpSignatory then result.lpSignatory = SourceTable.encodeJsonLpSignatoryType(fm.lpSignatory) end
-	result.asaFullnameInvestornameAmlquestionnaire = encodeOptionalStringType(fm.asaFullnameInvestornameAmlquestionnaire)
-	result.asaFullnameInvestornameGeneralinfo1 = encodeOptionalStringType(fm.asaFullnameInvestornameGeneralinfo1)
-	result.luxsentityRegulatedstatusPart2Duediligencequestionnaire = encodeOptionalMultipleCheckbox(fm.luxsentityRegulatedstatusPart2Duediligencequestionnaire)
-	result.indiInternationalsupplementsPart1Duediligencequestionnaire = encodeOptionalMultipleCheckbox(fm.indiInternationalsupplementsPart1Duediligencequestionnaire)
-	result.entityInternationalsupplementsPart1Duediligencequestionnaire = encodeOptionalMultipleCheckbox(fm.entityInternationalsupplementsPart1Duediligencequestionnaire)
-	if fm.w9 then result.w9 = SourceTable.encodeJsonW9Type(fm.w9) end
-	return result
-end
-
-function SourceTable.decodeJsonSourceTableSchema(json: {[string]: any}): SourceTableSchema
-	return {
-		fieldsMap = if json.fieldsMap then SourceTable.decodeJsonSourceTableFieldsMap(json.fieldsMap) else nil,
-		fieldKeysInOrder = json.fieldKeysInOrder or {},
-		label = json.label or "",
 	}
 end
 
@@ -287,6 +263,14 @@ function SourceTable.encodeJsonSourceTableSchema(schema: SourceTableSchema): {[s
 		result.fieldsMap = SourceTable.encodeJsonSourceTableFieldsMap(schema.fieldsMap)
 	end
 	return result
+end
+
+function SourceTable.decodeJsonSourceTableSchema(json: {[string]: any}): SourceTableSchema
+	return {
+		fieldsMap = if json.fieldsMap then SourceTable.decodeJsonSourceTableFieldsMap(json.fieldsMap) else nil,
+		fieldKeysInOrder = json.fieldKeysInOrder or {},
+		label = json.label or "",
+	}
 end
 
 return SourceTable
