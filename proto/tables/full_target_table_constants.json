@@ -1,0 +1,3904 @@
+{
+  "fields_map": {
+    "sf_InvestorAccount_null_TCG_Global_Id_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_Selection": {
+      "type_id": "CustomCompound",
+      "value_sub_fields": {
+        "SubFundGlobalId": {
+          "type_id": "String"
+        },
+        "CommitmentAmount": {
+          "type_id": "Float"
+        }
+      },
+      "sub_field_keys_in_order": [
+        "SubFundGlobalId",
+        "CommitmentAmount"
+      ]
+    },
+    "sf_Account_InvestorAccount_TCG_Global_Id_c": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_Name": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_Type_c": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_Industry": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_Beneficial_Country_Formula_c": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_TCG_Global_Id_c": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_Account_Team_Members_c": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_Description": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_BillingAddress": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_ShippingAddress": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_Phone": {
+      "type_id": "PhoneFax"
+    },
+    "sf_Account_CommonName_Website": {
+      "type_id": "String"
+    },
+    "sf_Account_CommonName_RecordTypeId": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Name": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Type": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_WLC_Trade_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_CommonName_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Phone": {
+      "type_id": "PhoneFax"
+    },
+    "sf_Account_SubscriptionInvestor_BillingCountry": {
+      "type_id": "Country"
+    },
+    "sf_Account_SubscriptionInvestor_BillingStreet": {
+      "type_id": "NumberAndStreet"
+    },
+    "sf_Account_SubscriptionInvestor_BillingCity": {
+      "type_id": "City"
+    },
+    "sf_Account_SubscriptionInvestor_BillingState": {
+      "type_id": "StateProvince"
+    },
+    "sf_Account_SubscriptionInvestor_BillingPostalCode": {
+      "type_id": "PostalZipCode"
+    },
+    "anduin_Account_SubscriptionInvestor_BillingFullAddress": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_ParentId": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Parent_Type_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_WLC_Occupation_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_WLC_Title_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_WLC_Employer_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_WLC_Subscribing_as_a_Representative_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Nominee",
+        "Trustee",
+        "Custodian",
+        "Other representative for another investor"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_WLC_Subscribing_as_Representative_Details_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Industry": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Domestic_Foreign_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Domestic",
+        "Foreign"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Citizenship_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TCG_Global_Id_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Has_Carlyle_Onboarding_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Has_Solutions_Onboarding_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Disregarded_Entity_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Individual_Organization_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Individual",
+        "Organization"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Tax_Country_Jurisdiction_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_State_of_Tax_Residence_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_AML_Investor_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Corporation or Company \u2013 Not FI",
+        "FI \u2013 Broker Dealer",
+        "FI \u2013 Insurance Company",
+        "FI \u2013 Investment Company",
+        "FI \u2013 Other",
+        "FI \u2013 Private Investment Company",
+        "Foundation or Endowment",
+        "IG",
+        "Natural Person",
+        "Partnership or Fund",
+        "Pension Plan",
+        "Publicly Listed Company",
+        "SWF or Government Entity",
+        "Trust",
+        "Individual/Trust \u2013 US",
+        "Individual/Trust - Non US",
+        "Broker Dealer \u2013 US",
+        "Broker Dealer - Non US",
+        "Insurance Company \u2013 US",
+        "Insurance Company - Non US",
+        "Investment Company - SEC Registered",
+        "Private Fund - 3c1 or 3c7",
+        "Non Profit \u2013 US",
+        "Non Profit - Non US",
+        "Pension Plan - US (ex gov)",
+        "Pension Plan - Non US (ex gov)",
+        "Bank or Thrift - US",
+        "Bank or Thrift - Non US",
+        "Government Entity - US (ex pension)",
+        "Pension Plan - US State or Municipal Government",
+        "Sovereign Wealth Fund - Non US (ex pension)",
+        "Subscriber - Non US Unknown Ownership",
+        "Other"
+      ],
+      "all_option_labels_in_order": [
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_AML_Address_City_c": {
+      "type_id": "City"
+    },
+    "sf_Account_SubscriptionInvestor_AML_Address_State_Province_c": {
+      "type_id": "StateProvince"
+    },
+    "sf_Account_SubscriptionInvestor_Beneficial_Owner_Type_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_AML_Address_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Beneficial_Country_Formula_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Regulated_Entity_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Risk_Rating_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Broker_Dealer_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "anduin_Account_SubscriptionInvestor_Broker_Dealer_c": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "true"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Risk_Rating_3_Notes_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Bank_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Bank_Location_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Risk_Committee_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_FINRA_Retail_Investor_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Lux_Tax_Assessment_Rating_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Low",
+        "Medium",
+        "High"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Website": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_High_Risk_Jurisdiction_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Eligible_Introducer_Letter_Certificate_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Medium_High_Risk_Jurisdiction_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Introducer_Letter_Certificate_Comments_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Nominee_Intermediary_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Yes",
+        "No"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_AML_Pre_Clearance_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_High_Risk_Industry_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_AML_Pre_Clearance_Funds_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Complex_Structure_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Type_of_Block_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Soft Block",
+        "Full Block"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Negative_News_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Account_Blocking_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Material Sanction",
+        "KYC Deficiency"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Bearer_Shares_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Account_Blocking_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Shell_Bank_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Account_Blocking_Removed_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Politically_Exposed_Person_PEP_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_AML_Review_Cycle_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_PEP_Status_Details_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Next_AML_Review_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_PEP_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "PEP IO",
+        "PEP IO-R",
+        "PEP IO-A",
+        "PEP RO",
+        "PEP RO-R",
+        "PEP RO-A",
+        "PEP N",
+        "PEP N-R",
+        "PEP N-A",
+        "PEP SN",
+        "PEP SN-R",
+        "PEP SN-A",
+        "PEP L",
+        "PEP L-R",
+        "PEP L-A",
+        "PEP NG",
+        "PEP NG-R",
+        "PEP NG-A",
+        "PEP OBO / PEP OCP",
+        "SOE",
+        "SIE"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Marketing_Method_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "NA",
+        "Tied Agent"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Source_of_Wealth_Category_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Business profits or dividends",
+        "Compensation, payment",
+        "Gift",
+        "Income from  employment",
+        "Inheritance",
+        "Investments",
+        "Liquidation of investment portfolio",
+        "Lottery/betting/casino winnings",
+        "Royalties",
+        "Sale of business or partnership",
+        "Sale of property",
+        "Sales of shares or other investments",
+        "Savings",
+        "Other"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Marketing_Details_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Source_of_Wealth_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_MiFID_Client_Category_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Retail Investor",
+        "\u201cPer Se\u201d Professional Client",
+        "Professional on Request",
+        "Eligible Counterparty"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Source_of_Funds_Category_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Business profits or dividends",
+        "Compensation payment",
+        "Gift",
+        "Income from employment",
+        "Inheritance",
+        "Investments",
+        "Lottery/betting/casino winnings",
+        "Royalties",
+        "Sale of business or partnership",
+        "Sale of property",
+        "Savings",
+        "Other"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Source_of_Funds_Details_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_SoW_SoF_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Legal_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Corporation",
+        "Partnership",
+        "Trust",
+        "Foundation/Endowment",
+        "Pension Plan",
+        "Limited Liability Company",
+        "Irrevocable Trust",
+        "Revocable Trust",
+        "Individual Retirement Account",
+        "Foundation",
+        "Endowment",
+        "Government Pension Plan",
+        "Other"
+      ],
+      "all_option_labels_in_order": [
+        "",
+        "",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_High_Risk_Factors_c": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "Jurisdiction",
+        "PEP",
+        "Nominee/Intermediary",
+        "Complex Structure",
+        "Industry",
+        "Negative News"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Awareness_Nexus_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_AML_Notes_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Approval_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "=N/A=",
+        "In Progress",
+        "Pending Tax and Demographic Review",
+        "Pending Tax Review",
+        "Pending Demographic Review",
+        "Pending Name Change Approval",
+        "Review Completed"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Name_Change_Approval_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "N/A",
+        "In Progress",
+        "Pending Demographic Review",
+        "Pending AML approval",
+        "Pending FM approval",
+        "Approved",
+        "Review Completed"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_AML_Approver_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_FM_Approver_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Form_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "W-9",
+        "W-8BEN",
+        "W-8IMY",
+        "W-8EXP",
+        "W-8ECI",
+        "W-8BEN-E"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Tax_ID_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_FM_Tax_Id_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Equity_Tax_Id_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Tax_Entity_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Trust",
+        "Investment Company",
+        "State or a Political Subdivision of a State",
+        "Sovereign Wealth Fund or Foreign Official Institution",
+        "Broker-Dealer",
+        "Banking or Thrift Institution",
+        "Pension Plan",
+        "Insurance Company",
+        "Investment company registered with the SEC",
+        "Non-profit Organization",
+        "State or Municipal Company Governmental Pension Plan",
+        "Issuer that would be an Investment Company but for Section (c)(1) or 3(c)(7)",
+        "Other"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Tax_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "C Corporation",
+        "Central bank of issue",
+        "Complex trust",
+        "Corporation",
+        "Disregarded entity",
+        "Estate",
+        "Foreign Central Bank of Issue",
+        "Foreign Government",
+        "Foreign Government - Controlled Entity",
+        "Foreign Government - Integral Part",
+        "Government",
+        "Government of a US possession",
+        "Grantor trust",
+        "Individual",
+        "International organization",
+        "LLC - C Corporation",
+        "LLC- Corporation",
+        "LLC- Disregarded Entity",
+        "LLC- Partnership",
+        "LLC - S Corporation",
+        "LLC- Unclassified",
+        "Non-qualified intermediary",
+        "Nonwithholding foreign grantor trust",
+        "Nonwithholding foreign partnership",
+        "Nonwithholding foreign simple trust",
+        "Other",
+        "Partnership",
+        "Private foundation",
+        "Qualified intermediary",
+        "S Corporation",
+        "Simple trust",
+        "Simple trust or grantor trust",
+        "Tax-exempt organization",
+        "Territory Financial Institution",
+        "Trust",
+        "Trust/Estate",
+        "Unclassified",
+        "Unknown",
+        "US Branch",
+        "Withholding foreign partnership",
+        "Withholding foreign trust"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_FATCA_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "501(c) organization",
+        "Account that is not a Financial Account \u2013 Estate",
+        "Active NFFE",
+        "Affiliate of a publicly traded corporation",
+        "Certified deemed-compliant FFI with only low-value accounts",
+        "Certified deemed-compliant investment advisors and investment managers",
+        "Certified deemed-compliant limited life debt investment entity",
+        "Certified deemed-compliant nonregistering local bank",
+        "Certified deemed-compliant sponsored, closely held investment vehicle",
+        "Direct reporting NFFE",
+        "Documented foreign individual",
+        "Entity wholly owned by exempt beneficial owners",
+        "Excepted inter-affiliate FFI",
+        "Excepted NFFE",
+        "Excepted NFFE - WP or WT",
+        "Excepted nonfinancial entity in liquidation or bankruptcy",
+        "Excepted nonfinancial start-up company",
+        "Excepted territory NFFE",
+        "Exempt retirement plans",
+        "Foreign government, government of a U.S. possession, or foreign central bank of issue",
+        "IGA compliant",
+        "IGA Compliant - US Person",
+        "International organization",
+        "Limited Branch treated as Nonparticipating FFI",
+        "NFFE Subject to 1472 Withholding",
+        "Non-consenting U.S. account",
+        "Nonfinancial group entity",
+        "Nonparticipating FFI (including a limited FFI or an FFI related to a Reporting IGA FFI other than a registered deemed-compliant FFI or participating FFI)",
+        "Nonparticipating FFI - branch",
+        "Nonparticipating FFI - NPFFI branch",
+        "Nonprofit organization",
+        "Nonreporting IGA FFI (including an FFI treated as a registered deemed-compliant FFI under an applicable Model 2 IGA)",
+        "Not applicable",
+        "Not applicable - ECI",
+        "NPFFI with Exempt Beneficial Owners",
+        "Owner-documented FFI",
+        "Participating FFI",
+        "Participating FFI- branch",
+        "Participating FFI in a model 2 - branch",
+        "Participating FFI- NPFFI branch",
+        "Passive NFFE identifying substantial U.S. owners",
+        "Passive NFFE with no substantial U.S. owners",
+        "Person other than a specified U.S. person",
+        "Preexisting entity",
+        "Preexisting individual",
+        "Presumed U.S. Person",
+        "Prima facie FFI",
+        "Publicly traded corporation",
+        "Recalcitrant account holder - Dormant",
+        "Recalcitrant account holder - no U.S. indicia",
+        "Recalcitrant account holder - passive NFFE",
+        "Recalcitrant account holder - U.S. indicia",
+        "Recalcitrant account holder - U.S. person",
+        "Registered deemed-compliant FFI (other than a reporting Model 1 FFI or sponsored FFI that has not obtained a GIIN)",
+        "Registered deemed compliant FFI - branch",
+        "Registered deemed compliant FFI - NPFFI branch",
+        "Reporting Model 1 FFI",
+        "Reporting Model 1 FFI- branch",
+        "Reporting Model 1 FFI - NPFFI branch",
+        "Reporting Model 2 FFI",
+        "Reporting Model 2 FFI - NPFFI branch",
+        "Restricted distributor",
+        "Specified U.S. person",
+        "Sponsored direct reporting NFFE",
+        "Sponsored FFI",
+        "Sponsored FFI that has not obtained a GIIN",
+        "Territory financial institution",
+        "Territory financial institution - treated as a U.S. person",
+        "U.S. Branch - Branch",
+        "U.S. branch of a PFFI - not treated as a U.S. person",
+        "U.S. branch of a PFFI - treated as a U.S. person",
+        "U.S. branch of a RDC FFI - treated as a U.S. Person"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_US_TIN_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "EIN",
+        "ITIN",
+        "QI-EIN",
+        "SSN",
+        "WP EIN",
+        "WT EIN",
+        "Not Provided"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Foreign_Tax_Identifying_Number_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Foreign_Tax_Identifying_Number_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Withholding_Foreign_Partnership_EIN_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Tax_Residency_Certificates_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Sponsoring_Entity_GIIN_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_W9_Other_Entity_Type_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Account_Opening_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Joint_Account_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Treaty_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Country_of_Birth_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Citizenship_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Country_of_Incorporation_Formation_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Exemption_from_FATCA_Reporting_Code_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Exempt_Payee_Code_c": {
+      "type_id": "Integer"
+    },
+    "sf_Account_SubscriptionInvestor_Date_Of_Birth_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Branch_GIIN_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_GIIN_Status_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_GIIN_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_GIIN_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "N/A",
+        "Invalid",
+        "=Pending=",
+        "Verified"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Qualified_Foreign_Pension_Fund_QFPF_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Tax_Reporting_by_AlpInvest_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Tax_Account_Owner_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_BillingCountry_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_BillingStreet_c": {
+      "type_id": "NumberAndStreet"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_BillingCity_c": {
+      "type_id": "City"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_BillingState_c": {
+      "type_id": "StateProvince"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_BillingPostalCode_c": {
+      "type_id": "PostalZipCode"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_BillingStreet2_c": {
+      "type_id": "NumberAndStreet"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Tax_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "C Corporation",
+        "Central bank of issue",
+        "Complex trust",
+        "Corporation",
+        "Disregarded entity",
+        "Estate",
+        "Foreign Central Bank of Issue",
+        "Foreign Government",
+        "Foreign Government - Controlled Entity",
+        "Foreign Government - Integral Part",
+        "Government",
+        "Government of a US possession",
+        "Grantor trust",
+        "Individual",
+        "International organization",
+        "LLC - C Corporation",
+        "LLC- Corporation",
+        "LLC- Disregarded Entity",
+        "LLC- Partnership",
+        "LLC - S Corporation",
+        "LLC- Unclassified",
+        "Non-qualified intermediary",
+        "Nonwithholding foreign grantor trust",
+        "Nonwithholding foreign partnership",
+        "Nonwithholding foreign simple trust",
+        "Other",
+        "Partnership",
+        "Private foundation",
+        "Qualified intermediary",
+        "S Corporation",
+        "Simple trust",
+        "Simple trust or grantor trust",
+        "Tax-exempt organization",
+        "Territory Financial Institution",
+        "Trust",
+        "Trust/Estate",
+        "Unclassified",
+        "Unknown",
+        "US Branch",
+        "Withholding foreign partnership",
+        "Withholding foreign trust"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Citizenship_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Country_of_Incorporation_Formation_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_US_Tax_ID_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Individual_or_Organization_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Individual",
+        "Organization"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_US_TIN_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "EIN",
+        "ITIN",
+        "QI-EIN",
+        "SSN",
+        "WP EIN",
+        "WT EIN",
+        "Not Provided"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Investor_Foreign_Domestic_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Domestic",
+        "Foreign"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Non_US_Tax_ID_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Foreign_Tax_Id_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Withholding_Foreign_Partnership_EIN_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Date_of_Birth_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Exemption_from_FATCA_Reporting_Code_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Tax_Country_Jurisdiction_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Exempt_Payee_Code_c": {
+      "type_id": "Integer"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_ShippingCountry_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_ShippingStreet_c": {
+      "type_id": "NumberAndStreet"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_ShippingCity_c": {
+      "type_id": "City"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Investor_Mailing_State_Province_c": {
+      "type_id": "StateProvince"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_ShippingPostalCode_c": {
+      "type_id": "PostalZipCode"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_ShippingStreet2_c": {
+      "type_id": "NumberAndStreet"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Tax_Form_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "W-9",
+        "W-8BEN",
+        "W-8IMY",
+        "W-8EXP",
+        "W-8ECI",
+        "W-8BEN-E"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Branch_GIIN_c": {
+      "type_id": "Giin"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_GIIN_c": {
+      "type_id": "Giin"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Country_of_Birth_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_FATCA_Classification_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "501(c) organization",
+        "Account that is not a Financial Account \u2013 Estate",
+        "Active NFFE",
+        "Affiliate of a publicly traded corporation",
+        "Certified deemed-compliant FFI with only low-value accounts",
+        "Certified deemed-compliant investment advisors and investment managers",
+        "Certified deemed-compliant limited life debt investment entity",
+        "Certified deemed-compliant nonregistering local bank",
+        "Certified deemed-compliant sponsored, closely held investment vehicle",
+        "Direct reporting NFFE",
+        "Documented foreign individual",
+        "Entity wholly owned by exempt beneficial owners",
+        "Excepted inter-affiliate FFI",
+        "Excepted NFFE",
+        "Excepted NFFE - WP or WT",
+        "Excepted nonfinancial entity in liquidation or bankruptcy",
+        "Excepted nonfinancial start-up company",
+        "Excepted territory NFFE",
+        "Exempt retirement plans",
+        "Foreign government, government of a U.S. possession, or foreign central bank of issue",
+        "IGA compliant",
+        "IGA Compliant - US Person",
+        "International organization",
+        "Limited Branch treated as Nonparticipating FFI",
+        "NFFE Subject to 1472 Withholding",
+        "Non-consenting U.S. account",
+        "Nonfinancial group entity",
+        "Nonparticipating FFI (including a limited FFI or an FFI related to a Reporting IGA FFI other than a registered deemed-compliant FFI or participating FFI)",
+        "Nonparticipating FFI - branch",
+        "Nonparticipating FFI - NPFFI branch",
+        "Nonprofit organization",
+        "Nonreporting IGA FFI (including an FFI treated as a registered deemed-compliant FFI under an applicable Model 2 IGA)",
+        "Not applicable",
+        "Not applicable - ECI",
+        "NPFFI with Exempt Beneficial Owners",
+        "Owner-documented FFI",
+        "Participating FFI",
+        "Participating FFI- branch",
+        "Participating FFI in a model 2 - branch",
+        "Participating FFI- NPFFI branch",
+        "Passive NFFE identifying substantial U.S. owners",
+        "Passive NFFE with no substantial U.S. owners",
+        "Person other than a specified U.S. person",
+        "Preexisting entity",
+        "Preexisting individual",
+        "Presumed U.S. Person",
+        "Prima facie FFI",
+        "Publicly traded corporation",
+        "Recalcitrant account holder - Dormant",
+        "Recalcitrant account holder - no U.S. indicia",
+        "Recalcitrant account holder - passive NFFE",
+        "Recalcitrant account holder - U.S. indicia",
+        "Recalcitrant account holder - U.S. person",
+        "Registered deemed-compliant FFI (other than a reporting Model 1 FFI or sponsored FFI that has not obtained a GIIN)",
+        "Registered deemed compliant FFI - branch",
+        "Registered deemed compliant FFI - NPFFI branch",
+        "Reporting Model 1 FFI",
+        "Reporting Model 1 FFI- branch",
+        "Reporting Model 1 FFI - NPFFI branch",
+        "Reporting Model 2 FFI",
+        "Reporting Model 2 FFI - NPFFI branch",
+        "Restricted distributor",
+        "Specified U.S. person",
+        "Sponsored direct reporting NFFE",
+        "Sponsored FFI",
+        "Sponsored FFI that has not obtained a GIIN",
+        "Territory financial institution",
+        "Territory financial institution - treated as a U.S. person",
+        "U.S. Branch - Branch",
+        "U.S. branch of a PFFI - not treated as a U.S. person",
+        "U.S. branch of a PFFI - treated as a U.S. person",
+        "U.S. branch of a RDC FFI - treated as a U.S. Person"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Sponsoring_Entity_GIIN_c": {
+      "type_id": "Giin"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_W9_Other_Entity_Type_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_First_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Last_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Middle_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_FATCA_Status_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Exemption_from_FATCA_Withholding_Cod_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Identification_as_a_Specified_UK_Person_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_CDOT_Entity_Account_Holder_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Corporation",
+        "Depository Institution",
+        "Broker or Dealer",
+        "Non-Reportable UK Entity",
+        "Financial Institution",
+        "Exempt Beneficial Owner",
+        "Active NFFE",
+        "Passive NFFE",
+        "Passive NFFE - Non-Profit Organization",
+        "Passive NFFE - other",
+        "None of the above"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Affiliated_Corporation_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Reportable_UK_Person_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Reportable_GGY_JEY_GIB_IOM_person_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_CRS_Classification_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Active NFE by reason of income and asssets",
+        "Central Bank",
+        "Financial Institution",
+        "Governmental Entity",
+        "Holding NFE that is a member of a nonfinancial group",
+        "Individual",
+        "International Organization",
+        "Investment Entity",
+        "NFE",
+        "NFE that is liquididating or emerging from bankruptcy",
+        "Non-Profit NFE",
+        "Passive NFE",
+        "Start-Up NFE",
+        "Treasury Center NFE that is a member of a nonfinancial group"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Related_Entity_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Place_of_Birth_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Date_of_Organization_Formation_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Effective_Date_of_Self_Certification_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Name_of_Securities_Market_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Status_of_CRS_Review_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Not Started",
+        "In Progress",
+        "Complete"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Reportable_Non_reportable_Account_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Does_the_Entity_Have_Controlling_Persons_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "anduin_Account_SubscriptionInvestor_Does_the_Entity_Have_Controlling_Persons_c": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "true"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Reporting_Countries_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_Unavailable_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_Country_No_1_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_No_1_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_Country_No_2_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_No_2_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_Country_No_3_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_No_3_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_Country_No_4_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_No_4_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_Country_No_5_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TIN_No_5_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_registered_address_2_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_mailing_address_2_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Accredited_Investor_Status_Entities_c": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "Equity Owners Accredited",
+        "Bank / Any Savings-Loan Institution",
+        "Insurance Company",
+        "Broker-Dealer",
+        "Investment Company",
+        "Business Development Company",
+        "Private Business Development Company",
+        "Corporation, 501(c)(3) Organization, Partnership, or LLC",
+        "Trust",
+        "Employee Benefit Plan (ERISA)",
+        "State Plan",
+        "Investment Adviser",
+        "Investment Adviser - Exempt",
+        "Small Business Investment Company",
+        "Rural Business Investment Company",
+        "Other Entity",
+        "Family Office",
+        "Family Client",
+        "Corp/Org/LLC - Assets > $5M",
+        "Corp/Org/LLC - All Equity Owners Accredited",
+        "Trust - Assets > $5M Directed by Sophisticated Person",
+        "Trust - Bank or Institution Trustee",
+        "Revocable Trust - All Grantors Accredited",
+        "ERISA Plan - Fiduciary Managed by Bank/Advisor",
+        "ERISA Plan - Assets > $5M",
+        "Gov't ERISA Plan - State or Municipal",
+        "Self-Directed ERISA Plan - All Participants Accredited",
+        "Bank or Savings Institution (Sec 3(a)(2) / 3(a)(5))",
+        "Insurance Company - Securities Act Section 2(13)",
+        "Investment Company - SEC Registered",
+        "Business Development Company - SEC Defined",
+        "Small Business Investment Company (SBA 301)",
+        "Rural Business Investment Company (USDA 384A)",
+        "Broker-Dealer - Registered under Exchange Act Sec 15",
+        "Investment Adviser - Registered under SEC/State Law",
+        "Investment Adviser - Exempt under SEC 203(l)/(m)",
+        "Other Entity - Owns Investments > $5M",
+        "Family Office - AUM > $5M Directed by Qualified Person",
+        "Family Client - Directed by Qualified Family Office",
+        "None of the Above Categories"
+      ],
+      "all_option_labels_in_order": [
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Accredited_Investor_Status_Individual_c": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "Net Worth",
+        "(archived) Individual Income",
+        "Individual with Certifications",
+        "Knowledgeable Employee",
+        "Individual - Net Worth",
+        "Individual - Income",
+        "Individual - Holds SEC Designated Licenses",
+        "Individual - Knowledgeable Employee (3c5 Rule)",
+        "Individual - Family Client of Qualified Family Office"
+      ],
+      "all_option_labels_in_order": [
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025. Previous value was \"Individual Income\", but to avoid creating duplicate system alias with the value \"Individual - Income\", changed to \"(archived) Individual Income\"",
+        "archived Nov 9, 2025",
+        "archived Nov 9, 2025",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Government_Issued_ID_on_File_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Passport",
+        "Drivers License",
+        "National Identification Card",
+        "State Issued Identification Card"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Government_ID_Expiration_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Expiration_of_Restrictive_Covenant_Perio_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Is_Capital_Shareholder_Controlled_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Is_Indiv_Retirement_Benefit_Plan_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Is_BHC_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Individual_Retirement_Account_IRA_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Qualified_Purchaser_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Yes",
+        "No"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Qualified_Investor_Status_Entity_c": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "Comp/Pship/Trust Min Investment Met",
+        "Other Trust",
+        "Qualified Purchasers Min Investment Met",
+        "Qualified Institutional Buyer",
+        "Comp/Pship/Trust Beneficial Owner Qualif"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Qualified_Client_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Net Worth Exceeds Minimum",
+        "Yes",
+        "No"
+      ],
+      "all_option_labels_in_order": [
+        "Archived Dec 22 2025. Use",
+        "",
+        ""
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Qualified_Investor_Status_Individual_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Individual Min Investments Met"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Is_Japanese_Res_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Is_FIEL_Qualified_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Is_Article_63_Applied_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_EU_Elective_Professional_Client_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Description": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_UBS_Escrow_Account_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_MSSB_ID_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_MROR_c": {
+      "type_id": "Percentage"
+    },
+    "sf_Account_SubscriptionInvestor_Is_US_Tax_Exempt_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Is_Section_115_Entity": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Owner_Is_US_Tax_Exempt": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Treated_as_Tax_Exempt_LP": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Tax_Exempt_Subtype_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Exempt Organization - Trust",
+        "Exempt Organization - Corporation",
+        "Exempt Organization - Super Tax Exempt (I.R.C. section 115)",
+        "Exempt Organization - Insurance Company"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Exempt_from_State_and_Local_Income_Tax_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_WH_Rate_OID_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_WH_Rate_ECI_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_WH_Rate_FATCA_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_RecordTypeId": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Account_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Prospective",
+        "Pending",
+        "Active",
+        "Inactive"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_WLC_Regulator_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_WLC_Exchange_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_WLC_Ticker_Symbol_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_WLC_Publicly_Listed_On_A_Stock_Exchange_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "anduin_Account_SubscriptionInvestor_Signer_FirstName": {
+      "type_id": "String"
+    },
+    "anduin_Account_SubscriptionInvestor_Signer_MiddleName": {
+      "type_id": "String"
+    },
+    "anduin_Account_SubscriptionInvestor_Signer_LastName": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Signer_FirstName": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Signer_MiddleName": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Signer_LastName": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "In Progress",
+        "Pending AML Approval",
+        "Pending Agreement Approval",
+        "Approved",
+        "Rejected",
+        "Pending Completion",
+        "Completed",
+        "Canceled",
+        "Declined",
+        "Errored",
+        "Pending Integration",
+        "Pending AML and/or Tax Approval",
+        "Pending AML Data",
+        "Executed",
+        "Completed - Pending Tax Fields"
+      ]
+    },
+    "sf_Agreement_Onboarding_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Onboarding",
+        "Transfer",
+        "Non-Onboarding",
+        "Transfer Tracker",
+        "Redemption"
+      ]
+    },
+    "sf_Agreement_Onboarding_Common_Subscription_Entity_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Subscription_Investor_Approval_Status_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Account_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Related_Common_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Individual_or_Organization_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Foreign_Domestic_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Original_Completed_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Agreement_Onboarding_Parent_Agreement_Id_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Commitment_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Primary",
+        "Affiliate",
+        "Secondary",
+        "Cancellation"
+      ]
+    },
+    "sf_Agreement_Onboarding_Investor_Fund_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Opportunity_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Fund_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Currency_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Fund_Close_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Partnership_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Requested_Commitment_Amount_c": {
+      "type_id": "Float"
+    },
+    "sf_Agreement_Onboarding_Commitment_c": {
+      "type_id": "Float"
+    },
+    "sf_Agreement_Onboarding_USD_Amount_c": {
+      "type_id": "Money"
+    },
+    "sf_Agreement_Onboarding_Effective_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Agreement_Onboarding_Investran_Vehicle_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Bonus - Non Unitholder",
+        "Bonus Pool",
+        "Carlyle Discretionary",
+        "CHA L.P. (TCG Holdings, L.L.C.)",
+        "CHA L.P. (TCG Holdings Cayman, L.P.)",
+        "CHA L.P. (TCG Holdings Cayman II, L.P.)",
+        "CHA L.P. (TCG Holdings II, L.P.)",
+        "CHU - Direct",
+        "CHU - Indirect",
+        "Equity - Non Unitholder",
+        "Equity Pool",
+        "Equity Pool II",
+        "Former Partner",
+        "Former Partners - Non Unitholder",
+        "Former Partners - Non Unitholder (NC)",
+        "GP",
+        "GP - Global Partners",
+        "GP - Grandparents I",
+        "GP - L - Grandparents II",
+        "GP - L - Selldown",
+        "GP of Coinvest - Grandparents",
+        "GP of Coinvest - Grandparents I",
+        "GP of Coinvest - Grandparents II",
+        "GP - R - Grandparents I",
+        "GP - R - Grandparents II",
+        "GP - R - ILP Direct",
+        "GP - R - Other",
+        "ILP",
+        "ILP \u2013 AIV Grandparents I",
+        "ILP \u2013 AIV Grandparents II",
+        "ILP - Direct",
+        "ILP \u2013 Grandparents I",
+        "ILP - Grandparents II",
+        "ILP - Selldown",
+        "Internal Coinvest",
+        "LP",
+        "LP - Direct",
+        "LP - Direct Other",
+        "LP - Disc Direct",
+        "LP - Disc Global Partners",
+        "LP - Disc Global Partners B",
+        "LP - Disc Grandparents II",
+        "LP - Disc Indirect Other",
+        "LP - Global Partners",
+        "LP - Global Partners B",
+        "LP - Grandparents I",
+        "LP - Grandparents II",
+        "LP - Indirect Other",
+        "LP - Selldown",
+        "Mellon - Non Unitholder",
+        "Non - Carlyle Interest",
+        "Unitholder",
+        "Unitholder (ARC)"
+      ]
+    },
+    "sf_Agreement_Onboarding_Related_Agreements_Group_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Associated_Legal_Entities_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Agreement_Legal_Entities_External_Ids_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Registered_Country_c": {
+      "type_id": "Country"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Registered_Street_Address_c": {
+      "type_id": "NumberAndStreet"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Registered_City_c": {
+      "type_id": "City"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Registered_State_Province_c": {
+      "type_id": "StateProvince"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Registered_Postal_Code_c": {
+      "type_id": "PostalZipCode"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Registered_Address_2_c": {
+      "type_id": "NumberAndStreet"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_Country_c": {
+      "type_id": "Country"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_Street_c": {
+      "type_id": "NumberAndStreet"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_City_c": {
+      "type_id": "City"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_State_Province_c": {
+      "type_id": "StateProvince"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_Zip_Postal_Code_c": {
+      "type_id": "PostalZipCode"
+    },
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_Address_2_c": {
+      "type_id": "NumberAndStreet"
+    },
+    "sf_Agreement_Onboarding_SI_US_Taxpayer_Identification_Number_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_US_TIN_Type_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Tax_Status_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Tax_Country_Jurisdiction_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_FATCA_Classification_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Non_US_Tax_ID_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Non_US_Tax_ID_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Citizenship_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Country_of_Incorporation_Formation_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Country_of_Birth_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Date_Of_Birth_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Agreement_Onboarding_SI_Exemption_from_FATCA_Reporting_Code_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Exempt_Payee_Code_c": {
+      "type_id": "Integer"
+    },
+    "sf_Agreement_Onboarding_SI_GIIN_c": {
+      "type_id": "Giin"
+    },
+    "sf_Agreement_Onboarding_SI_Branch_GIIN_c": {
+      "type_id": "Giin"
+    },
+    "sf_Agreement_Onboarding_X892_CAI_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_X892_CAI_Text_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Tax_Exempt_Status_Notes_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_ERISA_Partner_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "ERISA",
+        "Treated as ERISA"
+      ]
+    },
+    "sf_Agreement_Onboarding_Is_ERISA_Title_I_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "anduin_Agreement_Onboarding_Is_ERISA_Title_I_c": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "true"
+      ]
+    },
+    "sf_Agreement_Onboarding_SI_Disregarded_GP_of_GP_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Qualified_Institutional_Investor_FIEL_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_SI_Funding_Parent_Sub_Entity_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Article_63_Paragraph_1_applies_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_SI_Funding_Silo_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_New_Commitment_or_Transfer_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "New Commitment",
+        "Transfer"
+      ]
+    },
+    "sf_Agreement_Onboarding_Confirmation_of_investment_on_own_behalf_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_Investor_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Corporation or Company - Not FI",
+        "FI - Broker Dealer",
+        "FI - Insurance Company",
+        "FI - Investment Company",
+        "FI - Other",
+        "FI - Private Investment Company",
+        "Foundation or Endowment",
+        "IG",
+        "SWF or Government Entity",
+        "Natural Person",
+        "Partnership or Fund",
+        "Pension Plan",
+        "Publicly Listed Company",
+        "Trust"
+      ]
+    },
+    "sf_Agreement_Onboarding_Lux_Tax_Assessment_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_Investing_in_Lux_Funds_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_Lux_Tax_Assessment_Score_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Low",
+        "Medium",
+        "High"
+      ]
+    },
+    "sf_Agreement_Onboarding_Source_of_Funds_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_Evidence_of_Existence_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Yes",
+        "No",
+        "N/A"
+      ]
+    },
+    "sf_Agreement_Onboarding_Source_of_Wealth_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_Evidence_of_Corporate_Authority_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Yes",
+        "No",
+        "N/A"
+      ]
+    },
+    "sf_Agreement_Onboarding_Source_of_Wealth_Details_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Signed_Structure_Chart_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_List_of_Legal_Reps_and_Directors_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Yes",
+        "No",
+        "N/A"
+      ]
+    },
+    "sf_Agreement_Onboarding_Evidence_of_Each_Tier_of_the_Structure_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_Identification_of_Authorized_Signatories_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Yes",
+        "No",
+        "N/A"
+      ]
+    },
+    "sf_Agreement_Onboarding_Identification_of_UBOs_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_FinCEN_Control_Person_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Yes",
+        "No",
+        "N/A"
+      ]
+    },
+    "sf_Agreement_Onboarding_World_Check_Results_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "No Hits",
+        "False Positive",
+        "Positive"
+      ]
+    },
+    "sf_Agreement_Onboarding_Control_Person_Jurisdiction_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_World_Check_Details_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Exceptions_Waivers_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_Approval_for_High_Risk_or_PEP_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Yes",
+        "No",
+        "N/A"
+      ]
+    },
+    "sf_Agreement_Onboarding_Exceptions_Waivers_Details_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Analyst_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_KYC_Satisfactory_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Yes",
+        "No"
+      ]
+    },
+    "sf_Agreement_Onboarding_AML_Review_Initiated_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Agreement_Onboarding_Post_Close_Details_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_AML_Clearance_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Agreement_Onboarding_Post_Close_Follow_Up_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Agreement_Onboarding_AML_Notes_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_AML_Approval_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Agreement_Onboarding_Eligible_Introducer_Letter_Certificate_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_External_Account_Number_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Comments_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_External_Account_Institution_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Credit Suisse",
+        "Goldman Sachs",
+        "JP Morgan",
+        "UBS",
+        "Other Institution"
+      ]
+    },
+    "sf_Agreement_Onboarding_AML_Data_Approved_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_AML_Approver_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_AML_Approved_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_FM_Approved_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_Skip_AML_Approvals_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_IF_Status_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_RecordTypeId": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_SI_Investing_assets_of_any_retirement_pl_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_Is_Investor_Controlling_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_Is_ERISA_FOIA_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_Onboarding_SI_Qualified_Investor_Status_Entity_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "anduin_Agreement_Onboarding_Signer_FirstName": {
+      "type_id": "String"
+    },
+    "anduin_Agreement_Onboarding_Signer_MiddleName": {
+      "type_id": "String"
+    },
+    "anduin_Agreement_Onboarding_Signer_LastName": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Signer_FirstName": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Signer_MiddleName": {
+      "type_id": "String"
+    },
+    "sf_Agreement_Onboarding_Signer_LastName": {
+      "type_id": "String"
+    },
+    "sf_Agreement_null_TCG_Global_Id_c": {
+      "type_id": "String"
+    },
+    "sf_Agreement_null_Commitment_c": {
+      "type_id": "Money"
+    },
+    "anduin_Agreement_null_Signer_FirstName": {
+      "type_id": "String"
+    },
+    "anduin_Agreement_null_Signer_MiddleName": {
+      "type_id": "String"
+    },
+    "anduin_Agreement_null_Signer_LastName": {
+      "type_id": "String"
+    },
+    "sf_Agreement_null_Signer_FirstName": {
+      "type_id": "String"
+    },
+    "sf_Agreement_null_Signer_MiddleName": {
+      "type_id": "String"
+    },
+    "sf_Agreement_null_Signer_LastName": {
+      "type_id": "String"
+    },
+    "sf_Agreement_null_WLC_International_Supplements_c": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "European Economic Area - Supplement",
+        "United Kingdom - Supplement",
+        "Swiss - Supplement",
+        "Canadian - Supplement",
+        "Japanese - Supplement",
+        "No Supplement"
+      ]
+    },
+    "sf_Agreement_null_Receive_Unapplied_Balance_Reduction_Amt_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_null_Is_not_IRC_US_Person": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_null_Owner_Is_not_IRC_US_Person": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_null_Treated_as_NonUS_LP": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Agreement_null_ECI_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Direct",
+        "Blocked"
+      ]
+    },
+    "sf_Agreement_null_UBTI_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Direct",
+        "Blocked"
+      ]
+    },
+    "sf_Agreement_null_USRPHC_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Direct",
+        "Blocked"
+      ]
+    },
+    "sf_Agreement_null_WLC_894_Eligible_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Name": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Product_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Legal_Name_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Abbreviation_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Status_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Status_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Inactive_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Vintage_Year_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Investor_Discretion_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Strategy_Description_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Part_of_Program_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_PR_A_Coverage_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_AIFMD_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Mandate_Background_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Carlyle_not_responsible_for_AML_KYC_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Type_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Product_Line_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Product_Type_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Family_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Focus_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Region_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Structure_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Currency_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Focus_Additional_Info_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Specific_Paragraph_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Managed_Account_Direct_Investments_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Closing_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Final_Closing_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Fund_FundPrivateEquityRealAsset_Final_Closing_Date_Per_LPA_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Fund_FundClose_Name": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundClose_Fund_c": {
+      "type_id": "String"
+    },
+    "sf_Fund_FundClose_Close_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Fund_FundClose_RecordTypeId": {
+      "type_id": "String"
+    },
+    "sf_Fund_null_TCG_Global_Id_c": {
+      "type_id": "String"
+    },
+    "sf_BeneficialOwner": {
+      "type_id": "CustomCompound",
+      "value_sub_fields": {
+        "sf_BeneficialOwner_null_Website_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Non_US_Tax_ID_Country_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_TCG_Global_Id_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_LastModifiedById": {
+          "type_id": "String"
+        },
+        "anduin_BeneficialOwner_null_Investor_Registered_FullAddress": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_FirstName": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Name": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Investor_Registered_State_Province_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_US_Tax_ID_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_OwnerId": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_MiddleName_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Investor_Registered_Country_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_AML_Refresh_Notes_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Government_Issued_ID_on_File_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_AML_Monitoring_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_BeneficialOwner_null_Individual_Organization_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Country_of_Birth_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Politically_Exposed_Person_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_BeneficialOwner_null_Percentage_of_Ownership_c": {
+          "type_id": "Percentage"
+        },
+        "sf_BeneficialOwner_null_Government_ID_Number_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Government_ID_Country_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Government_ID_Expiration_Date_c": {
+          "type_id": "DateTimeString"
+        },
+        "sf_BeneficialOwner_null_Is_Active_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_BeneficialOwner_null_Non_US_Tax_ID_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_LastName": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Beneficial_Owner_Long_Name_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_KYC_Refresh_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_BeneficialOwner_null_PEP_Status_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Investor_Registered_Postal_Code_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_US_Tax_ID_Type_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Investor_Registered_Street_Address_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Date_of_Birth_c": {
+          "type_id": "DateTimeString"
+        },
+        "sf_BeneficialOwner_null_Last_Triggered_Timestamp_c": {
+          "type_id": "DateTimeString"
+        },
+        "sf_BeneficialOwner_null_Risk_Rating_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Investor_Registered_City_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Source_of_Wealth_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_AML_Notes_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_MaxComply_Id_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Beneficial_Country_c": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_CreatedById": {
+          "type_id": "String"
+        },
+        "sf_BeneficialOwner_null_Government_ID_Jurisdiction_State_c": {
+          "type_id": "String"
+        }
+      },
+      "sub_field_keys_in_order": [
+        "sf_BeneficialOwner_null_Website_c",
+        "sf_BeneficialOwner_null_Non_US_Tax_ID_Country_c",
+        "sf_BeneficialOwner_null_TCG_Global_Id_c",
+        "sf_BeneficialOwner_null_LastModifiedById",
+        "anduin_BeneficialOwner_null_Investor_Registered_FullAddress",
+        "sf_BeneficialOwner_null_FirstName",
+        "sf_BeneficialOwner_null_Name",
+        "sf_BeneficialOwner_null_Investor_Registered_State_Province_c",
+        "sf_BeneficialOwner_null_US_Tax_ID_c",
+        "sf_BeneficialOwner_null_OwnerId",
+        "sf_BeneficialOwner_null_MiddleName_c",
+        "sf_BeneficialOwner_null_Investor_Registered_Country_c",
+        "sf_BeneficialOwner_null_AML_Refresh_Notes_c",
+        "sf_BeneficialOwner_null_Government_Issued_ID_on_File_c",
+        "sf_BeneficialOwner_null_AML_Monitoring_c",
+        "sf_BeneficialOwner_null_Individual_Organization_c",
+        "sf_BeneficialOwner_null_Country_of_Birth_c",
+        "sf_BeneficialOwner_null_Politically_Exposed_Person_c",
+        "sf_BeneficialOwner_null_Percentage_of_Ownership_c",
+        "sf_BeneficialOwner_null_Government_ID_Number_c",
+        "sf_BeneficialOwner_null_Government_ID_Country_c",
+        "sf_BeneficialOwner_null_Government_ID_Expiration_Date_c",
+        "sf_BeneficialOwner_null_Is_Active_c",
+        "sf_BeneficialOwner_null_Non_US_Tax_ID_c",
+        "sf_BeneficialOwner_null_LastName",
+        "sf_BeneficialOwner_null_Beneficial_Owner_Long_Name_c",
+        "sf_BeneficialOwner_null_KYC_Refresh_c",
+        "sf_BeneficialOwner_null_PEP_Status_c",
+        "sf_BeneficialOwner_null_Investor_Registered_Postal_Code_c",
+        "sf_BeneficialOwner_null_US_Tax_ID_Type_c",
+        "sf_BeneficialOwner_null_Investor_Registered_Street_Address_c",
+        "sf_BeneficialOwner_null_Date_of_Birth_c",
+        "sf_BeneficialOwner_null_Last_Triggered_Timestamp_c",
+        "sf_BeneficialOwner_null_Risk_Rating_c",
+        "sf_BeneficialOwner_null_Investor_Registered_City_c",
+        "sf_BeneficialOwner_null_Source_of_Wealth_c",
+        "sf_BeneficialOwner_null_AML_Notes_c",
+        "sf_BeneficialOwner_null_MaxComply_Id_c",
+        "sf_BeneficialOwner_null_Beneficial_Country_c",
+        "sf_BeneficialOwner_null_CreatedById",
+        "sf_BeneficialOwner_null_Government_ID_Jurisdiction_State_c"
+      ]
+    },
+    "sf_ControllingPersons": {
+      "type_id": "CustomCompound",
+      "value_sub_fields": {
+        "sf_ControllingPersons_null_TIN_Unavailable_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Mailing_State_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Mailing_City_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Date_of_Birth_c": {
+          "type_id": "DateTimeString"
+        },
+        "sf_ControllingPersons_null_First_Name_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Subscription_Investor_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_CRS_Document_ID_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Subscription_Investor_ID_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Residence_Country_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_TIN_Country_No_5_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Country_of_Birth_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Effective_Date_c": {
+          "type_id": "DateTimeString"
+        },
+        "sf_ControllingPersons_null_Mailing_Address_2_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Mailing_Country_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Middle_Name_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_TIN_No_5_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Mailing_Postal_Code_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_TIN_No_1_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_TIN_Country_No_3_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Reporting_Countries_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Residence_Postal_Code_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Last_Name_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Type_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Residence_State_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Type2_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_TIN_No_4_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Residence_Street_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Controlling_Person_Package_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_CRS_Reporting_Threshold_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_TIN_Country_No_4_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_TIN_No_2_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Inactive_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_ControllingPersons_null_Residence_City_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Type3_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_TIN_No_3_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_TIN_Country_No_1_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Place_of_Birth_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Mailing_Street_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_CRS_Validation_Result_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_TIN_Country_No_2_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Residence_Address_2_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_CRS_Status_c": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Name": {
+          "type_id": "String"
+        },
+        "sf_ControllingPersons_null_Tax_Status_c": {
+          "type_id": "String"
+        }
+      },
+      "sub_field_keys_in_order": [
+        "sf_ControllingPersons_null_TIN_Unavailable_c",
+        "sf_ControllingPersons_null_Mailing_State_c",
+        "sf_ControllingPersons_null_Mailing_City_c",
+        "sf_ControllingPersons_null_Date_of_Birth_c",
+        "sf_ControllingPersons_null_First_Name_c",
+        "sf_ControllingPersons_null_Subscription_Investor_c",
+        "sf_ControllingPersons_null_CRS_Document_ID_c",
+        "sf_ControllingPersons_null_Subscription_Investor_ID_c",
+        "sf_ControllingPersons_null_Residence_Country_c",
+        "sf_ControllingPersons_null_TIN_Country_No_5_c",
+        "sf_ControllingPersons_null_Country_of_Birth_c",
+        "sf_ControllingPersons_null_Effective_Date_c",
+        "sf_ControllingPersons_null_Mailing_Address_2_c",
+        "sf_ControllingPersons_null_Mailing_Country_c",
+        "sf_ControllingPersons_null_Middle_Name_c",
+        "sf_ControllingPersons_null_TIN_No_5_c",
+        "sf_ControllingPersons_null_Mailing_Postal_Code_c",
+        "sf_ControllingPersons_null_TIN_No_1_c",
+        "sf_ControllingPersons_null_TIN_Country_No_3_c",
+        "sf_ControllingPersons_null_Reporting_Countries_c",
+        "sf_ControllingPersons_null_Residence_Postal_Code_c",
+        "sf_ControllingPersons_null_Last_Name_c",
+        "sf_ControllingPersons_null_Type_c",
+        "sf_ControllingPersons_null_Residence_State_c",
+        "sf_ControllingPersons_null_Type2_c",
+        "sf_ControllingPersons_null_TIN_No_4_c",
+        "sf_ControllingPersons_null_Residence_Street_c",
+        "sf_ControllingPersons_null_Controlling_Person_Package_c",
+        "sf_ControllingPersons_null_CRS_Reporting_Threshold_c",
+        "sf_ControllingPersons_null_TIN_Country_No_4_c",
+        "sf_ControllingPersons_null_TIN_No_2_c",
+        "sf_ControllingPersons_null_Inactive_c",
+        "sf_ControllingPersons_null_Residence_City_c",
+        "sf_ControllingPersons_null_Type3_c",
+        "sf_ControllingPersons_null_TIN_No_3_c",
+        "sf_ControllingPersons_null_TIN_Country_No_1_c",
+        "sf_ControllingPersons_null_Place_of_Birth_c",
+        "sf_ControllingPersons_null_Mailing_Street_c",
+        "sf_ControllingPersons_null_CRS_Validation_Result_c",
+        "sf_ControllingPersons_null_TIN_Country_No_2_c",
+        "sf_ControllingPersons_null_Residence_Address_2_c",
+        "sf_ControllingPersons_null_CRS_Status_c",
+        "sf_ControllingPersons_null_Name",
+        "sf_ControllingPersons_null_Tax_Status_c"
+      ]
+    },
+    "sf_IFC_null_Email_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Status_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Common_Name_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Investor_Classification_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Beneficial_Country_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Date_of_Birth_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Individual_or_Organization_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Full_Address_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_CreatedById": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Name": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_LastModifiedById": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_External_ID_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_RecordTypeId": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Contact_Country_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Contact_ID_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Contact_Name_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Contact_RecordType_Name_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Contact_TCG_Global_ID_c": {
+      "type_id": "String"
+    },
+    "sf_IFC_null_Contact_s_CN_Registered_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Contact": {
+      "type_id": "CustomCompound",
+      "value_sub_fields": {
+        "sf_Contact_null_MailingAddress": {
+          "type_id": "String"
+        },
+        "sf_Contact_null_AccountId": {
+          "type_id": "String"
+        },
+        "sf_Contact_null_op_business_phone_c": {
+          "type_id": "String"
+        },
+        "sf_Contact_IFC_Wire_Approver_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_null_MailingStreet": {
+          "type_id": "NumberAndStreet"
+        },
+        "sf_Contact_null_MailingState": {
+          "type_id": "StateProvince"
+        },
+        "sf_Contact_null_MailingPostalCode": {
+          "type_id": "PostalZipCode"
+        },
+        "sf_Contact_IFC_Tax_Advisor_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_IFC_Tax_Information_Not_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_IFC_Capital_Call_Management_Not_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_IFC_Legal_Information_Not_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_null_MailingCity": {
+          "type_id": "City"
+        },
+        "sf_Contact_null_op_email_primary_c": {
+          "type_id": "String"
+        },
+        "sf_Contact_IFC_AML_KYC_Contact_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "anduin_Contact_Role": {
+          "type_id": "MultipleCheckbox",
+          "all_option_keys_in_order": [
+            "Primary Contact",
+            "Secondary Contact",
+            "Tax Advisor",
+            "Legal Advisor",
+            "Finance Contact",
+            "AML/KYC Contact",
+            "Wire Approver"
+          ],
+          "all_option_labels_in_order": [
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document",
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document",
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document",
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document",
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document",
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document",
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document"
+          ]
+        },
+        "sf_Contact_null_Middle_Name_c": {
+          "type_id": "String"
+        },
+        "sf_Contact_null_Name": {
+          "type_id": "String"
+        },
+        "sf_Contact_null_Salutation": {
+          "type_id": "String"
+        },
+        "sf_Contact_IFC_Notifications_Not_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_IFC_Distribution_Management_Not_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_null_FirstName": {
+          "type_id": "String"
+        },
+        "sf_Contact_IFC_Finance_Contact_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_IFC_Legal_Advisor_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_IFC_Primary_Contact_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "anduin_Contact_Notification": {
+          "type_id": "MultipleCheckbox",
+          "all_option_keys_in_order": [
+            "Capital Call Notices",
+            "Distribution Notices",
+            "Financial Reporting",
+            "Legal Information",
+            "Tax Information"
+          ],
+          "all_option_labels_in_order": [
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document",
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document",
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document",
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document",
+            "Anduin-invented CSA to map for multiplecheckboxes in PDF document"
+          ]
+        },
+        "sf_Contact_IFC_Notifications_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_null_EmailFundraising": {
+          "type_id": "Email"
+        },
+        "sf_Contact_IFC_Financial_Reporting_Not_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_null_Fax": {
+          "type_id": "PhoneFax"
+        },
+        "sf_Contact_null_TCG_Global_Id_c": {
+          "type_id": "String"
+        },
+        "sf_Contact_IFC_Secondary_Contact_c": {
+          "type_id": "RadioGroup",
+          "all_option_keys_in_order": [
+            "true",
+            "false"
+          ]
+        },
+        "sf_Contact_null_LastName": {
+          "type_id": "String"
+        },
+        "sf_Contact_null_MailingCountry": {
+          "type_id": "Country"
+        },
+        "sf_Contact_null_BusinessPhone": {
+          "type_id": "PhoneFax"
+        }
+      },
+      "sub_field_keys_in_order": [
+        "sf_Contact_null_MailingAddress",
+        "sf_Contact_null_AccountId",
+        "sf_Contact_null_op_business_phone_c",
+        "sf_Contact_IFC_Wire_Approver_c",
+        "sf_Contact_null_MailingStreet",
+        "sf_Contact_null_MailingState",
+        "sf_Contact_null_MailingPostalCode",
+        "sf_Contact_IFC_Tax_Advisor_c",
+        "sf_Contact_IFC_Tax_Information_Not_c",
+        "sf_Contact_IFC_Capital_Call_Management_Not_c",
+        "sf_Contact_IFC_Legal_Information_Not_c",
+        "sf_Contact_null_MailingCity",
+        "sf_Contact_null_op_email_primary_c",
+        "sf_Contact_IFC_AML_KYC_Contact_c",
+        "anduin_Contact_Role",
+        "sf_Contact_null_Middle_Name_c",
+        "sf_Contact_null_Name",
+        "sf_Contact_null_Salutation",
+        "sf_Contact_IFC_Notifications_Not_c",
+        "sf_Contact_IFC_Distribution_Management_Not_c",
+        "sf_Contact_null_FirstName",
+        "sf_Contact_IFC_Finance_Contact_c",
+        "sf_Contact_IFC_Legal_Advisor_c",
+        "sf_Contact_IFC_Primary_Contact_c",
+        "anduin_Contact_Notification",
+        "sf_Contact_IFC_Notifications_c",
+        "sf_Contact_null_EmailFundraising",
+        "sf_Contact_IFC_Financial_Reporting_Not_c",
+        "sf_Contact_null_Fax",
+        "sf_Contact_null_TCG_Global_Id_c",
+        "sf_Contact_IFC_Secondary_Contact_c",
+        "sf_Contact_null_LastName",
+        "sf_Contact_null_MailingCountry",
+        "sf_Contact_null_BusinessPhone"
+      ]
+    },
+    "sf_TaxForm_W9_Tax_Account_Owner": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_Disregarded_Entity_Name": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_TAO_Tax_Account_Owner": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_Tax_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Individual",
+        "C Corporation",
+        "S Corporation",
+        "Partnership",
+        "Trust/Estate",
+        "LLC - C Corporation",
+        "LLC - S Corporation",
+        "LLC- Partnership",
+        "LLC- Unclassified",
+        "Other"
+      ]
+    },
+    "sf_TaxForm_W9_TAO_Tax_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Individual",
+        "C Corporation",
+        "S Corporation",
+        "Partnership",
+        "Trust/Estate",
+        "LLC - C Corporation",
+        "LLC - S Corporation",
+        "LLC- Partnership",
+        "LLC- Unclassified",
+        "Other"
+      ]
+    },
+    "sf_TaxForm_W9_Tax_Entity_Type_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_Exempt_Payee_Code_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_Exemption_from_FATCA_Reporting_Code_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_TAO_Exempt_Payee_Code_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_TAO_Exemption_from_FATCA_Reporting_Code_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_BillingStreet": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_BillingCity": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_BillingState": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_BillingPostalCode": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_BillingCountry": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_TAO_BillingStreet_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_TAO_BillingCity_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_TAO_BillingState_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_TAO_BillingPostalCode_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_TAO_BillingCountry_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_FM_Tax_Id_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_US_TIN_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "SSN",
+        "EIN"
+      ]
+    },
+    "sf_TaxForm_W9_TAO_US_Tax_ID_c": {
+      "type_id": "String"
+    },
+    "sf_TaxForm_W9_TAO_US_TIN_Type_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "SSN",
+        "EIN"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_WH_Rate_Expiration_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Validation_Result_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "=Undocumented=",
+        "Validated"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Effective_Date_of_Tax_Form_Status_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Effective_Date_of_FATCA_Status_and_Rate_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_Subject_to_FATCA_Withholding_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "N/A",
+        "=Pending=",
+        "Yes",
+        "No"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Status_of_FATCA_Review_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "N/A",
+        "In Process",
+        "Completed"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_FATCA_Monitored_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Limitation_of_Benefits_Other_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_Limitation_of_Benefits_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Company that meets the derivative benefits test",
+        "Company that meets the ownership and base erosion test",
+        "Company with an item of income that meets the active trade or business test",
+        "Discretionary determination",
+        "Government \u2013 contracting state/political subdivision/local authority",
+        "Individual",
+        "None",
+        "Other",
+        "Publicly-traded corporation",
+        "Subsidiary of publicly-traded corporation",
+        "Tax exempt/Charitable organization",
+        "Tax exempt pension trust/Pension fund"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Global_ID_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Tax_ID_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_W_H_Rate_c": {
+      "type_id": "Percentage"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Status_of_FATCA_Review_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "N/A",
+        "In Process",
+        "Completed"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Subject_to_FATCA_Withholding_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "N/A",
+        "Pending",
+        "Yes",
+        "No"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Tax_Approval_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "In Progress",
+        "Pending Review",
+        "Review Completed"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Tax_Form_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Undocumented",
+        "Validated"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Treaty_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_W_H_Rate_FIRPTA_Income_c": {
+      "type_id": "Percentage"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_W_H_Rate_Interest_Income_c": {
+      "type_id": "Percentage"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_W_H_Rate_Private_Dividend_c": {
+      "type_id": "Percentage"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_W_H_Rate_Public_Dividend_c": {
+      "type_id": "Percentage"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_GIIN_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "N/A",
+        "Invalid",
+        "Pending",
+        "Verified"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Demographic_Approval_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "In Progress",
+        "Pending Review",
+        "Review Completed"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_GIIN_Status_Date_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Effective_Date_FATCA_CompletedStatus_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Effective_Date_of_Tax_Form_Status_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Limitation_of_Benefits_other_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_FATCA_Monitored_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Beneficial_Country_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_EW8_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "NA",
+        "Provisioned",
+        "Provisioning - Not Complete"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Client_ID_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_FATCA_Document_ID_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Validation_Result_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Undocumented",
+        "Validated"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_CRS_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Nonreportable Individual",
+        "Reportable Individual",
+        "Undocumented",
+        "Financial Institution",
+        "Financial Institution - investment Entity",
+        "Governmental Entity, International Organisation, or Central Bank",
+        "Publicly Traded Corporation or Related Entity",
+        "Active NFE - Other",
+        "Active NFE - Start-up Company",
+        "Passive NFE"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_CRS_Document_ID_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_CRS_Validation_Result_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Undocumented",
+        "Validated"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_FATCA_Document_ID_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_S_Exemption_Code_c": {
+      "type_id": "String"
+    },
+    "sf_Account_SubscriptionInvestor_State_Exempt_Certification_Provided_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_Date_State_Exempt_Certificate_Provided_c": {
+      "type_id": "DateTimeString"
+    },
+    "sf_Account_SubscriptionInvestor_AML_Refresh_Status_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "None",
+        "2023 \u2013 In Communication",
+        "2023 \u2013 Complete",
+        "2023 \u2013 No Response",
+        "2025 \u2013 Not Initiated Yet",
+        "2025 \u2013 In Communication",
+        "2025 \u2013 No Response",
+        "2025 - Complete"
+      ]
+    },
+    "sf_IFC_null_Hide_IFC_From_Contact_Self_Servicing_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "true",
+        "false"
+      ]
+    },
+    "sf_Account_SubscriptionInvestor_TAO_Limitation_of_Benefits_c": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Company that meets the derivative benefits test",
+        "Company that meets the ownership and base erosion test",
+        "Company with an item of income that meets the active trade or business test",
+        "Discretionary determination",
+        "Government \u2013 contracting state/political subdivision/local authority",
+        "Individual",
+        "None",
+        "Other",
+        "Publicly-traded corporation",
+        "Subsidiary of publicly-traded corporation",
+        "Tax exempt/Charitable organization",
+        "Tax exempt pension trust/Pension fund"
+      ]
+    },
+    "sf_Agreement_Onboarding_Initial_Additional": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "Initial",
+        "Additional"
+      ]
+    }
+  },
+  "field_keys_in_order": [
+    "sf_InvestorAccount_null_TCG_Global_Id_c",
+    "sf_Fund_Selection",
+    "sf_Account_InvestorAccount_TCG_Global_Id_c",
+    "sf_Account_CommonName_Name",
+    "sf_Account_CommonName_Type_c",
+    "sf_Account_CommonName_Industry",
+    "sf_Account_CommonName_Beneficial_Country_Formula_c",
+    "sf_Account_CommonName_TCG_Global_Id_c",
+    "sf_Account_CommonName_Account_Team_Members_c",
+    "sf_Account_CommonName_Description",
+    "sf_Account_CommonName_BillingAddress",
+    "sf_Account_CommonName_ShippingAddress",
+    "sf_Account_CommonName_Phone",
+    "sf_Account_CommonName_Website",
+    "sf_Account_CommonName_RecordTypeId",
+    "sf_Account_SubscriptionInvestor_Name",
+    "sf_Account_SubscriptionInvestor_Type",
+    "sf_Account_SubscriptionInvestor_WLC_Trade_Name_c",
+    "sf_Account_SubscriptionInvestor_CommonName_c",
+    "sf_Account_SubscriptionInvestor_Phone",
+    "sf_Account_SubscriptionInvestor_BillingCountry",
+    "sf_Account_SubscriptionInvestor_BillingStreet",
+    "sf_Account_SubscriptionInvestor_BillingCity",
+    "sf_Account_SubscriptionInvestor_BillingState",
+    "sf_Account_SubscriptionInvestor_BillingPostalCode",
+    "anduin_Account_SubscriptionInvestor_BillingFullAddress",
+    "sf_Account_SubscriptionInvestor_ParentId",
+    "sf_Account_SubscriptionInvestor_Parent_Type_c",
+    "sf_Account_SubscriptionInvestor_WLC_Occupation_c",
+    "sf_Account_SubscriptionInvestor_WLC_Title_c",
+    "sf_Account_SubscriptionInvestor_WLC_Employer_Name_c",
+    "sf_Account_SubscriptionInvestor_WLC_Subscribing_as_a_Representative_c",
+    "sf_Account_SubscriptionInvestor_WLC_Subscribing_as_Representative_Details_c",
+    "sf_Account_SubscriptionInvestor_Industry",
+    "sf_Account_SubscriptionInvestor_Domestic_Foreign_c",
+    "sf_Account_SubscriptionInvestor_Citizenship_c",
+    "sf_Account_SubscriptionInvestor_TCG_Global_Id_c",
+    "sf_Account_SubscriptionInvestor_Has_Carlyle_Onboarding_c",
+    "sf_Account_SubscriptionInvestor_Has_Solutions_Onboarding_c",
+    "sf_Account_SubscriptionInvestor_Disregarded_Entity_c",
+    "sf_Account_SubscriptionInvestor_Individual_Organization_c",
+    "sf_Account_SubscriptionInvestor_Tax_Country_Jurisdiction_c",
+    "sf_Account_SubscriptionInvestor_State_of_Tax_Residence_c",
+    "sf_Account_SubscriptionInvestor_AML_Investor_Type_c",
+    "sf_Account_SubscriptionInvestor_AML_Address_City_c",
+    "sf_Account_SubscriptionInvestor_AML_Address_State_Province_c",
+    "sf_Account_SubscriptionInvestor_Beneficial_Owner_Type_c",
+    "sf_Account_SubscriptionInvestor_AML_Address_Country_c",
+    "sf_Account_SubscriptionInvestor_Beneficial_Country_Formula_c",
+    "sf_Account_SubscriptionInvestor_Regulated_Entity_c",
+    "sf_Account_SubscriptionInvestor_Risk_Rating_c",
+    "sf_Account_SubscriptionInvestor_Broker_Dealer_c",
+    "anduin_Account_SubscriptionInvestor_Broker_Dealer_c",
+    "sf_Account_SubscriptionInvestor_Risk_Rating_3_Notes_c",
+    "sf_Account_SubscriptionInvestor_Bank_Name_c",
+    "sf_Account_SubscriptionInvestor_Bank_Location_c",
+    "sf_Account_SubscriptionInvestor_Risk_Committee_c",
+    "sf_Account_SubscriptionInvestor_FINRA_Retail_Investor_c",
+    "sf_Account_SubscriptionInvestor_Lux_Tax_Assessment_Rating_c",
+    "sf_Account_SubscriptionInvestor_Website",
+    "sf_Account_SubscriptionInvestor_High_Risk_Jurisdiction_c",
+    "sf_Account_SubscriptionInvestor_Eligible_Introducer_Letter_Certificate_c",
+    "sf_Account_SubscriptionInvestor_Medium_High_Risk_Jurisdiction_c",
+    "sf_Account_SubscriptionInvestor_Introducer_Letter_Certificate_Comments_c",
+    "sf_Account_SubscriptionInvestor_Nominee_Intermediary_c",
+    "sf_Account_SubscriptionInvestor_AML_Pre_Clearance_c",
+    "sf_Account_SubscriptionInvestor_High_Risk_Industry_c",
+    "sf_Account_SubscriptionInvestor_AML_Pre_Clearance_Funds_c",
+    "sf_Account_SubscriptionInvestor_Complex_Structure_c",
+    "sf_Account_SubscriptionInvestor_Type_of_Block_c",
+    "sf_Account_SubscriptionInvestor_Negative_News_c",
+    "sf_Account_SubscriptionInvestor_Account_Blocking_c",
+    "sf_Account_SubscriptionInvestor_Bearer_Shares_c",
+    "sf_Account_SubscriptionInvestor_Account_Blocking_Date_c",
+    "sf_Account_SubscriptionInvestor_Shell_Bank_c",
+    "sf_Account_SubscriptionInvestor_Account_Blocking_Removed_Date_c",
+    "sf_Account_SubscriptionInvestor_Politically_Exposed_Person_PEP_c",
+    "sf_Account_SubscriptionInvestor_AML_Review_Cycle_c",
+    "sf_Account_SubscriptionInvestor_PEP_Status_Details_c",
+    "sf_Account_SubscriptionInvestor_Next_AML_Review_Date_c",
+    "sf_Account_SubscriptionInvestor_PEP_Status_c",
+    "sf_Account_SubscriptionInvestor_Marketing_Method_c",
+    "sf_Account_SubscriptionInvestor_Source_of_Wealth_Category_c",
+    "sf_Account_SubscriptionInvestor_Marketing_Details_c",
+    "sf_Account_SubscriptionInvestor_Source_of_Wealth_c",
+    "sf_Account_SubscriptionInvestor_MiFID_Client_Category_c",
+    "sf_Account_SubscriptionInvestor_Source_of_Funds_Category_c",
+    "sf_Account_SubscriptionInvestor_Source_of_Funds_Details_c",
+    "sf_Account_SubscriptionInvestor_SoW_SoF_Country_c",
+    "sf_Account_SubscriptionInvestor_Legal_Status_c",
+    "sf_Account_SubscriptionInvestor_High_Risk_Factors_c",
+    "sf_Account_SubscriptionInvestor_Awareness_Nexus_c",
+    "sf_Account_SubscriptionInvestor_AML_Notes_c",
+    "sf_Account_SubscriptionInvestor_Approval_Status_c",
+    "sf_Account_SubscriptionInvestor_Name_Change_Approval_Status_c",
+    "sf_Account_SubscriptionInvestor_AML_Approver_c",
+    "sf_Account_SubscriptionInvestor_FM_Approver_c",
+    "sf_Account_SubscriptionInvestor_Form_Type_c",
+    "sf_Account_SubscriptionInvestor_Tax_ID_c",
+    "sf_Account_SubscriptionInvestor_FM_Tax_Id_c",
+    "sf_Account_SubscriptionInvestor_Equity_Tax_Id_c",
+    "sf_Account_SubscriptionInvestor_Tax_Entity_Type_c",
+    "sf_Account_SubscriptionInvestor_Tax_Status_c",
+    "sf_Account_SubscriptionInvestor_FATCA_Status_c",
+    "sf_Account_SubscriptionInvestor_US_TIN_Type_c",
+    "sf_Account_SubscriptionInvestor_Foreign_Tax_Identifying_Number_c",
+    "sf_Account_SubscriptionInvestor_Foreign_Tax_Identifying_Number_Country_c",
+    "sf_Account_SubscriptionInvestor_Withholding_Foreign_Partnership_EIN_c",
+    "sf_Account_SubscriptionInvestor_Tax_Residency_Certificates_c",
+    "sf_Account_SubscriptionInvestor_Sponsoring_Entity_GIIN_c",
+    "sf_Account_SubscriptionInvestor_W9_Other_Entity_Type_c",
+    "sf_Account_SubscriptionInvestor_Account_Opening_Date_c",
+    "sf_Account_SubscriptionInvestor_Joint_Account_Name_c",
+    "sf_Account_SubscriptionInvestor_Treaty_Country_c",
+    "sf_Account_SubscriptionInvestor_Country_of_Birth_c",
+    "sf_Account_SubscriptionInvestor_Citizenship_Country_c",
+    "sf_Account_SubscriptionInvestor_Country_of_Incorporation_Formation_c",
+    "sf_Account_SubscriptionInvestor_Exemption_from_FATCA_Reporting_Code_c",
+    "sf_Account_SubscriptionInvestor_Exempt_Payee_Code_c",
+    "sf_Account_SubscriptionInvestor_Date_Of_Birth_c",
+    "sf_Account_SubscriptionInvestor_Branch_GIIN_c",
+    "sf_Account_SubscriptionInvestor_GIIN_Status_Date_c",
+    "sf_Account_SubscriptionInvestor_GIIN_c",
+    "sf_Account_SubscriptionInvestor_GIIN_Status_c",
+    "sf_Account_SubscriptionInvestor_Qualified_Foreign_Pension_Fund_QFPF_c",
+    "sf_Account_SubscriptionInvestor_Tax_Reporting_by_AlpInvest_c",
+    "sf_Account_SubscriptionInvestor_Tax_Account_Owner_c",
+    "sf_Account_SubscriptionInvestor_TAO_BillingCountry_c",
+    "sf_Account_SubscriptionInvestor_TAO_BillingStreet_c",
+    "sf_Account_SubscriptionInvestor_TAO_BillingCity_c",
+    "sf_Account_SubscriptionInvestor_TAO_BillingState_c",
+    "sf_Account_SubscriptionInvestor_TAO_BillingPostalCode_c",
+    "sf_Account_SubscriptionInvestor_TAO_BillingStreet2_c",
+    "sf_Account_SubscriptionInvestor_TAO_Tax_Status_c",
+    "sf_Account_SubscriptionInvestor_TAO_Citizenship_Country_c",
+    "sf_Account_SubscriptionInvestor_TAO_Country_of_Incorporation_Formation_c",
+    "sf_Account_SubscriptionInvestor_TAO_US_Tax_ID_c",
+    "sf_Account_SubscriptionInvestor_TAO_Individual_or_Organization_c",
+    "sf_Account_SubscriptionInvestor_TAO_US_TIN_Type_c",
+    "sf_Account_SubscriptionInvestor_TAO_Investor_Foreign_Domestic_c",
+    "sf_Account_SubscriptionInvestor_TAO_Non_US_Tax_ID_Country_c",
+    "sf_Account_SubscriptionInvestor_TAO_Foreign_Tax_Id_c",
+    "sf_Account_SubscriptionInvestor_TAO_Withholding_Foreign_Partnership_EIN_c",
+    "sf_Account_SubscriptionInvestor_TAO_Date_of_Birth_c",
+    "sf_Account_SubscriptionInvestor_TAO_Exemption_from_FATCA_Reporting_Code_c",
+    "sf_Account_SubscriptionInvestor_TAO_Tax_Country_Jurisdiction_c",
+    "sf_Account_SubscriptionInvestor_TAO_Exempt_Payee_Code_c",
+    "sf_Account_SubscriptionInvestor_TAO_ShippingCountry_c",
+    "sf_Account_SubscriptionInvestor_TAO_ShippingStreet_c",
+    "sf_Account_SubscriptionInvestor_TAO_ShippingCity_c",
+    "sf_Account_SubscriptionInvestor_TAO_Investor_Mailing_State_Province_c",
+    "sf_Account_SubscriptionInvestor_TAO_ShippingPostalCode_c",
+    "sf_Account_SubscriptionInvestor_TAO_ShippingStreet2_c",
+    "sf_Account_SubscriptionInvestor_TAO_Tax_Form_Type_c",
+    "sf_Account_SubscriptionInvestor_TAO_Branch_GIIN_c",
+    "sf_Account_SubscriptionInvestor_TAO_GIIN_c",
+    "sf_Account_SubscriptionInvestor_TAO_Country_of_Birth_c",
+    "sf_Account_SubscriptionInvestor_TAO_FATCA_Classification_c",
+    "sf_Account_SubscriptionInvestor_TAO_Sponsoring_Entity_GIIN_c",
+    "sf_Account_SubscriptionInvestor_TAO_W9_Other_Entity_Type_c",
+    "sf_Account_SubscriptionInvestor_TAO_First_Name_c",
+    "sf_Account_SubscriptionInvestor_TAO_Last_Name_c",
+    "sf_Account_SubscriptionInvestor_TAO_Middle_Name_c",
+    "sf_Account_SubscriptionInvestor_TAO_FATCA_Status_c",
+    "sf_Account_SubscriptionInvestor_TAO_Exemption_from_FATCA_Withholding_Cod_c",
+    "sf_Account_SubscriptionInvestor_Identification_as_a_Specified_UK_Person_c",
+    "sf_Account_SubscriptionInvestor_CDOT_Entity_Account_Holder_Status_c",
+    "sf_Account_SubscriptionInvestor_Affiliated_Corporation_c",
+    "sf_Account_SubscriptionInvestor_Reportable_UK_Person_c",
+    "sf_Account_SubscriptionInvestor_Reportable_GGY_JEY_GIB_IOM_person_c",
+    "sf_Account_SubscriptionInvestor_CRS_Classification_c",
+    "sf_Account_SubscriptionInvestor_Related_Entity_c",
+    "sf_Account_SubscriptionInvestor_Place_of_Birth_c",
+    "sf_Account_SubscriptionInvestor_Date_of_Organization_Formation_Date_c",
+    "sf_Account_SubscriptionInvestor_Effective_Date_of_Self_Certification_c",
+    "sf_Account_SubscriptionInvestor_Name_of_Securities_Market_c",
+    "sf_Account_SubscriptionInvestor_Status_of_CRS_Review_c",
+    "sf_Account_SubscriptionInvestor_Reportable_Non_reportable_Account_c",
+    "sf_Account_SubscriptionInvestor_Does_the_Entity_Have_Controlling_Persons_c",
+    "anduin_Account_SubscriptionInvestor_Does_the_Entity_Have_Controlling_Persons_c",
+    "sf_Account_SubscriptionInvestor_Reporting_Countries_c",
+    "sf_Account_SubscriptionInvestor_TIN_Unavailable_c",
+    "sf_Account_SubscriptionInvestor_TIN_Country_No_1_c",
+    "sf_Account_SubscriptionInvestor_TIN_No_1_c",
+    "sf_Account_SubscriptionInvestor_TIN_Country_No_2_c",
+    "sf_Account_SubscriptionInvestor_TIN_No_2_c",
+    "sf_Account_SubscriptionInvestor_TIN_Country_No_3_c",
+    "sf_Account_SubscriptionInvestor_TIN_No_3_c",
+    "sf_Account_SubscriptionInvestor_TIN_Country_No_4_c",
+    "sf_Account_SubscriptionInvestor_TIN_No_4_c",
+    "sf_Account_SubscriptionInvestor_TIN_Country_No_5_c",
+    "sf_Account_SubscriptionInvestor_TIN_No_5_c",
+    "sf_Account_SubscriptionInvestor_registered_address_2_c",
+    "sf_Account_SubscriptionInvestor_mailing_address_2_c",
+    "sf_Account_SubscriptionInvestor_Accredited_Investor_Status_Entities_c",
+    "sf_Account_SubscriptionInvestor_Accredited_Investor_Status_Individual_c",
+    "sf_Account_SubscriptionInvestor_Government_Issued_ID_on_File_c",
+    "sf_Account_SubscriptionInvestor_Government_ID_Expiration_Date_c",
+    "sf_Account_SubscriptionInvestor_Expiration_of_Restrictive_Covenant_Perio_c",
+    "sf_Account_SubscriptionInvestor_Is_Capital_Shareholder_Controlled_c",
+    "sf_Account_SubscriptionInvestor_Is_Indiv_Retirement_Benefit_Plan_c",
+    "sf_Account_SubscriptionInvestor_Is_BHC_c",
+    "sf_Account_SubscriptionInvestor_Individual_Retirement_Account_IRA_c",
+    "sf_Account_SubscriptionInvestor_Qualified_Purchaser_c",
+    "sf_Account_SubscriptionInvestor_Qualified_Investor_Status_Entity_c",
+    "sf_Account_SubscriptionInvestor_Qualified_Client_Status_c",
+    "sf_Account_SubscriptionInvestor_Qualified_Investor_Status_Individual_c",
+    "sf_Account_SubscriptionInvestor_Is_Japanese_Res_c",
+    "sf_Account_SubscriptionInvestor_Is_FIEL_Qualified_c",
+    "sf_Account_SubscriptionInvestor_Is_Article_63_Applied_c",
+    "sf_Account_SubscriptionInvestor_EU_Elective_Professional_Client_c",
+    "sf_Account_SubscriptionInvestor_Description",
+    "sf_Account_SubscriptionInvestor_UBS_Escrow_Account_c",
+    "sf_Account_SubscriptionInvestor_MSSB_ID_c",
+    "sf_Account_SubscriptionInvestor_MROR_c",
+    "sf_Account_SubscriptionInvestor_Is_US_Tax_Exempt_c",
+    "sf_Account_SubscriptionInvestor_Is_Section_115_Entity",
+    "sf_Account_SubscriptionInvestor_Owner_Is_US_Tax_Exempt",
+    "sf_Account_SubscriptionInvestor_Treated_as_Tax_Exempt_LP",
+    "sf_Account_SubscriptionInvestor_Tax_Exempt_Subtype_c",
+    "sf_Account_SubscriptionInvestor_Exempt_from_State_and_Local_Income_Tax_c",
+    "sf_Account_SubscriptionInvestor_WH_Rate_OID_c",
+    "sf_Account_SubscriptionInvestor_WH_Rate_ECI_c",
+    "sf_Account_SubscriptionInvestor_WH_Rate_FATCA_c",
+    "sf_Account_SubscriptionInvestor_RecordTypeId",
+    "sf_Account_SubscriptionInvestor_Account_Status_c",
+    "sf_Account_SubscriptionInvestor_WLC_Regulator_c",
+    "sf_Account_SubscriptionInvestor_WLC_Exchange_c",
+    "sf_Account_SubscriptionInvestor_WLC_Ticker_Symbol_c",
+    "sf_Account_SubscriptionInvestor_WLC_Publicly_Listed_On_A_Stock_Exchange_c",
+    "anduin_Account_SubscriptionInvestor_Signer_FirstName",
+    "anduin_Account_SubscriptionInvestor_Signer_MiddleName",
+    "anduin_Account_SubscriptionInvestor_Signer_LastName",
+    "sf_Account_SubscriptionInvestor_Signer_FirstName",
+    "sf_Account_SubscriptionInvestor_Signer_MiddleName",
+    "sf_Account_SubscriptionInvestor_Signer_LastName",
+    "sf_Agreement_Onboarding_Name_c",
+    "sf_Agreement_Onboarding_Status_c",
+    "sf_Agreement_Onboarding_Type_c",
+    "sf_Agreement_Onboarding_Common_Subscription_Entity_c",
+    "sf_Agreement_Onboarding_Subscription_Investor_Approval_Status_c",
+    "sf_Agreement_Onboarding_Account_c",
+    "sf_Agreement_Onboarding_Related_Common_Name_c",
+    "sf_Agreement_Onboarding_SI_Individual_or_Organization_c",
+    "sf_Agreement_Onboarding_SI_Investor_Foreign_Domestic_c",
+    "sf_Agreement_Onboarding_Original_Completed_Date_c",
+    "sf_Agreement_Onboarding_Parent_Agreement_Id_c",
+    "sf_Agreement_Onboarding_Commitment_Type_c",
+    "sf_Agreement_Onboarding_Investor_Fund_c",
+    "sf_Agreement_Onboarding_Opportunity_c",
+    "sf_Agreement_Onboarding_Fund_c",
+    "sf_Agreement_Onboarding_Currency_c",
+    "sf_Agreement_Onboarding_Fund_Close_c",
+    "sf_Agreement_Onboarding_Partnership_c",
+    "sf_Agreement_Onboarding_Requested_Commitment_Amount_c",
+    "sf_Agreement_Onboarding_Commitment_c",
+    "sf_Agreement_Onboarding_USD_Amount_c",
+    "sf_Agreement_Onboarding_Effective_Date_c",
+    "sf_Agreement_Onboarding_Investran_Vehicle_Type_c",
+    "sf_Agreement_Onboarding_Related_Agreements_Group_c",
+    "sf_Agreement_Onboarding_Associated_Legal_Entities_c",
+    "sf_Agreement_Onboarding_Agreement_Legal_Entities_External_Ids_c",
+    "sf_Agreement_Onboarding_SI_Investor_Registered_Country_c",
+    "sf_Agreement_Onboarding_SI_Investor_Registered_Street_Address_c",
+    "sf_Agreement_Onboarding_SI_Investor_Registered_City_c",
+    "sf_Agreement_Onboarding_SI_Investor_Registered_State_Province_c",
+    "sf_Agreement_Onboarding_SI_Investor_Registered_Postal_Code_c",
+    "sf_Agreement_Onboarding_SI_Investor_Registered_Address_2_c",
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_Country_c",
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_Street_c",
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_City_c",
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_State_Province_c",
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_Zip_Postal_Code_c",
+    "sf_Agreement_Onboarding_SI_Investor_Mailing_Address_2_c",
+    "sf_Agreement_Onboarding_SI_US_Taxpayer_Identification_Number_c",
+    "sf_Agreement_Onboarding_SI_US_TIN_Type_c",
+    "sf_Agreement_Onboarding_SI_Tax_Status_c",
+    "sf_Agreement_Onboarding_SI_Tax_Country_Jurisdiction_c",
+    "sf_Agreement_Onboarding_SI_FATCA_Classification_c",
+    "sf_Agreement_Onboarding_SI_Non_US_Tax_ID_c",
+    "sf_Agreement_Onboarding_SI_Non_US_Tax_ID_Country_c",
+    "sf_Agreement_Onboarding_SI_Citizenship_Country_c",
+    "sf_Agreement_Onboarding_SI_Country_of_Incorporation_Formation_c",
+    "sf_Agreement_Onboarding_SI_Country_of_Birth_c",
+    "sf_Agreement_Onboarding_SI_Date_Of_Birth_c",
+    "sf_Agreement_Onboarding_SI_Exemption_from_FATCA_Reporting_Code_c",
+    "sf_Agreement_Onboarding_SI_Exempt_Payee_Code_c",
+    "sf_Agreement_Onboarding_SI_GIIN_c",
+    "sf_Agreement_Onboarding_SI_Branch_GIIN_c",
+    "sf_Agreement_Onboarding_X892_CAI_c",
+    "sf_Agreement_Onboarding_X892_CAI_Text_c",
+    "sf_Agreement_Onboarding_Tax_Exempt_Status_Notes_c",
+    "sf_Agreement_Onboarding_ERISA_Partner_c",
+    "sf_Agreement_Onboarding_Is_ERISA_Title_I_c",
+    "anduin_Agreement_Onboarding_Is_ERISA_Title_I_c",
+    "sf_Agreement_Onboarding_SI_Disregarded_GP_of_GP_c",
+    "sf_Agreement_Onboarding_SI_Qualified_Institutional_Investor_FIEL_c",
+    "sf_Agreement_Onboarding_SI_Funding_Parent_Sub_Entity_c",
+    "sf_Agreement_Onboarding_SI_Article_63_Paragraph_1_applies_c",
+    "sf_Agreement_Onboarding_SI_Funding_Silo_c",
+    "sf_Agreement_Onboarding_New_Commitment_or_Transfer_c",
+    "sf_Agreement_Onboarding_Confirmation_of_investment_on_own_behalf_c",
+    "sf_Agreement_Onboarding_Investor_Type_c",
+    "sf_Agreement_Onboarding_Lux_Tax_Assessment_c",
+    "sf_Agreement_Onboarding_Investing_in_Lux_Funds_c",
+    "sf_Agreement_Onboarding_Lux_Tax_Assessment_Score_c",
+    "sf_Agreement_Onboarding_Source_of_Funds_c",
+    "sf_Agreement_Onboarding_Evidence_of_Existence_c",
+    "sf_Agreement_Onboarding_Source_of_Wealth_c",
+    "sf_Agreement_Onboarding_Evidence_of_Corporate_Authority_c",
+    "sf_Agreement_Onboarding_Source_of_Wealth_Details_c",
+    "sf_Agreement_Onboarding_Signed_Structure_Chart_c",
+    "sf_Agreement_Onboarding_List_of_Legal_Reps_and_Directors_c",
+    "sf_Agreement_Onboarding_Evidence_of_Each_Tier_of_the_Structure_c",
+    "sf_Agreement_Onboarding_Identification_of_Authorized_Signatories_c",
+    "sf_Agreement_Onboarding_Identification_of_UBOs_c",
+    "sf_Agreement_Onboarding_FinCEN_Control_Person_c",
+    "sf_Agreement_Onboarding_World_Check_Results_c",
+    "sf_Agreement_Onboarding_Control_Person_Jurisdiction_c",
+    "sf_Agreement_Onboarding_World_Check_Details_c",
+    "sf_Agreement_Onboarding_Exceptions_Waivers_c",
+    "sf_Agreement_Onboarding_Approval_for_High_Risk_or_PEP_c",
+    "sf_Agreement_Onboarding_Exceptions_Waivers_Details_c",
+    "sf_Agreement_Onboarding_Analyst_c",
+    "sf_Agreement_Onboarding_KYC_Satisfactory_c",
+    "sf_Agreement_Onboarding_AML_Review_Initiated_c",
+    "sf_Agreement_Onboarding_Post_Close_Details_c",
+    "sf_Agreement_Onboarding_AML_Clearance_Date_c",
+    "sf_Agreement_Onboarding_Post_Close_Follow_Up_Date_c",
+    "sf_Agreement_Onboarding_AML_Notes_c",
+    "sf_Agreement_Onboarding_AML_Approval_Date_c",
+    "sf_Agreement_Onboarding_Eligible_Introducer_Letter_Certificate_c",
+    "sf_Agreement_Onboarding_External_Account_Number_c",
+    "sf_Agreement_Onboarding_Comments_c",
+    "sf_Agreement_Onboarding_External_Account_Institution_c",
+    "sf_Agreement_Onboarding_AML_Data_Approved_c",
+    "sf_Agreement_Onboarding_AML_Approver_c",
+    "sf_Agreement_Onboarding_AML_Approved_c",
+    "sf_Agreement_Onboarding_FM_Approved_c",
+    "sf_Agreement_Onboarding_Skip_AML_Approvals_c",
+    "sf_Agreement_Onboarding_IF_Status_c",
+    "sf_Agreement_Onboarding_RecordTypeId",
+    "sf_Agreement_Onboarding_SI_Investing_assets_of_any_retirement_pl_c",
+    "sf_Agreement_Onboarding_Is_Investor_Controlling_c",
+    "sf_Agreement_Onboarding_Is_ERISA_FOIA_c",
+    "sf_Agreement_Onboarding_SI_Qualified_Investor_Status_Entity_c",
+    "anduin_Agreement_Onboarding_Signer_FirstName",
+    "anduin_Agreement_Onboarding_Signer_MiddleName",
+    "anduin_Agreement_Onboarding_Signer_LastName",
+    "sf_Agreement_Onboarding_Signer_FirstName",
+    "sf_Agreement_Onboarding_Signer_MiddleName",
+    "sf_Agreement_Onboarding_Signer_LastName",
+    "sf_Agreement_null_TCG_Global_Id_c",
+    "sf_Agreement_null_Commitment_c",
+    "anduin_Agreement_null_Signer_FirstName",
+    "anduin_Agreement_null_Signer_MiddleName",
+    "anduin_Agreement_null_Signer_LastName",
+    "sf_Agreement_null_Signer_FirstName",
+    "sf_Agreement_null_Signer_MiddleName",
+    "sf_Agreement_null_Signer_LastName",
+    "sf_Agreement_null_WLC_International_Supplements_c",
+    "sf_Agreement_null_Receive_Unapplied_Balance_Reduction_Amt_c",
+    "sf_Agreement_null_Is_not_IRC_US_Person",
+    "sf_Agreement_null_Owner_Is_not_IRC_US_Person",
+    "sf_Agreement_null_Treated_as_NonUS_LP",
+    "sf_Agreement_null_ECI_c",
+    "sf_Agreement_null_UBTI_c",
+    "sf_Agreement_null_USRPHC_c",
+    "sf_Agreement_null_WLC_894_Eligible_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Name",
+    "sf_Fund_FundPrivateEquityRealAsset_Product_Name_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Legal_Name_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Abbreviation_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Status_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Status_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Inactive_Date_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Vintage_Year_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Investor_Discretion_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Strategy_Description_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Part_of_Program_c",
+    "sf_Fund_FundPrivateEquityRealAsset_PR_A_Coverage_c",
+    "sf_Fund_FundPrivateEquityRealAsset_AIFMD_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Mandate_Background_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Carlyle_not_responsible_for_AML_KYC_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Type_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Product_Line_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Product_Type_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Family_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Focus_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Region_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Structure_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Currency_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Focus_Additional_Info_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Fund_Specific_Paragraph_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Managed_Account_Direct_Investments_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Closing_Date_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Final_Closing_Date_c",
+    "sf_Fund_FundPrivateEquityRealAsset_Final_Closing_Date_Per_LPA_c",
+    "sf_Fund_FundClose_Name",
+    "sf_Fund_FundClose_Fund_c",
+    "sf_Fund_FundClose_Close_Date_c",
+    "sf_Fund_FundClose_RecordTypeId",
+    "sf_Fund_null_TCG_Global_Id_c",
+    "sf_BeneficialOwner",
+    "sf_ControllingPersons",
+    "sf_IFC_null_Email_c",
+    "sf_IFC_null_Status_c",
+    "sf_IFC_null_Common_Name_c",
+    "sf_IFC_null_Investor_Classification_c",
+    "sf_IFC_null_Beneficial_Country_c",
+    "sf_IFC_null_Date_of_Birth_c",
+    "sf_IFC_null_Individual_or_Organization_c",
+    "sf_IFC_null_Full_Address_c",
+    "sf_IFC_null_CreatedById",
+    "sf_IFC_null_Name",
+    "sf_IFC_null_LastModifiedById",
+    "sf_IFC_null_External_ID_c",
+    "sf_IFC_null_RecordTypeId",
+    "sf_IFC_null_Contact_Country_c",
+    "sf_IFC_null_Contact_ID_c",
+    "sf_IFC_null_Contact_Name_c",
+    "sf_IFC_null_Contact_RecordType_Name_c",
+    "sf_IFC_null_Contact_TCG_Global_ID_c",
+    "sf_IFC_null_Contact_s_CN_Registered_Country_c",
+    "sf_Contact",
+    "sf_TaxForm_W9_Tax_Account_Owner",
+    "sf_TaxForm_W9_Disregarded_Entity_Name",
+    "sf_TaxForm_W9_TAO_Tax_Account_Owner",
+    "sf_TaxForm_W9_Tax_Status_c",
+    "sf_TaxForm_W9_TAO_Tax_Status_c",
+    "sf_TaxForm_W9_Tax_Entity_Type_c",
+    "sf_TaxForm_W9_Exempt_Payee_Code_c",
+    "sf_TaxForm_W9_Exemption_from_FATCA_Reporting_Code_c",
+    "sf_TaxForm_W9_TAO_Exempt_Payee_Code_c",
+    "sf_TaxForm_W9_TAO_Exemption_from_FATCA_Reporting_Code_c",
+    "sf_TaxForm_W9_BillingStreet",
+    "sf_TaxForm_W9_BillingCity",
+    "sf_TaxForm_W9_BillingState",
+    "sf_TaxForm_W9_BillingPostalCode",
+    "sf_TaxForm_W9_BillingCountry",
+    "sf_TaxForm_W9_TAO_BillingStreet_c",
+    "sf_TaxForm_W9_TAO_BillingCity_c",
+    "sf_TaxForm_W9_TAO_BillingState_c",
+    "sf_TaxForm_W9_TAO_BillingPostalCode_c",
+    "sf_TaxForm_W9_TAO_BillingCountry_c",
+    "sf_TaxForm_W9_FM_Tax_Id_c",
+    "sf_TaxForm_W9_US_TIN_Type_c",
+    "sf_TaxForm_W9_TAO_US_Tax_ID_c",
+    "sf_TaxForm_W9_TAO_US_TIN_Type_c",
+    "sf_Account_SubscriptionInvestor_WH_Rate_Expiration_Date_c",
+    "sf_Account_SubscriptionInvestor_Validation_Result_c",
+    "sf_Account_SubscriptionInvestor_Effective_Date_of_Tax_Form_Status_c",
+    "sf_Account_SubscriptionInvestor_Effective_Date_of_FATCA_Status_and_Rate_c",
+    "sf_Account_SubscriptionInvestor_Subject_to_FATCA_Withholding_c",
+    "sf_Account_SubscriptionInvestor_Status_of_FATCA_Review_c",
+    "sf_Account_SubscriptionInvestor_FATCA_Monitored_c",
+    "sf_Account_SubscriptionInvestor_Limitation_of_Benefits_Other_c",
+    "sf_Account_SubscriptionInvestor_Limitation_of_Benefits_c",
+    "sf_Account_SubscriptionInvestor_TAO_Global_ID_c",
+    "sf_Account_SubscriptionInvestor_TAO_Tax_ID_c",
+    "sf_Account_SubscriptionInvestor_TAO_W_H_Rate_c",
+    "sf_Account_SubscriptionInvestor_TAO_Status_of_FATCA_Review_c",
+    "sf_Account_SubscriptionInvestor_TAO_Subject_to_FATCA_Withholding_c",
+    "sf_Account_SubscriptionInvestor_TAO_Tax_Approval_Status_c",
+    "sf_Account_SubscriptionInvestor_TAO_Tax_Form_Status_c",
+    "sf_Account_SubscriptionInvestor_TAO_Treaty_Country_c",
+    "sf_Account_SubscriptionInvestor_TAO_W_H_Rate_FIRPTA_Income_c",
+    "sf_Account_SubscriptionInvestor_TAO_W_H_Rate_Interest_Income_c",
+    "sf_Account_SubscriptionInvestor_TAO_W_H_Rate_Private_Dividend_c",
+    "sf_Account_SubscriptionInvestor_TAO_W_H_Rate_Public_Dividend_c",
+    "sf_Account_SubscriptionInvestor_TAO_GIIN_Status_c",
+    "sf_Account_SubscriptionInvestor_TAO_Demographic_Approval_Status_c",
+    "sf_Account_SubscriptionInvestor_TAO_GIIN_Status_Date_c",
+    "sf_Account_SubscriptionInvestor_TAO_Effective_Date_FATCA_CompletedStatus_c",
+    "sf_Account_SubscriptionInvestor_TAO_Effective_Date_of_Tax_Form_Status_c",
+    "sf_Account_SubscriptionInvestor_TAO_Limitation_of_Benefits_other_c",
+    "sf_Account_SubscriptionInvestor_TAO_FATCA_Monitored_c",
+    "sf_Account_SubscriptionInvestor_TAO_Beneficial_Country_c",
+    "sf_Account_SubscriptionInvestor_TAO_EW8_Status_c",
+    "sf_Account_SubscriptionInvestor_TAO_Client_ID_c",
+    "sf_Account_SubscriptionInvestor_TAO_FATCA_Document_ID_c",
+    "sf_Account_SubscriptionInvestor_TAO_Validation_Result_c",
+    "sf_Account_SubscriptionInvestor_CRS_Status_c",
+    "sf_Account_SubscriptionInvestor_CRS_Document_ID_c",
+    "sf_Account_SubscriptionInvestor_CRS_Validation_Result_c",
+    "sf_Account_SubscriptionInvestor_FATCA_Document_ID_c",
+    "sf_Account_SubscriptionInvestor_S_Exemption_Code_c",
+    "sf_Account_SubscriptionInvestor_State_Exempt_Certification_Provided_c",
+    "sf_Account_SubscriptionInvestor_Date_State_Exempt_Certificate_Provided_c",
+    "sf_Account_SubscriptionInvestor_AML_Refresh_Status_c",
+    "sf_IFC_null_Hide_IFC_From_Contact_Self_Servicing_c",
+    "sf_Account_SubscriptionInvestor_TAO_Limitation_of_Benefits_c",
+    "sf_Agreement_Onboarding_Initial_Additional"
+  ],
+  "label": "Carlyle_SFDCdata_20260223_v22_Khang"
+}

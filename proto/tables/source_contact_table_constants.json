@@ -1,0 +1,97 @@
+{
+  "fields_map": {
+    "contactInfo": {
+      "type_id": "CustomCompound",
+      "value_sub_fields": {
+        "country_address_contact_part3_duediligencequestionnaire": {
+          "type_id": "Country"
+        },
+        "zip_address_contact_part3_duediligencequestionnaire": {
+          "type_id": "PostalZipCode"
+        },
+        "contactrole_part3_duediligencequestionnaire": {
+          "type_id": "MultipleCheckbox",
+          "all_option_keys_in_order": [
+            "primarycontact_contactrole_part3_duediligencequestionnaire",
+            "secondarycontact_contactrole_part3_duediligencequestionnaire",
+            "taxadvisor_contactrole_part3_duediligencequestionnaire",
+            "legaladvisor_contactrole_part3_duediligencequestionnaire",
+            "financecontact_contactrole_part3_duediligencequestionnaire",
+            "amlkyccontact_contactrole_part3_duediligencequestionnaire",
+            "wireapprover_contactrole_part3_duediligencequestionnaire"
+          ],
+          "all_option_labels_in_order": [
+            "Primary Contact",
+            "Secondary Contact",
+            "Tax Advisor",
+            "Legal Advisor",
+            "Finance Contact",
+            "AML/KYC Contact",
+            "Wire Approver"
+          ]
+        },
+        "contactnotification_part3_duediligencequestionnaire": {
+          "type_id": "MultipleCheckbox",
+          "all_option_keys_in_order": [
+            "capitalcallnotices_contactnotification_part3_duediligencequestionnaire",
+            "distributionnotices_contactnotification_part3_duediligencequestionnaire",
+            "financialreporting_contactnotification_part3_duediligencequestionnaire",
+            "legalinfo_contactnotification_part3_duediligencequestionnaire",
+            "taxinfo_contactnotification_part3_duediligencequestionnaire",
+            "lpconnect_contactnotification_part3_duediligencequestionnaire"
+          ],
+          "all_option_labels_in_order": [
+            "Capital Call Notices",
+            "Distribution Notices",
+            "Financial Reporting",
+            "Legal Information",
+            "Tax Information",
+            "LP Connect Access Only/No Emails"
+          ]
+        },
+        "name_contact_part3_duediligencequestionnaire": {
+          "type_id": "String"
+        },
+        "city_address_contact_part3_duediligencequestionnaire": {
+          "type_id": "City"
+        },
+        "numberandstreet_address_contact_part3_duediligencequestionnaire": {
+          "type_id": "NumberAndStreet"
+        },
+        "phone_contact_part3_duediligencequestionnaire": {
+          "type_id": "PhoneFax"
+        },
+        "state_address_contact_part3_duediligencequestionnaire": {
+          "type_id": "StateProvince"
+        },
+        "address_contact_part3_duediligencequestionnaire": {
+          "type_id": "String"
+        },
+        "email_contact_part3_duediligencequestionnaire": {
+          "type_id": "Email"
+        },
+        "fax_contact_part3_duediligencequestionnaire": {
+          "type_id": "PhoneFax"
+        }
+      },
+      "sub_field_keys_in_order": [
+        "country_address_contact_part3_duediligencequestionnaire",
+        "zip_address_contact_part3_duediligencequestionnaire",
+        "contactrole_part3_duediligencequestionnaire",
+        "contactnotification_part3_duediligencequestionnaire",
+        "name_contact_part3_duediligencequestionnaire",
+        "city_address_contact_part3_duediligencequestionnaire",
+        "numberandstreet_address_contact_part3_duediligencequestionnaire",
+        "phone_contact_part3_duediligencequestionnaire",
+        "state_address_contact_part3_duediligencequestionnaire",
+        "address_contact_part3_duediligencequestionnaire",
+        "email_contact_part3_duediligencequestionnaire",
+        "fax_contact_part3_duediligencequestionnaire"
+      ]
+    }
+  },
+  "field_keys_in_order": [
+    "contactInfo"
+  ],
+  "label": "Contact sheet"
+}

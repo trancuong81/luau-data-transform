@@ -1,0 +1,641 @@
+syntax = "proto3";
+
+package ocaml_data_transform;
+
+import "data_types.proto";
+import "luauoptions/luau_options.proto";
+
+option (luau.luau_generator) = "schema";
+
+message SourceFeederTableLpSignatoryFields {
+  StringType entity_authorizedtitle_signaturepage = 1;
+  StringType date_signaturepage = 2;
+  StringType entity_subscribername_signaturepage = 3;
+  StringType asa_commitment_amount = 4;
+  StringType entity_authorizedname_signaturepage = 5;
+  StringType individual_subscribername_signaturepage = 6;
+}
+
+message SourceFeederTableLpSignatoryType {
+  string type_id = 1;
+  SourceFeederTableLpSignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableMainGpSignatoryFields {
+  StringType acceptedcommitment_gpsignaturepage = 1;
+  StringType name_firstauthorizedsignatory_gpsignaturepage = 2;
+  StringType title_firstauthorizedsignatory_gpsignaturepage = 3;
+}
+
+message SourceFeederTableMainGpSignatoryType {
+  string type_id = 1;
+  SourceFeederTableMainGpSignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableLuxGpSignatoryFields {
+  StringType name_firstauthorizedsignatory_caplux_gpsignaturepage = 1;
+  StringType name_secondauthorizedsignatory_caplux_gpsignaturepage = 2;
+  StringType title_firstauthorizedsignatory_caplux_gpsignaturepage = 3;
+  StringType title_secondauthorizedsignatory_caplux_gpsignaturepage = 4;
+}
+
+message SourceFeederTableLuxGpSignatoryType {
+  string type_id = 1;
+  SourceFeederTableLuxGpSignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableTaxownerSignatoryFields {
+  StringType name_taxowner_annex1 = 1;
+  StringType date_taxowner_annex1 = 2;
+}
+
+message SourceFeederTableTaxownerSignatoryType {
+  string type_id = 1;
+  SourceFeederTableTaxownerSignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableWitnessSignatoryFields {
+  StringType witnessedname_taxowner_annex1 = 1;
+  StringType witnesseddate_taxowner_annex1 = 2;
+}
+
+message SourceFeederTableWitnessSignatoryType {
+  string type_id = 1;
+  SourceFeederTableWitnessSignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableResidentialaddressIndividualFields {
+  StringType asa_zip_currentresidentialaddress_individual_amlquestionnaire = 1;
+  StringType asa_city_currentresidentialaddress_individual_amlquestionnaire = 2;
+  StringType asa_state_currentresidentialaddress_individual_amlquestionnaire = 3;
+  StringType asa_numberandstreet_currentresidentialaddress_individual_amlquestionnaire = 4;
+  StringType asa_country_currentresidentialaddress_individual_amlquestionnaire = 5;
+}
+
+message SourceFeederTableResidentialaddressIndividualType {
+  string type_id = 1;
+  SourceFeederTableResidentialaddressIndividualFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableClientquestionnairePart1SignatoryFields {
+  StringType signername_part1_duediligencequestionnaire = 1;
+  StringType date_part1_duediligencequestionnaire = 2;
+}
+
+message SourceFeederTableClientquestionnairePart1SignatoryType {
+  string type_id = 1;
+  SourceFeederTableClientquestionnairePart1SignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTablePlaceofbusinessEntityFields {
+  StringType asa_numberandstreet_currentbusinessaddress_entity_amlquestionnaire = 1;
+  StringType asa_city_currentbusinessaddress_entity_amlquestionnaire = 2;
+  StringType asa_country_currentbusinessaddress_entity_amlquestionnaire = 3;
+  StringType asa_state_currentbusinessaddress_entity_amlquestionnaire = 4;
+  StringType asa_zip_currentbusinessaddress_entity_amlquestionnaire = 5;
+}
+
+message SourceFeederTablePlaceofbusinessEntityType {
+  string type_id = 1;
+  SourceFeederTablePlaceofbusinessEntityFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableAddressUboFields {
+  StringType zip_residentialaddress_beneficialowner_amlquestionnaire = 1;
+  StringType city_residentialaddress_beneficialowner_amlquestionnaire = 2;
+  StringType state_residentialaddress_beneficialowner_amlquestionnaire = 3;
+  StringType numberandstreet_residentialaddress_beneficialowner_amlquestionnaire = 4;
+  StringType country_residentialaddress_beneficialowner_amlquestionnaire = 5;
+}
+
+message SourceFeederTableAddressUboType {
+  string type_id = 1;
+  SourceFeederTableAddressUboFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableAddressUbo0Fields {
+  StringType numberandstreet_residentialaddress_beneficialowner_amlquestionnaire_0 = 1;
+  StringType country_residentialaddress_beneficialowner_amlquestionnaire_0 = 2;
+  StringType zip_residentialaddress_beneficialowner_amlquestionnaire_0 = 3;
+  StringType state_residentialaddress_beneficialowner_amlquestionnaire_0 = 4;
+  StringType city_residentialaddress_beneficialowner_amlquestionnaire_0 = 5;
+}
+
+message SourceFeederTableAddressUbo0Type {
+  string type_id = 1;
+  SourceFeederTableAddressUbo0Fields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableAddressUbo1Fields {
+  StringType country_residentialaddress_beneficialowner_amlquestionnaire_1 = 1;
+  StringType state_residentialaddress_beneficialowner_amlquestionnaire_1 = 2;
+  StringType zip_residentialaddress_beneficialowner_amlquestionnaire_1 = 3;
+  StringType city_residentialaddress_beneficialowner_amlquestionnaire_1 = 4;
+  StringType numberandstreet_residentialaddress_beneficialowner_amlquestionnaire_1 = 5;
+}
+
+message SourceFeederTableAddressUbo1Type {
+  string type_id = 1;
+  SourceFeederTableAddressUbo1Fields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableAddressUbo2Fields {
+  StringType numberandstreet_residentialaddress_beneficialowner_amlquestionnaire_2 = 1;
+  StringType country_residentialaddress_beneficialowner_amlquestionnaire_2 = 2;
+  StringType state_residentialaddress_beneficialowner_amlquestionnaire_2 = 3;
+  StringType zip_residentialaddress_beneficialowner_amlquestionnaire_2 = 4;
+  StringType city_residentialaddress_beneficialowner_amlquestionnaire_2 = 5;
+}
+
+message SourceFeederTableAddressUbo2Type {
+  string type_id = 1;
+  SourceFeederTableAddressUbo2Fields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableAddressUbo3Fields {
+  StringType city_residentialaddress_beneficialowner_amlquestionnaire_3 = 1;
+  StringType country_residentialaddress_beneficialowner_amlquestionnaire_3 = 2;
+  StringType zip_residentialaddress_beneficialowner_amlquestionnaire_3 = 3;
+  StringType numberandstreet_residentialaddress_beneficialowner_amlquestionnaire_3 = 4;
+  StringType state_residentialaddress_beneficialowner_amlquestionnaire_3 = 5;
+}
+
+message SourceFeederTableAddressUbo3Type {
+  string type_id = 1;
+  SourceFeederTableAddressUbo3Fields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableClientquestionnairePart2SignatoryFields {
+  StringType signername_part2_duediligencequestionnaire = 1;
+  StringType date_part2_duediligencequestionnaire = 2;
+}
+
+message SourceFeederTableClientquestionnairePart2SignatoryType {
+  string type_id = 1;
+  SourceFeederTableClientquestionnairePart2SignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableWireinstructionsFields {
+  StringType asa_banklocation_wireinstructionsto_wireinfo = 1;
+  StringType beneficiaryaddress_wireinstructionto_wireinfo = 2;
+  StringType asa_intermediaryaba_wireinstructionsto_wireinfo = 3;
+  StringType asa_intermediaryswift_wireinstructionsto_wireinfo = 4;
+  StringType asa_furthercreditaccount_wireinstructionsto_wireinfo = 5;
+  StringType asa_iban_wireinstructionsto_wireinfo = 6;
+  StringType asa_furthercreditname_wireinstructionsto_wireinfo = 7;
+  StringType asa_accountname_wireinstructionsto_wireinfo = 8;
+  StringType asa_aba_wireinstructionsto_wireinfo = 9;
+  StringType asa_swift_wireinstructionsto_wireinfo = 10;
+  StringType asa_accountnumber_wireinstructionsto_wireinfo = 11;
+  StringType asa_bankname_wireinstructionsto_wireinfo = 12;
+  StringType intermediarybankcountry_wireinstructionsto_wireinfo = 13;
+  StringType asa_intermediarybankname_wireinstructionsto_wireinfo = 14;
+  StringType currency_wireinstructionto_wireinfo = 15;
+}
+
+message SourceFeederTableWireinstructionsType {
+  string type_id = 1;
+  SourceFeederTableWireinstructionsFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableBrokeragefirmFields {
+  StringType country_brokerageaccount_wireinfo = 1;
+  StringType firmname_brokerageaccount_wireinfo = 2;
+  StringType zip_brokerageaccount_wireinfo = 3;
+  StringType accountname_brokerageaccount_wireinfo = 4;
+  StringType state_brokerageaccount_wireinfo = 5;
+  StringType dtcnumber_brokerageaccount_wireinfo = 6;
+  StringType accountnumber_brokerageaccount_wireinfo = 7;
+  StringType city_brokerageaccount_wireinfo = 8;
+  StringType address_brokerageaccount_wireinfo = 9;
+}
+
+message SourceFeederTableBrokeragefirmType {
+  string type_id = 1;
+  SourceFeederTableBrokeragefirmFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableCanadianSignatoryFields {
+  StringType date_signaturepage_canadianiqs = 1;
+  StringType investorname_signaturepage_canadianiqs = 2;
+  StringType provinceofresident_signaturepage_canadianiqs = 3;
+  StringType authorizedsignatoryname_signaturepage_canadianiqs = 4;
+}
+
+message SourceFeederTableCanadianSignatoryType {
+  string type_id = 1;
+  SourceFeederTableCanadianSignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableTaxowner2SignatoryFields {
+  StringType name_taxowner_exhibitk = 1;
+  StringType date_taxowner_exhibitk = 2;
+}
+
+message SourceFeederTableTaxowner2SignatoryType {
+  string type_id = 1;
+  SourceFeederTableTaxowner2SignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableWitness2SignatoryFields {
+  StringType name_witness_exhibitk = 1;
+  StringType date_witness_exhibitk = 2;
+}
+
+message SourceFeederTableWitness2SignatoryType {
+  string type_id = 1;
+  SourceFeederTableWitness2SignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableAdditionalrepresentationsSignatoryFields {
+  StringType subscribername_addtionalrepresentations = 1;
+  StringType signorname_addtionalrepresentations = 2;
+  StringType signortitle_addtionalrepresentations = 3;
+}
+
+message SourceFeederTableAdditionalrepresentationsSignatoryType {
+  string type_id = 1;
+  SourceFeederTableAdditionalrepresentationsSignatoryFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceFeederTableFieldsMap {
+  StringType asa_fullname_investorname_generalinfo = 1;
+  SourceFeederTableLpSignatoryType lp_signatory = 2;
+  SourceFeederTableMainGpSignatoryType main_gp_signatory = 3;
+  SourceFeederTableLuxGpSignatoryType lux_gp_signatory = 4;
+  StringType date_gpsignaturepage = 5;
+  SourceFeederTableTaxownerSignatoryType taxowner_signatory = 6;
+  SourceFeederTableWitnessSignatoryType witness_signatory = 7;
+  StringType asa_fullname_investorname_amlquestionnaire = 8;
+  StringType jointaccountholdersnames_part1_duediligencequestionnaire = 9;
+  StringType asa_dateofbirth_individual_amlquestionnaire = 10;
+  StringType asa_placeofbirth_individual_amlquestionnaire = 11;
+  StringType ssnorftiorppno_part1_duediligencequestionnaire = 12;
+  StringType asa_nationality_individual_amlquestionnaire = 13;
+  StringType asa_fulladdress_currentresidentialaddress_individual_amlquestionnaire = 14;
+  SourceFeederTableResidentialaddressIndividualType residentialaddress_individual = 15;
+  MultipleCheckboxType indi_internationalsupplements_part1_duediligencequestionnaire = 16;
+  StringType asa_occupation_individual_amlquestionnaire = 17;
+  StringType professionalactivity_and_title_individual_amlquestionnaire = 18;
+  StringType nameofemployer_part1_duediligencequestionnaire = 19;
+  StringType addressofemployer_part1_duediligencequestionnaire = 20;
+  MultipleCheckboxType sourceofwealth_part1_duediligencequestionnaire = 21;
+  MultipleCheckboxType nominee_part1_duediligencequestionnaire = 22;
+  MultipleCheckboxType category_nominee_part1_duediligencequestionnaire = 23;
+  StringType specifyother_category_nominee_part1_duediligencequestionnaire = 24;
+  MultipleCheckboxType affiliated_part1_duediligencequestionnaire = 25;
+  StringType name_affiliated_part1_duediligencequestionnaire = 26;
+  MultipleCheckboxType asa_politicallyexposedpersons_amlquestionnaire = 27;
+  SourceFeederTableClientquestionnairePart1SignatoryType clientquestionnaire_part1_signatory = 28;
+  StringType asa_fullname_investorname_generalinfo1 = 29;
+  StringType tradename_part2_duediligencequestionnaire = 30;
+  StringType jurisdictionoforganization_part2_duediligencequestionnaire = 31;
+  StringType asa_dateofestablishment_entity_amlquestionnaire = 32;
+  StringType purposeofbusiness_entity_amlquestionnaire = 33;
+  StringType asa_fulladdress_currentbusinessaddress_entity_amlquestionnaire = 34;
+  SourceFeederTablePlaceofbusinessEntityType placeofbusiness_entity = 35;
+  MultipleCheckboxType entity_internationalsupplements_part1_duediligencequestionnaire = 36;
+  StringType website_part2_duediligencequestionnaire = 37;
+  StringType tin_part2_duediligencequestionnaire = 38;
+  MultipleCheckboxType sourceoffunds_part2_duediligencequestionnaire = 39;
+  MultipleCheckboxType legalformofentity_part2_duediligencequestionnaire = 40;
+  StringType specificother_legalformofentity_part2_duediligencequestionnaire = 41;
+  MultipleCheckboxType trust_part1_duediligencequestionnaire = 42;
+  MultipleCheckboxType asa_formpf_formpf = 43;
+  StringType asa_specify_other_formpf = 44;
+  MultipleCheckboxType financialinstitution_regulatedstatus_part2_duediligencequestionnaire = 45;
+  StringType indicate_financialinstitution_regulatedstatus_part2_duediligencequestionnaire = 46;
+  MultipleCheckboxType department_regulatedstatus_part2_duediligencequestionnaire = 47;
+  MultipleCheckboxType entity_regulatedstatus_part2_duediligencequestionnaire = 48;
+  MultipleCheckboxType luxsentity_regulatedstatus_part2_duediligencequestionnaire = 49;
+  StringType indicate_luxsentity_regulatedstatus_part2_duediligencequestionnaire = 50;
+  StringType tickersymbol_luxsentity_regulatedstatus_part2_duediligencequestionnaire = 51;
+  MultipleCheckboxType goventity_part2_duediligencequestionnaire = 52;
+  MultipleCheckboxType nominee_part2_duediligencequestionnaire = 53;
+  MultipleCheckboxType category_nominee_part2_duediligencequestionnaire = 54;
+  StringType specificrepresentative_category_nominee_part2_duediligencequestionnaire = 55;
+  MultipleCheckboxType affiliated_part2_duediligencequestionnaire = 56;
+  StringType indicate_affiliated_part2_duediligencequestionnaire = 57;
+  StringType name_controlperson_part2_duediligencequestionnaire = 58;
+  StringType tittle_controlperson_part2_duediligencequestionnaire = 59;
+  StringType dob_controlperson_part2_duediligencequestionnaire = 60;
+  StringType address_controlperson_part2_duediligencequestionnaire = 61;
+  StringType id_controlperson_part2_duediligencequestionnaire = 62;
+  StringType citizenship_controlperson_part2_duediligencequestionnaire = 63;
+  StringType pep_controlperson_part2_duediligencequestionnaire = 64;
+  StringType publiclytraded_controlperson_part2_duediligencequestionnaire = 65;
+  StringType regulatedentity_controlperson_part2_duediligencequestionnaire = 66;
+  StringType name_controlperson_part2_duediligencequestionnaire_0 = 67;
+  StringType tittle_controlperson_part2_duediligencequestionnaire_0 = 68;
+  StringType dob_controlperson_part2_duediligencequestionnaire_0 = 69;
+  StringType address_controlperson_part2_duediligencequestionnaire_0 = 70;
+  StringType id_controlperson_part2_duediligencequestionnaire_0 = 71;
+  StringType citizenship_controlperson_part2_duediligencequestionnaire_0 = 72;
+  StringType pep_controlperson_part2_duediligencequestionnaire_0 = 73;
+  StringType publiclytraded_controlperson_part2_duediligencequestionnaire_0 = 74;
+  StringType regulatedentity_controlperson_part2_duediligencequestionnaire_0 = 75;
+  StringType name_controlperson_part2_duediligencequestionnaire_1 = 76;
+  StringType tittle_controlperson_part2_duediligencequestionnaire_1 = 77;
+  StringType dob_controlperson_part2_duediligencequestionnaire_1 = 78;
+  StringType address_controlperson_part2_duediligencequestionnaire_1 = 79;
+  StringType id_controlperson_part2_duediligencequestionnaire_1 = 80;
+  StringType citizenship_controlperson_part2_duediligencequestionnaire_1 = 81;
+  StringType pep_controlperson_part2_duediligencequestionnaire_1 = 82;
+  StringType publiclytraded_controlperson_part2_duediligencequestionnaire_1 = 83;
+  StringType regulatedentity_controlperson_part2_duediligencequestionnaire_1 = 84;
+  StringType name_controlperson_part2_duediligencequestionnaire_2 = 85;
+  StringType tittle_controlperson_part2_duediligencequestionnaire_2 = 86;
+  StringType dob_controlperson_part2_duediligencequestionnaire_2 = 87;
+  StringType address_controlperson_part2_duediligencequestionnaire_2 = 88;
+  StringType id_controlperson_part2_duediligencequestionnaire_2 = 89;
+  StringType citizenship_controlperson_part2_duediligencequestionnaire_2 = 90;
+  StringType pep_controlperson_part2_duediligencequestionnaire_2 = 91;
+  StringType publiclytraded_controlperson_part2_duediligencequestionnaire_2 = 92;
+  StringType regulatedentity_controlperson_part2_duediligencequestionnaire_2 = 93;
+  StringType name_controlperson_part2_duediligencequestionnaire_3 = 94;
+  StringType tittle_controlperson_part2_duediligencequestionnaire_3 = 95;
+  StringType dob_controlperson_part2_duediligencequestionnaire_3 = 96;
+  StringType address_controlperson_part2_duediligencequestionnaire_3 = 97;
+  StringType id_controlperson_part2_duediligencequestionnaire_3 = 98;
+  StringType citizenship_controlperson_part2_duediligencequestionnaire_3 = 99;
+  StringType pep_controlperson_part2_duediligencequestionnaire_3 = 100;
+  StringType publiclytraded_controlperson_part2_duediligencequestionnaire_3 = 101;
+  StringType regulatedentity_controlperson_part2_duediligencequestionnaire_3 = 102;
+  StringType asa_fullname_beneficialowner_amlquestionnaire = 103;
+  StringType tittle_beneficialowner_amlquestionnaire = 104;
+  StringType asa_dateofbirth_beneficialowner_amlquestionnaire = 105;
+  StringType asa_residentialaddress_beneficialowner_amlquestionnaire = 106;
+  SourceFeederTableAddressUboType address_ubo = 107;
+  StringType id_beneficialowner_part2_duediligencequestionnaire = 108;
+  StringType citizenship_beneficialowner_part2_duediligencequestionnaire = 109;
+  StringType pep_beneficialowner_part2_duediligencequestionnaire = 110;
+  StringType publiclytraded_beneficialowner_part2_duediligencequestionnaire = 111;
+  StringType regulatedentity_beneficialowner_part2_duediligencequestionnaire = 112;
+  StringType asa_fullname_beneficialowner_amlquestionnaire_0 = 113;
+  StringType tittle_beneficialowner_amlquestionnaire_0 = 114;
+  StringType asa_dateofbirth_beneficialowner_amlquestionnaire_0 = 115;
+  StringType asa_residentialaddress_beneficialowner_amlquestionnaire_0 = 116;
+  SourceFeederTableAddressUbo0Type address_ubo_0 = 117;
+  StringType id_beneficialowner_part2_duediligencequestionnaire_0 = 118;
+  StringType citizenship_beneficialowner_part2_duediligencequestionnaire_0 = 119;
+  StringType pep_beneficialowner_part2_duediligencequestionnaire_0 = 120;
+  StringType publiclytraded_beneficialowner_part2_duediligencequestionnaire_0 = 121;
+  StringType regulatedentity_beneficialowner_part2_duediligencequestionnaire_0 = 122;
+  StringType asa_fullname_beneficialowner_amlquestionnaire_1 = 123;
+  StringType tittle_beneficialowner_amlquestionnaire_1 = 124;
+  StringType asa_dateofbirth_beneficialowner_amlquestionnaire_1 = 125;
+  StringType asa_residentialaddress_beneficialowner_amlquestionnaire_1 = 126;
+  SourceFeederTableAddressUbo1Type address_ubo_1 = 127;
+  StringType id_beneficialowner_part2_duediligencequestionnaire_1 = 128;
+  StringType citizenship_beneficialowner_part2_duediligencequestionnaire_1 = 129;
+  StringType pep_beneficialowner_part2_duediligencequestionnaire_1 = 130;
+  StringType publiclytraded_beneficialowner_part2_duediligencequestionnaire_1 = 131;
+  StringType regulatedentity_beneficialowner_part2_duediligencequestionnaire_1 = 132;
+  StringType asa_fullname_beneficialowner_amlquestionnaire_2 = 133;
+  StringType tittle_beneficialowner_amlquestionnaire_2 = 134;
+  StringType asa_dateofbirth_beneficialowner_amlquestionnaire_2 = 135;
+  StringType asa_residentialaddress_beneficialowner_amlquestionnaire_2 = 136;
+  SourceFeederTableAddressUbo2Type address_ubo_2 = 137;
+  StringType id_beneficialowner_part2_duediligencequestionnaire_2 = 138;
+  StringType citizenship_beneficialowner_part2_duediligencequestionnaire_2 = 139;
+  StringType pep_beneficialowner_part2_duediligencequestionnaire_2 = 140;
+  StringType publiclytraded_beneficialowner_part2_duediligencequestionnaire_2 = 141;
+  StringType regulatedentity_beneficialowner_part2_duediligencequestionnaire_2 = 142;
+  StringType asa_fullname_beneficialowner_amlquestionnaire_3 = 143;
+  StringType tittle_beneficialowner_amlquestionnaire_3 = 144;
+  StringType asa_dateofbirth_beneficialowner_amlquestionnaire_3 = 145;
+  StringType asa_residentialaddress_beneficialowner_amlquestionnaire_3 = 146;
+  SourceFeederTableAddressUbo3Type address_ubo_3 = 147;
+  StringType id_beneficialowner_part2_duediligencequestionnaire_3 = 148;
+  StringType citizenship_beneficialowner_part2_duediligencequestionnaire_3 = 149;
+  StringType pep_beneficialowner_part2_duediligencequestionnaire_3 = 150;
+  StringType publiclytraded_beneficialowner_part2_duediligencequestionnaire_3 = 151;
+  StringType regulatedentity_beneficialowner_part2_duediligencequestionnaire_3 = 152;
+  SourceFeederTableClientquestionnairePart2SignatoryType clientquestionnaire_part2_signatory = 153;
+  StringType asa_fullname_investorname_generalinfo2 = 154;
+  SourceFeederTableWireinstructionsType wireInstructions = 155;
+  MultipleCheckboxType nameofsubscriber_wireinstructionto_part3_duediligencequestionnaire = 156;
+  SourceFeederTableBrokeragefirmType brokerageFirm = 157;
+  MultipleCheckboxType typeofownership_individuals_investorquestionnaire = 158;
+  MultipleCheckboxType asa_accreditedinvestor_accreditedinvestor = 159;
+  MultipleCheckboxType qualifiedpurchaser_individuals_investorquestionnaire = 160;
+  MultipleCheckboxType usperson_individuals_investorquestionnaire = 161;
+  MultipleCheckboxType qualifiedclient_individuals_investorquestionnaire = 162;
+  MultipleCheckboxType notinvest1100_individuals_investorquestionnaire = 163;
+  MultipleCheckboxType taxtreatment_taxmatter_individuals_investorquestionnaire = 164;
+  StringType explainother_taxtreatment_taxmatter_individuals_investorquestionnaire = 165;
+  StringType ustinorssn_taxmatter_individuals_investorquestionnaire = 166;
+  StringType ustinorssn_taxmatter_individuals_investorquestionnaire_0 = 167;
+  StringType uktaxref_taxmatter_individuals_investorquestionnaire = 168;
+  StringType uktaxref_taxmatter_individuals_investorquestionnaire_0 = 169;
+  StringType nonustin_taxmatter_individuals_investorquestionnaire = 170;
+  StringType nonustin_taxmatter_individuals_investorquestionnaire_0 = 171;
+  StringType countrynonustin_taxmatter_individuals_investorquestionnaire = 172;
+  StringType countrynonustin_taxmatter_individuals_investorquestionnaire_0 = 173;
+  MultipleCheckboxType disregardedentity_taxmatter_individuals_investorquestionnaire = 174;
+  StringType name_taxowner_taxmatter_individuals_investorquestionnaire = 175;
+  StringType country_taxowner_taxmatter_individuals_investorquestionnaire = 176;
+  StringType taxid_taxowner_taxmatter_individuals_investorquestionnaire = 177;
+  StringType stae_taxowner_taxmatter_individuals_investorquestionnaire = 178;
+  MultipleCheckboxType noncooperativejurisdictions_individuals_investorquestionnaire = 179;
+  MultipleCheckboxType electingfeepartner_individuals_investorquestionnaire = 180;
+  MultipleCheckboxType skip_finra_individuals_investorquestionnaire = 181;
+  MultipleCheckboxType finra_individuals_investorquestionnaire = 182;
+  MultipleCheckboxType brokerdealerpersonnel_finra_individuals_investorquestionnaire_group = 183;
+  MultipleCheckboxType immediatefamilymember_brokerdealerpersonnel_finra_individuals_investorquestionnaire_group = 184;
+  StringType nameemployed_immediatefamilymember_brokerdealerpersonnel_finra_individuals_investorquestionnaire = 185;
+  MultipleCheckboxType personsowningabrokerdealer_finra_individuals_investorquestionnaire_group = 186;
+  MultipleCheckboxType immediatefamilymember_personsowningabrokerdealer_finra_individuals_investorquestionnaire_group = 187;
+  StringType specifyname_immediatefamilymember_personsowningabrokerdealer_finra_individuals_investorquestionnaire = 188;
+  MultipleCheckboxType publiccompany_finra_individuals_investorquestionnaire_group = 189;
+  MultipleCheckboxType asa_convictedlast10years_badactor = 190;
+  MultipleCheckboxType asa_subjecttojudgementlast5years_badactor = 191;
+  MultipleCheckboxType asa_subjecttofinalorder_badactor = 192;
+  MultipleCheckboxType asa_subjecttosecorder15bor15c_badactor = 193;
+  MultipleCheckboxType asa_subjecttosecorderpast5years_badactor = 194;
+  MultipleCheckboxType asa_suspendedmembership_badactor = 195;
+  MultipleCheckboxType asa_underwriter_badactor = 196;
+  MultipleCheckboxType asa_uspsfalserepresentation_badactor = 197;
+  MultipleCheckboxType notsubject_s506dregulationd_individuals_investorquestionnaire = 198;
+  MultipleCheckboxType subscriberacknowledges_individuals_investorquestionnaire = 199;
+  MultipleCheckboxType asa_accreditedinvestor_accreditedinvestor1 = 200;
+  StringType nameofplanfiduciary_accreditedinvestor_entity_investorquestionnaire = 201;
+  MultipleCheckboxType voluntary_employeebenefitplan_entity_investorquestionnaire = 202;
+  MultipleCheckboxType registerrequired_employeebenefitplan_entity_investorquestionnaire = 203;
+  MultipleCheckboxType permit_employeebenefitplan_entity_investorquestionnaire = 204;
+  MultipleCheckboxType asa_qualifiedpurchaser_qualifiedpurchaser = 205;
+  MultipleCheckboxType purpose_entity_investorquestionnaire = 206;
+  MultipleCheckboxType lessthan10countas_numberofbeneficialowners_entity_investorquestionnaire = 207;
+  StringType howmanylessthan10countas_numberofbeneficialowners_entity_investorquestionnaire = 208;
+  MultipleCheckboxType morethan10countas_numberofbeneficialowners_entity_investorquestionnaire = 209;
+  StringType howmanymorethan10countas_numberofbeneficialowners_entity_investorquestionnaire = 210;
+  StringType asa_jurisdictionoftaxresidency_generalinfo = 211;
+  StringType jurisdictionyearend_taxmatter_entity_investorquestionnaire = 212;
+  StringType usyearend_taxmatter_entity_investorquestionnaire = 213;
+  MultipleCheckboxType taxstatus_taxmatter_entity_investorquestionnaire = 214;
+  MultipleCheckboxType exempt_taxmatter_entity_investorquestionnaire = 215;
+  MultipleCheckboxType treatment_taxmatter_entity_investorquestionnaire = 216;
+  StringType explainother_treatment_taxmatter_entity_investorquestionnaire = 217;
+  StringType indicatedisregarded_treatment_taxmatter_entity_investorquestionnaire = 218;
+  StringType percent_taxmatter_entity_investorquestionnaire = 219;
+  MultipleCheckboxType foreignsovereign_taxmatter_entity_investorquestionnaire = 220;
+  MultipleCheckboxType caipartner_taxmatter_entity_investorquestionnaire = 221;
+  MultipleCheckboxType s511_taxexempt_entity_investorquestionnaire = 222;
+  MultipleCheckboxType onwerexempt_s511_taxexempt_entity_investorquestionnaire = 223;
+  MultipleCheckboxType partnershiporflowthroughvehicle_taxexempt_entity_investorquestionnaire = 224;
+  MultipleCheckboxType taxexemptlp_taxexempt_entity_investorquestionnaire = 225;
+  MultipleCheckboxType blocked_taxexemptlp_taxexempt_entity_investorquestionnaire = 226;
+  MultipleCheckboxType entitled_taxexempt_entity_investorquestionnaire = 227;
+  MultipleCheckboxType subtype_entitled_taxexempt_entity_investorquestionnaire = 228;
+  MultipleCheckboxType usgovernmentperson_entity_investorquestionnaire = 229;
+  MultipleCheckboxType nonus_nonustaxstatus_entity_investorquestionnaire = 230;
+  MultipleCheckboxType partnershiporflowthrough_nonustaxstatus_entity_investorquestionnaire = 231;
+  MultipleCheckboxType nonuslimitedpartner_nonustaxstatus_entity_investorquestionnaire = 232;
+  MultipleCheckboxType electeciinvestments_nonustaxstatus_entity_investorquestionnaire = 233;
+  MultipleCheckboxType electusrphcinvestments_nonustaxstatus_entity_investorquestionnaire = 234;
+  StringType usgovernmental_taxcredit_entity_investorquestionnaire = 235;
+  StringType taxexempt_taxcredit_entity_investorquestionnaire = 236;
+  StringType taxableus_taxcredit_entity_investorquestionnaire = 237;
+  StringType nonus_taxcredit_entity_investorquestionnaire = 238;
+  StringType prohibitforeignentity_entity_investorquestionnaire = 239;
+  MultipleCheckboxType noncooperativejurisdictions_entity_investorquestionnaire = 240;
+  MultipleCheckboxType fiscallytransparent_s894benefits_entity_investorquestionnaire = 241;
+  MultipleCheckboxType caymanfiscallytransparent_s894benefits_entity_investorquestionnaire = 242;
+  MultipleCheckboxType withholdingqualifiedholder_entity_investorquestionnaire = 243;
+  MultipleCheckboxType planassets_erisa_entity_investorquestionnaire = 244;
+  MultipleCheckboxType asa_erisa_erisa = 245;
+  StringType percentofasset_erisa_entity_investorquestionnaire = 246;
+  MultipleCheckboxType otherentity_erisa_entity_investorquestionnaire_group = 247;
+  StringType lessthan25percentandnotexceed_otherentity_erisa_entity_investorquestionnaire = 248;
+  StringType morethan25percentandnotexceed_otherentity_erisa_entity_investorquestionnaire = 249;
+  MultipleCheckboxType controllinginfluence_checkyesorno_entity_investorquestionnaire = 250;
+  MultipleCheckboxType publicaccesslawmatters_entity_investorquestionnaire = 251;
+  MultipleCheckboxType seperatelegalpersonality_additionalquestions_entity_investorquestionnaire = 252;
+  MultipleCheckboxType interests_additionalquestions_entity_investorquestionnaire = 253;
+  MultipleCheckboxType avoidregistration_additionalquestions_entity_investorquestionnaire = 254;
+  MultipleCheckboxType consent_additionalquestions_entity_investorquestionnaire = 255;
+  MultipleCheckboxType restrictedpersonorcoveredperson_newissues_entity_investorquestionnaire = 256;
+  MultipleCheckboxType generalexemptions_newissues_entity_investorquestionnaire = 257;
+  StringType allocateprofitsorlosses_otherentity_generalexemptions_newissues_entity_investorquestionnaire = 258;
+  MultipleCheckboxType restrictedandcoveredpersons_newissues_entity_investorquestionnaire = 259;
+  MultipleCheckboxType brokerdealerpersonnel_restrictedandcoveredpersons_newissues_entity_investorquestionnaire_group = 260;
+  MultipleCheckboxType immediatefamilymember_brokerdealerpersonnel_restrictedandcoveredpersons_newissues_entity_investorquestionnaire_group = 261;
+  StringType nameemployed_immediatefamilymember_brokerdealerpersonnel_restrictedandcoveredpersons_newissues_entity_investorquestionnaire = 262;
+  MultipleCheckboxType personowningabrokerdealer_restrictedandcoveredpersons_newissues_entity_investorquestionnaire_group = 263;
+  MultipleCheckboxType immediatefamilymember_personowningabrokerdealer_restrictedandcoveredpersons_newissues_entity_investorquestionnaire_group = 264;
+  StringType brokerdealername_immediatefamilymember_personowningabrokerdealer_restrictedandcoveredpersons_newissues_entity_investorquestionnaire = 265;
+  MultipleCheckboxType publiccompany_restrictedandcoveredpersons_newissues_entity_investorquestionnaire_group = 266;
+  MultipleCheckboxType electingfeepartner_entity_investorquestionnaire = 267;
+  MultipleCheckboxType commit1100_entity_investorquestionnaire = 268;
+  MultipleCheckboxType qualifiedclient_entity_investorquestionnaire = 269;
+  MultipleCheckboxType asa_bhc_specialentities = 270;
+  MultipleCheckboxType governmentalplan_bhc = 271;
+  MultipleCheckboxType asa_convictedlast10years_badactor1 = 272;
+  MultipleCheckboxType asa_subjecttojudgementlast5years_badactor1 = 273;
+  MultipleCheckboxType asa_subjecttofinalorder_badactor1 = 274;
+  MultipleCheckboxType asa_subjecttosecorder15bor15c_badactor1 = 275;
+  MultipleCheckboxType asa_subjecttosecorderpast5years_badactor1 = 276;
+  MultipleCheckboxType asa_suspendedmembership_badactor1 = 277;
+  MultipleCheckboxType asa_underwriter_badactor1 = 278;
+  MultipleCheckboxType asa_uspsfalserepresentation_badactor1 = 279;
+  MultipleCheckboxType notsubject_506dofregulationd_entity_investorquestionnaire = 280;
+  MultipleCheckboxType beenreffered_thirdpartyreferrals_entity_investorquestionnaire = 281;
+  StringType name_beenreffered_thirdpartyreferrals_entity_investorquestionnaire = 282;
+  MultipleCheckboxType signeddisclosurestatement_thirdpartyreferrals_entity_investorquestionnaire = 283;
+  MultipleCheckboxType subscriberacknowledges_entity_investorquestionnaire = 284;
+  MultipleCheckboxType transparentordisregarded_section1_exhibite = 285;
+  MultipleCheckboxType taxable_section1_exhibite = 286;
+  MultipleCheckboxType section2_exhibite = 287;
+  MultipleCheckboxType domiciledoregisteredineea_eeaiqs = 288;
+  StringType specify_domiciledoregisteredineea_eeaiqs = 289;
+  MultipleCheckboxType onbehalf_eeaiqs = 290;
+  StringType name_onbehalf_eeaiqs = 291;
+  StringType position_onbehalf_eeaiqs = 292;
+  StringType corporate_onbehalf_eeaiqs = 293;
+  StringType state_onbehalf_eeaiqs = 294;
+  MultipleCheckboxType represent_eearepandrequest = 295;
+  MultipleCheckboxType group_represent_eearepandrequest = 296;
+  StringType nature_antherinstitutionalinvestor_represent_eearepandrequest = 297;
+  MultipleCheckboxType group_largeundertaking_represent_eearepandrequest = 298;
+  MultipleCheckboxType electiveprofessionalcriteria_eearepandrequest = 299;
+  MultipleCheckboxType proinvestorstatus_ukrepandrequest = 300;
+  MultipleCheckboxType group_proinvestorstatus_ukrepandrequest = 301;
+  StringType nature_antherinstitutionalinvestor_proinvestorstatus_ukrepandrequest = 302;
+  MultipleCheckboxType group_largeundertaking_proinvestorstatus_ukrepandrequest = 303;
+  MultipleCheckboxType electiveprofessionalcriteria_ukrepandrequest = 304;
+  MultipleCheckboxType represent_ukiqs = 305;
+  MultipleCheckboxType group_investmentpro_represent_ukiqs = 306;
+  MultipleCheckboxType group_person_investmentpro_represent_ukiqs = 307;
+  MultipleCheckboxType group_highnetworth_represent_ukiqs = 308;
+  MultipleCheckboxType group_corporate_highnetworth_represent_ukiqs = 309;
+  MultipleCheckboxType regularqualifiedinvestors_swissinvestor_appendixb = 310;
+  MultipleCheckboxType types_largeundertaking_regularqualifiedinvestors_scheduleh = 311;
+  MultipleCheckboxType electedqualifiedinvestors_scheduleh_appendixb = 312;
+  MultipleCheckboxType swissexempt_scheduleh_appendixb = 313;
+  StringType provinceresident_canadianiqs = 314;
+  MultipleCheckboxType isaccreditedinvestor_canadianiqs = 315;
+  MultipleCheckboxType ispermittedclient_canadianiqs = 316;
+  MultipleCheckboxType accredittedinvestor_canadiansupplement = 317;
+  MultipleCheckboxType permittedclientrepresentation_canadiansupplement = 318;
+  SourceFeederTableCanadianSignatoryType canadian_signatory = 319;
+  MultipleCheckboxType qualifiedinstitutionalinvestorstatus_japanregulations = 320;
+  MultipleCheckboxType nonqualifiedinstitutionalinvestorstatus_japanregulations = 321;
+  MultipleCheckboxType collectiveinvestmentschemeorspecialpurposeco_japanregulations = 322;
+  StringType type_yes_collectiveinvestmentschemeorspecialpurposeco_japanregulations = 323;
+  StringType numberofqualifiedinstitutionalinvestors_yes_collectiveinvestmentschemeorspecialpurposeco_japanregulations = 324;
+  StringType numberofnonqualifiedinstitutionalinvestors_yes_collectiveinvestmentschemeorspecialpurposeco_japanregulations = 325;
+  MultipleCheckboxType professionalinvestorstatus_japanregulations = 326;
+  MultipleCheckboxType treatasgeneralinvestor_yes_professionalinvestorstatus_japanregulations = 327;
+  StringType totalassets_statusofassets_professionalinvestorstatus_japanregulations = 328;
+  StringType netassets_statusofassets_professionalinvestorstatus_japanregulations = 329;
+  StringType financialassets_statusofassets_professionalinvestorstatus_japanregulations = 330;
+  StringType forcollectiveinvestmentscheme_investmentexperienceandperiod_professionalinvestorstatus_japanregulations = 331;
+  StringType forothersecurities_investmentexperienceandperiod_professionalinvestorstatus_japanregulations = 332;
+  MultipleCheckboxType purposeoftransaction_aml_japanregulations = 333;
+  StringType specify_other_purposeoftransaction_aml_japanregulations = 334;
+  MultipleCheckboxType businessofinvestor_aml_japanregulations = 335;
+  StringType specify_other_businessofinvestor_aml_japanregulations = 336;
+  MultipleCheckboxType occupationofinvestor_aml_japanregulations = 337;
+  StringType specify_other_occupationofinvestor_aml_japanregulations = 338;
+  MultipleCheckboxType taxcredit_warranties = 339;
+  StringType subscribername_taxcredit_warranties = 340;
+  SourceFeederTableTaxowner2SignatoryType taxowner2_signatory = 341;
+  SourceFeederTableWitness2SignatoryType witness2_signatory = 342;
+  MultipleCheckboxType qualifiedbusiness_supplementalforeign = 343;
+  MultipleCheckboxType morethan50percstock_supplementalforeign = 344;
+  MultipleCheckboxType section9901_supplementalforeign = 345;
+  MultipleCheckboxType chinesemilitary_supplementalforeign = 346;
+  MultipleCheckboxType entitylistrequired_supplementalforeign = 347;
+  MultipleCheckboxType section154b_supplementalforeign = 348;
+  StringType date_addtionalrepresentations = 349;
+  StringType letter_subscribername_addtionalrepresentations = 350;
+  StringType naturalperson_addtionalrepresentations = 351;
+  StringType entity_addtionalrepresentations = 352;
+  SourceFeederTableAdditionalrepresentationsSignatoryType additionalrepresentations_signatory = 353;
+}
+
+message SourceFeederTableSchema {
+  SourceFeederTableFieldsMap fields_map = 1;
+  repeated string field_keys_in_order = 2;
+  string label = 3;
+}

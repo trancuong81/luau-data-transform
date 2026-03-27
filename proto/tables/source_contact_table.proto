@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package ocaml_data_transform;
+
+import "data_types.proto";
+import "luauoptions/luau_options.proto";
+
+option (luau.luau_generator) = "schema";
+
+message SourceContactTableContactinfoFields {
+  StringType country_address_contact_part3_duediligencequestionnaire = 1;
+  StringType zip_address_contact_part3_duediligencequestionnaire = 2;
+  MultipleCheckboxType contactrole_part3_duediligencequestionnaire = 3;
+  MultipleCheckboxType contactnotification_part3_duediligencequestionnaire = 4;
+  StringType name_contact_part3_duediligencequestionnaire = 5;
+  StringType city_address_contact_part3_duediligencequestionnaire = 6;
+  StringType numberandstreet_address_contact_part3_duediligencequestionnaire = 7;
+  StringType phone_contact_part3_duediligencequestionnaire = 8;
+  StringType state_address_contact_part3_duediligencequestionnaire = 9;
+  StringType address_contact_part3_duediligencequestionnaire = 10;
+  StringType email_contact_part3_duediligencequestionnaire = 11;
+  StringType fax_contact_part3_duediligencequestionnaire = 12;
+}
+
+message SourceContactTableContactinfoType {
+  string type_id = 1;
+  SourceContactTableContactinfoFields value_sub_fields = 2;
+  repeated string sub_field_keys_in_order = 3;
+  string label = 4;
+}
+message SourceContactTableFieldsMap {
+  SourceContactTableContactinfoType contactInfo = 1;
+}
+
+message SourceContactTableSchema {
+  SourceContactTableFieldsMap fields_map = 1;
+  repeated string field_keys_in_order = 2;
+  string label = 3;
+}
