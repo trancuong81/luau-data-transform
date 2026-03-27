@@ -5,6 +5,7 @@ local SourceMasterTable = require("@lib/source_master_table")
 local SourceW9Table = require("@lib/source_w9_table")
 local SourceContactTable = require("@lib/source_contact_table")
 local FullTargetTable = require("@lib/full_target_table")
+local Schema = require("@lib/schema")
 
 local CarlyleMappings = {}
 
@@ -1470,9 +1471,13 @@ local function mapContact(contactData: any): { any }
 		elseif vsf ~= nil and type(vsf) == "table" then
 			subValue = vsf :: { [string]: any }
 		else
-			-- row IS the sub-field dict
+			-- row IS the sub-field dict (may have snake_case keys from raw JSON)
 			subValue = row :: { [string]: any }
 		end
+
+		-- Convert snake_case keys to camelCase so field lookups work uniformly.
+		-- Raw JSON contact data uses snake_case (e.g. name_contact_part3_...).
+		subValue = Schema.camelcaseKeys(subValue) :: { [string]: any }
 
 		-- Helper to get a string value from a sub-field
 		-- Handles both: subValue[key].rawValue.value (CUE raw) and subValue[key].value (stripped)

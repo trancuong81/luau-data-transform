@@ -2,9 +2,9 @@
 
 ![Luau](https://img.shields.io/badge/Luau-strict_mode-blue)
 ![Runtime](https://img.shields.io/badge/runtime-Lune_v0.10+-green)
-![Tests](https://img.shields.io/badge/tests-57%2F57_passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-80%2F80_passing-brightgreen)
 
-A type-safe data transformation pipeline in Luau, running on the [Lune](https://github.com/lune-org/lune) runtime. Ported from the OCaml reference implementation, it transforms data between source and target table schemas with 21 semantic types, 15 compound types, and dual serialization (JSON + Protobuf binary).
+A type-safe data transformation pipeline in Luau, running on the [Lune](https://github.com/lune-org/lune) runtime. Ported from the OCaml reference implementation, it transforms data between source and target table schemas with 21 semantic types, 15 compound types, and dual serialization (JSON + Protobuf binary). Includes a full production-scale Carlyle use case with 5 source/target tables (1200+ fields), 89+ scalar mapping rules, 3 array mappings, and end-to-end integration tests.
 
 ## Table of Contents
 
@@ -25,10 +25,9 @@ A type-safe data transformation pipeline in Luau, running on the [Lune](https://
 This project implements a complete data transformation pipeline that:
 
 1. **Defines typed schemas** — 6 simple types (String, Number, Boolean, Enum, MultipleCheckbox, RadioGroup) spanning 21 semantic variants, plus 15 compound types (Address, IndividualName, Money, etc.) with nested sub-fields.
-2. **Transforms data between schemas** — 6 concrete field mappings convert a 7-field source table (investor data) to an 8-field target table (Salesforce fields), with logic for name splitting, currency parsing, checkbox merging, and radio-group coercion.
-3. **Serializes in two formats** — Full JSON and Protobuf binary codecs with symmetric encode/decode for all types.
-
-The pipeline is designed for real-world scale: production tables have ~1000 fields, many requiring per-field options and constants. The type system and codec architecture support this through consistent patterns (constructor + encoder + decoder per type) and a `typeId`-based dispatch union.
+2. **Transforms data between schemas** — A prototype with 6 field mappings (7-field source → 8-field target), plus a production-scale Carlyle use case with 89+ scalar mappings and 3 array mappings across 5 source tables (contact, W9, feeder, master) producing a 493-field target table.
+3. **Generates typed modules from proto** — A `protoc-gen-luau` code generator produces typed Luau modules from `.proto` definitions, with a Python script (`scripts/gen_protos.py`) to generate proto + constants JSON from CUE schema exports.
+4. **Serializes in two formats** — Full JSON and Protobuf binary codecs with symmetric encode/decode for all types.
 
 ## Prerequisites & Setup
 
@@ -57,47 +56,69 @@ lune --version
 ## Running Tests
 
 ```bash
-# Run the full test suite (57 tests)
+# Run the full test suite (80 tests)
 lune run test/test_main
 ```
 
 Expected output:
 
 ```
-[PASS] Wire format primitives        (15 tests)
-[PASS] Data type JSON codecs         (8 tests)
-[PASS] Schema loading                (3 tests)
-[PASS] JSON path navigation          (4 tests)
-[PASS] Transform utilities           (6 tests)
-[PASS] Generic mappings              (2 tests)
-[PASS] Example field mappings        (15 tests)
-[PASS] Protobuf binary round-trips   (5 tests)
+[PASS] Wire format primitives           (15 tests)
+[PASS] Data type JSON codecs            (8 tests)
+[PASS] Schema loading                   (3 tests)
+[PASS] JSON path navigation             (4 tests)
+[PASS] Transform utilities              (6 tests)
+[PASS] Generic mappings                 (2 tests)
+[PASS] Example field mappings           (15 tests)
+[PASS] Protobuf binary round-trips      (5 tests)
+[PASS] Carlyle scalar mappings          (15 tests)
+[PASS] Carlyle array mappings           (6 tests)
+[PASS] Carlyle integration              (2 tests — feeder + master end-to-end)
 
-57 passed, 0 failed
+80 passed, 0 failed
 ```
 
-**Run the CLI transformation:**
+**Run the prototype CLI transformation:**
 
 ```bash
 lune run bin/main test/fixtures/values.json
 ```
 
-This reads a source JSON fixture, applies all 6 field mappings, and outputs the transformed target table as pretty-printed JSON.
+This reads a 7-field source fixture, applies 6 field mappings, and outputs the 8-field target as JSON.
+
+**Run the Carlyle production transform:**
+
+```bash
+# Feeder table (contact + feeder + w9 → 493-field target)
+lune run bin/carlyle_transform test/fixtures/test-feeder-table-input.json
+
+# Master table (contact + master → 493-field target)
+lune run bin/carlyle_transform test/fixtures/test-master-table-input.json
+```
+
+Input JSON has optional namespaces: `contact`, `w9`, `feeder`, `master`. The transform applies 89+ scalar mappings and 3 array mappings, outputting the full target table as JSON.
 
 ## Project Structure
 
 ```
 luau-data-transform/
 ├── bin/
-│   └── main.luau                    CLI entry point (JSON in → transform → JSON out)
+│   ├── main.luau                    Prototype CLI (7-field source → 8-field target)
+│   └── carlyle_transform.luau       Carlyle CLI (4 source tables → 493-field target)
 │
 ├── lib/                             Core library
 │   ├── data_types.luau              6 simple + 15 compound type definitions, constructors, JSON codecs
-│   ├── source_table.luau            Source schema types (LpSignatory, W9) + JSON codec
-│   ├── target_table.luau            Target schema types (8 Salesforce fields) + JSON codec
+│   ├── source_table.luau            Prototype source schema (7 fields) + JSON codec
+│   ├── target_table.luau            Prototype target schema (8 fields) + JSON codec
+│   ├── source_contact_table.luau    [generated] Contact source (1 field, compound)
+│   ├── source_w9_table.luau         [generated] W9 source (18 fields)
+│   ├── source_feeder_table.luau     [generated] Feeder source (353 fields, 20 compounds)
+│   ├── source_master_table.luau     [generated] Master source (362 fields, 20 compounds)
+│   ├── full_target_table.luau       [generated] Full target (493 fields, 4 compound arrays)
 │   ├── table_schema.luau            Generic TableSchema, SingleFieldType, FieldGroup wrappers
 │   ├── schema.luau                  Schema loading from proto constants + snakeToCamel conversion
-│   ├── example_mappings.luau        6 concrete field mapping transformations
+│   ├── carlyle_mappings.luau        Carlyle use case: 89+ scalar rules, 3 array mappers, orchestrator
+│   ├── example_mappings.luau        Prototype: 6 concrete field mapping transformations
 │   ├── mappings.luau                Generic mapping engine (textbox, checkbox, custom)
 │   ├── json_path.luau               Path-based navigation in nested tables
 │   ├── transform_utils.luau         Functional utilities (groupBy, mergeBy, deepMerge)
@@ -108,6 +129,9 @@ luau-data-transform/
 │       ├── decoder.luau             Type-specific protobuf decoders
 │       └── schema_registry.luau     Message type dispatch (encode/decode by name)
 │
+├── scripts/
+│   └── gen_protos.py                Generates .proto + _constants.json from CUE JSON exports
+│
 ├── test/
 │   ├── test_main.luau               Test orchestrator (runs all suites)
 │   ├── test_wire.luau               Wire format primitive tests (15)
@@ -117,23 +141,41 @@ luau-data-transform/
 │   ├── test_json_path.luau          Path navigation tests
 │   ├── test_transform_utils.luau    Utility function tests
 │   ├── test_mappings.luau           Generic mapping tests
-│   ├── test_example_mappings.luau   Field mapping tests (15)
-│   ├── test_integration.luau        Full pipeline integration test
+│   ├── test_example_mappings.luau   Prototype field mapping tests (15)
+│   ├── test_integration.luau        Prototype pipeline integration test
+│   ├── test_carlyle_scalar_mappings.luau  Carlyle scalar + array mapper tests (21)
+│   ├── test_carlyle_integration.luau      Carlyle end-to-end tests (2)
 │   └── fixtures/
-│       ├── values.json              Sample source table data
-│       └── transformed_values.json  Expected transformation output
+│       ├── values.json                    Prototype source data
+│       ├── transformed_values.json        Prototype expected output
+│       ├── test-feeder-table-input.json   Carlyle feeder input (SV-stripped)
+│       ├── test-feeder-table-output.json  Carlyle feeder expected output
+│       ├── test-master-table-input.json   Carlyle master input (SV-stripped)
+│       └── test-master-table-output.json  Carlyle master expected output
 │
-├── proto/                           Protobuf definitions (source of truth, from OCaml repo)
+├── proto/                           Protobuf definitions
 │   ├── data_types.proto             Simple + compound type message definitions
 │   ├── data_types_constants.json    Type metadata (regex patterns, options, field orders)
 │   └── tables/
-│       ├── source_table.proto
+│       ├── source_table.proto                 Prototype source (7 fields)
 │       ├── source_table_constants.json
-│       ├── target_table.proto
-│       └── target_table_constants.json
+│       ├── target_table.proto                 Prototype target (8 fields)
+│       ├── target_table_constants.json
+│       ├── source_contact_table.proto         [generated] Contact (1 field)
+│       ├── source_contact_table_constants.json
+│       ├── source_w9_table.proto              [generated] W9 (18 fields)
+│       ├── source_w9_table_constants.json
+│       ├── source_feeder_table.proto          [generated] Feeder (353 fields)
+│       ├── source_feeder_table_constants.json
+│       ├── source_master_table.proto          [generated] Master (362 fields)
+│       ├── source_master_table_constants.json
+│       ├── full_target_table.proto            [generated] Target (493 fields)
+│       └── full_target_table_constants.json
 │
 ├── docs/
-│   └── specs/                       Design documents and implementation plans
+│   ├── specs/                       Design documents
+│   ├── superpowers/plans/           Implementation plans
+│   └── cue-json-src/               CUE schema exports (source of truth for field definitions)
 │
 ├── .luaurc                          Path aliases (@lib, @test, @proto)
 └── .gitignore
@@ -183,13 +225,21 @@ Decoder.decodePbStringType(bytes)      -->  StringType
 
 ### Source & Target Schemas
 
-**SourceTableFieldsMap** (7 fields) models investor onboarding data:
-- `lpSignatory` — Custom compound: commitment amount, subscriber/entity names
-- `w9` — Custom compound: SSN, EIN, Line 2
-- 4 checkbox/string fields for regulatory questionnaires and investor names
+**Prototype schemas** (hand-written):
+- **SourceTableFieldsMap** (7 fields) — investor onboarding: lpSignatory compound, W9 compound, 4 checkbox/string fields
+- **TargetTableFieldsMap** (8 fields) — Salesforce: commitment, investor name, regulated status, supplements, signer name, TIN type
 
-**TargetTableFieldsMap** (8 fields) maps to Salesforce fields:
-- Commitment (Money), investor name (String), regulated status (RadioGroup), international supplements (MultipleCheckbox), signer first/middle/last name (3x String), W9 TIN type (RadioGroup)
+**Production Carlyle schemas** (generated via `protoc-gen-luau` from proto definitions):
+
+| Table | Fields | Compounds | Source |
+|-------|--------|-----------|--------|
+| SourceContactTable | 1 | 1 (ContactInfo, 12 sub-fields) | `docs/cue-json-src/full-source-table.json` |
+| SourceW9Table | 18 | 0 | Same (namespace: w9) |
+| SourceFeederTable | 353 | 20 (Signatory, Address, etc.) | Same (namespace: feeder) |
+| SourceMasterTable | 362 | 20 | Same (namespace: master) |
+| FullTargetTable | 493 | 4 (BeneficialOwner, Contact, ControllingPersons, FundSelection) | `docs/cue-json-src/full-target-table.json` |
+
+Proto + constants files are generated by `scripts/gen_protos.py`, then Luau modules are generated by `protoc-gen-luau` (external Go tool) via `generate.sh`.
 
 **TableSchema** is a generic wrapper providing:
 - `fieldsMap: {[string]: SingleFieldType}` — heterogeneous typed field collection
@@ -206,16 +256,23 @@ The transform layer has two levels of abstraction:
 - `customMapping`: Apply arbitrary transform function
 - `applyMapping` / `transformAll`: Execute mappings and deep-merge results
 
-**Concrete field mappings** (`lib/example_mappings.luau`) — domain logic:
+**Prototype field mappings** (`lib/example_mappings.luau`) — 6 hand-written transformations demonstrating the patterns (commitment, investor name, regulated status, international supplements, signer name, W9 TIN type).
 
-| Mapping | Logic |
-|---------|-------|
-| `mapCommitment` | Extract string amount → strip commas → parse as number → wrap in MoneyType |
-| `mapInvestorName` | Coalesce AML questionnaire name, fallback to general info name |
-| `mapRegulatedStatus` | Map `yes_*`/`no_*` checkbox keys → `"true"`/`"false"` RadioGroup |
-| `mapInternationalSupplements` | Merge individual + entity supplement checkboxes through 12-entry lookup table |
-| `mapSignerName` | Extract full name → split into first/middle/last via word boundaries |
-| `mapW9TinType` | Detect SSN vs EIN based on W9 field presence and values |
+**Production Carlyle mappings** (`lib/carlyle_mappings.luau`) — data-driven, 1844 lines:
+
+| Pattern | Count | Logic |
+|---------|-------|-------|
+| Textbox | 46 | Collect `.value` from source StringType fields, concatenate |
+| RadioGroup | 34 | Collect `selectedKeys`, map through option lookup, deduplicate |
+| CheckboxGroup | 6 | Same as radioGroup (3 standard + 3 boolean variant) |
+| NameSplit | 3 | Split full name → first/middle/last (9 target fields) |
+| Custom | 1 | Individual vs Organization detection |
+| W9 conditional | ~20 | Rules conditioned on disregarded entity (w9_line2) |
+| sf_ControllingPersons | 1 array | Index-based (5 indices), name splitting |
+| sf_BeneficialOwner | 1 array | Index-based, 12 sub-fields including nested address |
+| sf_Contact | 1 array | Iterates contact array, role/notification boolean mapping |
+
+Orchestrated by `CarlyleMappings.transform(contact, w9, feeder, master) → FullTargetTableFieldsMap`.
 
 **Supporting utilities:**
 - `json_path.luau`: Path-based table navigation (`getPath`, `setPath`, `getString`, `getStringList`)
@@ -244,40 +301,36 @@ Layer 1: Wire Primitives      varint, tags, length-delimited, WriteBuf
 
 ### Data Flow
 
+**Prototype pipeline** (7-field source → 8-field target):
+
 ```
-                    ┌─────────────────────┐
-                    │   values.json       │
-                    │   (source fixture)  │
-                    └─────────┬───────────┘
-                              │ fs.readFile + serde.decode("json")
-                              ▼
-                    ┌─────────────────────┐
-                    │ decodeJsonSource-   │
-                    │ TableFieldsMap()    │  ← Type validation
-                    └─────────┬───────────┘
-                              │
-                              ▼
-              ┌───────────────────────────────┐
-              │   ExampleMappings.transform() │
-              │                               │
-              │  1. mapCommitment      → Money │
-              │  2. mapInvestorName    → String│
-              │  3. mapRegulatedStatus → Radio │
-              │  4. mapIntlSupplements → Check │
-              │  5. mapSignerName  → 3×String  │
-              │  6. mapW9TinType      → Radio │
-              └───────────────┬───────────────┘
-                              │
-                              ▼
-                    ┌─────────────────────┐
-                    │ encodeJsonTarget-   │
-                    │ TableFieldsMap()    │
-                    └─────────┬───────────┘
-                              │ serde.encode("json", ..., true)
-                              ▼
-                    ┌─────────────────────┐
-                    │   stdout (JSON)     │
-                    └─────────────────────┘
+values.json → decodeJsonSourceTableFieldsMap() → ExampleMappings.transform()
+  → 6 field mappings → encodeJsonTargetTableFieldsMap() → stdout JSON
+```
+
+**Production Carlyle pipeline** (1200+ fields, 4 sources → 493-field target):
+
+```
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│   contact    │  │     w9       │  │   feeder     │  │   master     │
+│  (1 field)   │  │ (18 fields)  │  │(353 fields)  │  │(362 fields)  │
+└──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘
+       │                 │                 │                 │
+       └────────────┬────┴────────┬────────┘─────────────────┘
+                    ▼             ▼
+     ┌─────────────────────────────────────────┐
+     │     CarlyleMappings.transform()         │
+     │                                         │
+     │  transformScalars(feeder, master, w9)    │
+     │    46 textbox + 34 radioGroup + 6 check │
+     │    3 nameSplit + 1 custom + ~20 W9      │
+     │                                         │
+     │  mapControllingPersons(master, feeder)   │
+     │  mapBeneficialOwner(master, feeder)      │
+     │  mapContact(contact)                     │
+     └────────────────┬────────────────────────┘
+                      ▼
+          FullTargetTableFieldsMap (493 fields)
 ```
 
 For binary serialization, the same types can be encoded/decoded through the protobuf codec path: `Encoder.encodePb*` → binary bytes → `Decoder.decodePb*`.
@@ -311,7 +364,7 @@ Repeated fields use standard tag-per-element encoding rather than proto3 packed 
 
 These are intentional design boundaries, not bugs:
 
-- **No `.proto` text parser** — codecs are hand-coded from proto definitions, not generated
+- **No `.proto` text parser** — codecs are generated by `protoc-gen-luau` from proto definitions via protoc plugin, not from parsing `.proto` files at runtime
 - **No unknown field preservation** — unknown fields are skipped and discarded per proto3 forward-compatibility semantics
 - **No proto2 features** — no required fields, extensions, or groups
 - **No cross-language interop testing** — round-trip testing is within Luau only; no validation against OCaml binary output
