@@ -209,7 +209,7 @@ def generate_table(
 
     constants = build_table_constants(fields, label)
     constants_path = output_dir / f"{file_prefix}_constants.json"
-    constants_path.write_text(json.dumps(constants, indent=2) + "\n")
+    constants_path.write_text(json.dumps(constants, indent=2, ensure_ascii=False) + "\n")
     print(f"  wrote {constants_path}")
 
 
