@@ -3,6 +3,7 @@ local DataTypes = require("@lib/data_types")
 local SourceFeederTable = require("@lib/source_feeder_table")
 local SourceMasterTable = require("@lib/source_master_table")
 local SourceW9Table = require("@lib/source_w9_table")
+local SourceContactTable = require("@lib/source_contact_table")
 local FullTargetTable = require("@lib/full_target_table")
 
 local CarlyleMappings = {}
@@ -1151,6 +1152,467 @@ local function resolve894Eligible(sources: { [string]: any }): DataTypes.Multipl
 end
 
 --------------------------------------------------------------------------------
+-- Array Mappers
+--------------------------------------------------------------------------------
+
+-- Index suffixes matching CUE _indices: ["", "_0", "_1", "_2", "_3"]
+-- In camelCase, the underscore prefix is dropped: "", "0", "1", "2", "3"
+local ARRAY_INDEX_SUFFIXES = { "", "0", "1", "2", "3" }
+
+local function makeEmptyStringType(): DataTypes.StringType
+	return DataTypes.makeStringType({ typeId = "String", value = "" })
+end
+
+local function makeEmptyMultipleCheckboxType(): DataTypes.MultipleCheckboxType
+	return DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = {} })
+end
+
+local function makeBoolCheckbox(val: boolean): DataTypes.MultipleCheckboxType
+	local sk = if val then { "true" } else { "false" }
+	return DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = sk })
+end
+
+--
+-- mapControllingPersons: builds an array of FullTargetTableSfControllingpersonsType
+-- from source master/feeder name fields with index suffixes.
+--
+local function mapControllingPersons(sources: { [string]: any }): { any }
+	local namespaces = { "master", "feeder" }
+	local result: { any } = {}
+
+	for _, suffix in ARRAY_INDEX_SUFFIXES do
+		local sourceFieldName = "nameControlpersonPart2Duediligencequestionnaire" .. suffix
+		-- Collect the full name from the first namespace that has it
+		local fullName = ""
+		for _, ns in namespaces do
+			local nsTable = sources[ns]
+			if nsTable ~= nil then
+				local raw = getField(nsTable, sourceFieldName)
+				if raw ~= nil then
+					local v = (raw :: { [string]: any }).value
+					if v ~= nil and v ~= "" then
+						fullName = fullName .. (v :: string)
+					end
+				end
+			end
+		end
+
+		local names = CarlyleMappings.splitName(fullName)
+
+		-- Build the sub-fields dict: all 45 fields of FullTargetTableSfControllingpersonsFields
+		-- Only 3 are mapped (firstName, middleName, lastName), rest are empty defaults
+		local subFields: { [string]: any } = {
+			-- Mapped fields
+			sfControllingPersonsNullFirstNameC = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
+			sfControllingPersonsNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
+			sfControllingPersonsNullLastNameC = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
+			-- All StringType fields default to empty
+			sfControllingPersonsNullTINUnavailableC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingStateC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingCityC = makeEmptyStringType(),
+			sfControllingPersonsNullDateOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullSubscriptionInvestorC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSDocumentIDC = makeEmptyStringType(),
+			sfControllingPersonsNullSubscriptionInvestorIDC = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceCountryC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo5C = makeEmptyStringType(),
+			sfControllingPersonsNullCountryOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullEffectiveDateC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingAddress2C = makeEmptyStringType(),
+			sfControllingPersonsNullMailingCountryC = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo5C = makeEmptyStringType(),
+			sfControllingPersonsNullMailingPostalCodeC = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo1C = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo3C = makeEmptyStringType(),
+			sfControllingPersonsNullReportingCountriesC = makeEmptyStringType(),
+			sfControllingPersonsNullResidencePostalCodeC = makeEmptyStringType(),
+			sfControllingPersonsNullTypeC = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceStateC = makeEmptyStringType(),
+			sfControllingPersonsNullType2C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo4C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceStreetC = makeEmptyStringType(),
+			sfControllingPersonsNullControllingPersonPackageC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSReportingThresholdC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo4C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo2C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceCityC = makeEmptyStringType(),
+			sfControllingPersonsNullType3C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo3C = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo1C = makeEmptyStringType(),
+			sfControllingPersonsNullPlaceOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingStreetC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSValidationResultC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo2C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceAddress2C = makeEmptyStringType(),
+			sfControllingPersonsNullCRSStatusC = makeEmptyStringType(),
+			sfControllingPersonsNullName = makeEmptyStringType(),
+			sfControllingPersonsNullTaxStatusC = makeEmptyStringType(),
+			-- MultipleCheckboxType field
+			sfControllingPersonsNullInactiveC = makeEmptyMultipleCheckboxType(),
+		}
+
+		table.insert(result, {
+			typeId = "CustomCompound",
+			valueSubFields = subFields,
+			subFieldKeysInOrder = {},
+			label = nil,
+		})
+	end
+
+	return result
+end
+
+--
+-- mapBeneficialOwner: builds an array of FullTargetTableSfBeneficialownerType
+-- from source master/feeder fields with index suffixes.
+-- Maps 12 sub-fields: 3 name, 5 address, 4 direct.
+--
+local function mapBeneficialOwner(sources: { [string]: any }): { any }
+	local namespaces = { "master", "feeder" }
+	local result: { any } = {}
+
+	-- Address sub-field base names (without index suffix)
+	local addressSubFieldBases = {
+		sfBeneficialOwnerNullInvestorRegisteredStreetAddressC = "numberandstreetResidentialaddressBeneficialownerAmlquestionnaire",
+		sfBeneficialOwnerNullInvestorRegisteredCityC = "cityResidentialaddressBeneficialownerAmlquestionnaire",
+		sfBeneficialOwnerNullInvestorRegisteredStateProvinceC = "stateResidentialaddressBeneficialownerAmlquestionnaire",
+		sfBeneficialOwnerNullInvestorRegisteredPostalCodeC = "zipResidentialaddressBeneficialownerAmlquestionnaire",
+		sfBeneficialOwnerNullInvestorRegisteredCountryC = "countryResidentialaddressBeneficialownerAmlquestionnaire",
+	}
+
+	for _, suffix in ARRAY_INDEX_SUFFIXES do
+		-- 1. Name fields: split full name
+		local nameField = "asaFullnameBeneficialownerAmlquestionnaire" .. suffix
+		local fullName = ""
+		for _, ns in namespaces do
+			local nsTable = sources[ns]
+			if nsTable ~= nil then
+				local raw = getField(nsTable, nameField)
+				if raw ~= nil then
+					local v = (raw :: { [string]: any }).value
+					if v ~= nil and v ~= "" then
+						fullName = fullName .. (v :: string)
+					end
+				end
+			end
+		end
+		local names = CarlyleMappings.splitName(fullName)
+
+		-- 2. Direct mapped fields (simple value lookup)
+		local directMappings = {
+			{ target = "sfBeneficialOwnerNullDateOfBirthC", source = "asaDateofbirthBeneficialownerAmlquestionnaire" },
+			{ target = "anduinBeneficialOwnerNullInvestorRegisteredFullAddress", source = "asaResidentialaddressBeneficialownerAmlquestionnaire" },
+			{ target = "sfBeneficialOwnerNullPEPStatusC", source = "pepBeneficialownerPart2Duediligencequestionnaire" },
+			{ target = "sfBeneficialOwnerNullUSTaxIDC", source = "idBeneficialownerPart2Duediligencequestionnaire" },
+		}
+
+		-- Build sub-fields dict
+		local subFields: { [string]: any } = {
+			-- Name split
+			sfBeneficialOwnerNullFirstName = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
+			sfBeneficialOwnerNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
+			sfBeneficialOwnerNullLastName = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
+			-- All other StringType fields: empty defaults
+			sfBeneficialOwnerNullWebsiteC = makeEmptyStringType(),
+			sfBeneficialOwnerNullNonUSTaxIDCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullTCGGlobalIdC = makeEmptyStringType(),
+			sfBeneficialOwnerNullLastModifiedById = makeEmptyStringType(),
+			sfBeneficialOwnerNullName = makeEmptyStringType(),
+			sfBeneficialOwnerNullOwnerId = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLRefreshNotesC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIssuedIDOnFileC = makeEmptyStringType(),
+			sfBeneficialOwnerNullIndividualOrganizationC = makeEmptyStringType(),
+			sfBeneficialOwnerNullCountryOfBirthC = makeEmptyStringType(),
+			sfBeneficialOwnerNullPercentageOfOwnershipC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDNumberC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDExpirationDateC = makeEmptyStringType(),
+			sfBeneficialOwnerNullNonUSTaxIDC = makeEmptyStringType(),
+			sfBeneficialOwnerNullBeneficialOwnerLongNameC = makeEmptyStringType(),
+			sfBeneficialOwnerNullUSTaxIDTypeC = makeEmptyStringType(),
+			sfBeneficialOwnerNullLastTriggeredTimestampC = makeEmptyStringType(),
+			sfBeneficialOwnerNullRiskRatingC = makeEmptyStringType(),
+			sfBeneficialOwnerNullSourceOfWealthC = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLNotesC = makeEmptyStringType(),
+			sfBeneficialOwnerNullMaxComplyIdC = makeEmptyStringType(),
+			sfBeneficialOwnerNullBeneficialCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullCreatedById = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDJurisdictionStateC = makeEmptyStringType(),
+			-- MultipleCheckboxType fields: empty defaults
+			sfBeneficialOwnerNullAMLMonitoringC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullPoliticallyExposedPersonC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullIsActiveC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullKYCRefreshC = makeEmptyMultipleCheckboxType(),
+		}
+
+		-- Fill direct mapped fields
+		for _, dm in directMappings do
+			local sourceField = dm.source .. suffix
+			local value = ""
+			for _, ns in namespaces do
+				local nsTable = sources[ns]
+				if nsTable ~= nil then
+					local raw = getField(nsTable, sourceField)
+					if raw ~= nil then
+						local v = (raw :: { [string]: any }).value
+						if v ~= nil and v ~= "" then
+							value = value .. (v :: string)
+						end
+					end
+				end
+			end
+			subFields[dm.target] = DataTypes.makeStringType({ typeId = "String", value = value })
+		end
+
+		-- Fill address sub-fields from addressUbo compound
+		local addressParent = "addressUbo" .. suffix
+		for targetField, addressSubFieldBase in addressSubFieldBases do
+			-- The sub-field name within the compound includes the index suffix
+			local addressSubField = addressSubFieldBase .. suffix
+			local value = ""
+			for _, ns in namespaces do
+				local nsTable = sources[ns]
+				if nsTable ~= nil then
+					local raw = getSubField(nsTable, addressParent, addressSubField)
+					if raw ~= nil then
+						local v = (raw :: { [string]: any }).value
+						if v ~= nil and v ~= "" then
+							value = value .. (v :: string)
+						end
+					end
+				end
+			end
+			subFields[targetField] = DataTypes.makeStringType({ typeId = "String", value = value })
+		end
+
+		table.insert(result, {
+			typeId = "CustomCompound",
+			valueSubFields = subFields,
+			subFieldKeysInOrder = {},
+			label = nil,
+		})
+	end
+
+	return result
+end
+
+--
+-- mapContact: builds an array of FullTargetTableSfContactType
+-- from the raw contact JSON data where contactInfo is an array.
+--
+local function mapContact(contactData: any): { any }
+	if contactData == nil then
+		return {}
+	end
+
+	local contactInfo = getField(contactData, "contactInfo")
+	if contactInfo == nil or type(contactInfo) ~= "table" then
+		return {}
+	end
+
+	-- Role key → target field mapping
+	local roleMap = {
+		["primarycontact_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCPrimaryContactC",
+		["secondarycontact_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCSecondaryContactC",
+		["taxadvisor_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCTaxAdvisorC",
+		["legaladvisor_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCLegalAdvisorC",
+		["financecontact_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCFinanceContactC",
+		["amlkyccontact_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCAMLKYCContactC",
+		["wireapprover_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCWireApproverC",
+	}
+	local roleKeys = {
+		"primarycontact_contactrole_part3_duediligencequestionnaire",
+		"secondarycontact_contactrole_part3_duediligencequestionnaire",
+		"taxadvisor_contactrole_part3_duediligencequestionnaire",
+		"legaladvisor_contactrole_part3_duediligencequestionnaire",
+		"financecontact_contactrole_part3_duediligencequestionnaire",
+		"amlkyccontact_contactrole_part3_duediligencequestionnaire",
+		"wireapprover_contactrole_part3_duediligencequestionnaire",
+	}
+
+	-- Notification key → target field mapping
+	local notiMap = {
+		["capitalcallnotices_contactnotification_part3_duediligencequestionnaire"] = "sfContactIFCCapitalCallManagementNotC",
+		["distributionnotices_contactnotification_part3_duediligencequestionnaire"] = "sfContactIFCDistributionManagementNotC",
+		["financialreporting_contactnotification_part3_duediligencequestionnaire"] = "sfContactIFCFinancialReportingNotC",
+		["legalinfo_contactnotification_part3_duediligencequestionnaire"] = "sfContactIFCLegalInformationNotC",
+		["taxinfo_contactnotification_part3_duediligencequestionnaire"] = "sfContactIFCTaxInformationNotC",
+	}
+	local notiKeys = {
+		"capitalcallnotices_contactnotification_part3_duediligencequestionnaire",
+		"distributionnotices_contactnotification_part3_duediligencequestionnaire",
+		"financialreporting_contactnotification_part3_duediligencequestionnaire",
+		"legalinfo_contactnotification_part3_duediligencequestionnaire",
+		"taxinfo_contactnotification_part3_duediligencequestionnaire",
+	}
+
+	local result: { any } = {}
+
+	for _, row in contactInfo :: { any } do
+		if row == nil then
+			continue
+		end
+		-- Each row has a rawValue or is the sub-field dict directly.
+		-- In stripped fixtures, each row is: { rawValue: { subFieldName: { rawValue: {value/selectedKeys} } } }
+		-- But we need to handle both SV-wrapped and SV-stripped formats.
+		-- The CUE says: subValue = row.rawValue, then subValue.name_contact_...rawValue.value
+		-- In our Luau SV-stripped format, the contact row's sub-fields are accessed like:
+		-- row.valueSubFields.nameContactPart3Duediligencequestionnaire.value
+		-- But the spec says contactData is raw JSON, so let's handle the raw (SV-wrapped) case:
+		-- row.rawValue.name_contact_part3_duediligencequestionnaire.rawValue.value
+		--
+		-- We handle both: check for valueSubFields (typed) or rawValue (raw JSON CUE output)
+		local subValue: { [string]: any }
+		local rawVal = (row :: { [string]: any }).rawValue
+		local vsf = (row :: { [string]: any }).valueSubFields
+		if rawVal ~= nil and type(rawVal) == "table" then
+			subValue = rawVal :: { [string]: any }
+		elseif vsf ~= nil and type(vsf) == "table" then
+			subValue = vsf :: { [string]: any }
+		else
+			-- row IS the sub-field dict
+			subValue = row :: { [string]: any }
+		end
+
+		-- Helper to get a string value from a sub-field
+		-- Handles both: subValue[key].rawValue.value (CUE raw) and subValue[key].value (stripped)
+		local function getContactStringValue(fieldName: string): string
+			local field = subValue[fieldName]
+			if field == nil then return "" end
+			local fMap = field :: { [string]: any }
+			-- Check rawValue wrapper
+			if fMap.rawValue ~= nil and type(fMap.rawValue) == "table" then
+				local rv = fMap.rawValue :: { [string]: any }
+				if rv.value ~= nil then
+					return rv.value :: string
+				end
+			end
+			-- Direct value
+			if fMap.value ~= nil then
+				return fMap.value :: string
+			end
+			return ""
+		end
+
+		-- Helper to get selectedKeys from a sub-field
+		local function getContactSelectedKeys(fieldName: string): { string }
+			local field = subValue[fieldName]
+			if field == nil then return {} end
+			local fMap = field :: { [string]: any }
+			-- Check rawValue wrapper
+			if fMap.rawValue ~= nil and type(fMap.rawValue) == "table" then
+				local rv = fMap.rawValue :: { [string]: any }
+				if rv.selectedKeys ~= nil then
+					return rv.selectedKeys :: { string }
+				end
+			end
+			-- Direct selectedKeys
+			if fMap.selectedKeys ~= nil then
+				return fMap.selectedKeys :: { string }
+			end
+			return {}
+		end
+
+		-- Extract name and split
+		local fullName = getContactStringValue("nameContactPart3Duediligencequestionnaire")
+		local nameParts = CarlyleMappings.splitName(fullName)
+
+		-- Extract role and notification selected keys
+		local selectedRoles = getContactSelectedKeys("contactrolePart3Duediligencequestionnaire")
+		local selectedNotis = getContactSelectedKeys("contactnotificationPart3Duediligencequestionnaire")
+
+		-- Build role set for quick lookup
+		local roleSet: { [string]: boolean } = {}
+		for _, k in selectedRoles do
+			roleSet[k] = true
+		end
+		local notiSet: { [string]: boolean } = {}
+		for _, k in selectedNotis do
+			notiSet[k] = true
+		end
+
+		-- Build output sub-fields
+		local subFields: { [string]: any } = {
+			-- Name fields
+			sfContactNullFirstName = DataTypes.makeStringType({ typeId = "String", value = nameParts.firstName }),
+			sfContactNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = nameParts.middleName }),
+			sfContactNullLastName = DataTypes.makeStringType({ typeId = "String", value = nameParts.lastName }),
+			sfContactNullName = DataTypes.makeStringType({ typeId = "String", value = fullName }),
+			-- Address fields
+			sfContactNullMailingAddress = DataTypes.makeStringType({
+				typeId = "String",
+				value = getContactStringValue("addressContactPart3Duediligencequestionnaire"),
+			}),
+			sfContactNullMailingStreet = DataTypes.makeStringType({
+				typeId = "String",
+				value = getContactStringValue("numberandstreetAddressContactPart3Duediligencequestionnaire"),
+			}),
+			sfContactNullMailingCity = DataTypes.makeStringType({
+				typeId = "String",
+				value = getContactStringValue("cityAddressContactPart3Duediligencequestionnaire"),
+			}),
+			sfContactNullMailingState = DataTypes.makeStringType({
+				typeId = "String",
+				value = getContactStringValue("stateAddressContactPart3Duediligencequestionnaire"),
+			}),
+			sfContactNullMailingPostalCode = DataTypes.makeStringType({
+				typeId = "String",
+				value = getContactStringValue("zipAddressContactPart3Duediligencequestionnaire"),
+			}),
+			sfContactNullMailingCountry = DataTypes.makeStringType({
+				typeId = "String",
+				value = getContactStringValue("countryAddressContactPart3Duediligencequestionnaire"),
+			}),
+			-- Contact details
+			sfContactNullOpBusinessPhoneC = DataTypes.makeStringType({
+				typeId = "String",
+				value = getContactStringValue("phoneContactPart3Duediligencequestionnaire"),
+			}),
+			sfContactNullFax = DataTypes.makeStringType({
+				typeId = "String",
+				value = getContactStringValue("faxContactPart3Duediligencequestionnaire"),
+			}),
+			sfContactNullOpEmailPrimaryC = DataTypes.makeStringType({
+				typeId = "String",
+				value = getContactStringValue("emailContactPart3Duediligencequestionnaire"),
+			}),
+			-- Static empty fields
+			sfContactNullAccountId = makeEmptyStringType(),
+			sfContactNullSalutation = makeEmptyStringType(),
+			sfContactNullTCGGlobalIdC = makeEmptyStringType(),
+			sfContactNullEmailFundraising = makeEmptyStringType(),
+			sfContactNullBusinessPhone = makeEmptyStringType(),
+			-- Empty MultipleCheckbox fields
+			sfContactIFCNotificationsNotC = makeEmptyMultipleCheckboxType(),
+			sfContactIFCNotificationsC = makeEmptyMultipleCheckboxType(),
+			anduinContactNotification = makeEmptyMultipleCheckboxType(),
+			anduinContactRole = makeEmptyMultipleCheckboxType(),
+		}
+
+		-- Set role boolean fields
+		for _, rk in roleKeys do
+			local targetField = roleMap[rk]
+			subFields[targetField] = makeBoolCheckbox(roleSet[rk] == true)
+		end
+
+		-- Set notification boolean fields
+		for _, nk in notiKeys do
+			local targetField = notiMap[nk]
+			subFields[targetField] = makeBoolCheckbox(notiSet[nk] == true)
+		end
+
+		table.insert(result, {
+			typeId = "CustomCompound",
+			valueSubFields = subFields,
+			subFieldKeysInOrder = {},
+			label = nil,
+		})
+	end
+
+	return result
+end
+
+--------------------------------------------------------------------------------
 -- Main Transform
 --------------------------------------------------------------------------------
 
@@ -1350,6 +1812,26 @@ function CarlyleMappings.transformScalars(
 			end
 		end
 	end
+
+	return FullTargetTable.makeFullTargetTableFieldsMap(output :: any)
+end
+
+--------------------------------------------------------------------------------
+-- Orchestrating Transform (scalars + arrays)
+--------------------------------------------------------------------------------
+
+function CarlyleMappings.transform(
+	contact: any, -- raw JSON, not typed (contactInfo is array)
+	w9: SourceW9Table.SourceW9TableFieldsMap?,
+	feeder: SourceFeederTable.SourceFeederTableFieldsMap?,
+	master: SourceMasterTable.SourceMasterTableFieldsMap?
+): FullTargetTable.FullTargetTableFieldsMap
+	local output: { [string]: any } = CarlyleMappings.transformScalars(feeder, master, w9) :: any
+	local sources: { [string]: any } = { master = master, feeder = feeder }
+
+	output["sfControllingPersons"] = mapControllingPersons(sources)
+	output["sfBeneficialOwner"] = mapBeneficialOwner(sources)
+	output["sfContact"] = mapContact(contact)
 
 	return FullTargetTable.makeFullTargetTableFieldsMap(output :: any)
 end
