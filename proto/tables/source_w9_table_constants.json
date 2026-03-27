@@ -1,0 +1,103 @@
+{
+  "fields_map": {
+    "w9_line1": {
+      "type_id": "String"
+    },
+    "w9_line2": {
+      "type_id": "String"
+    },
+    "w9_line3_1": {
+      "type_id": "RadioGroup",
+      "all_option_keys_in_order": [
+        "w9_line3_1_SCorp",
+        "w9_line3_1_individual",
+        "w9_line3_1_Ccorp",
+        "w9_line3_1_Partnership",
+        "w9_line3_1_Trust",
+        "w9_line3_1_llc",
+        "w9_line3_1_other"
+      ],
+      "all_option_labels_in_order": [
+        "S corporation",
+        "Individual/sole proprietor",
+        "C corporation",
+        "Partnership",
+        "Trust/estate",
+        "LLC.",
+        "Other"
+      ]
+    },
+    "w9_line3_1_LLCclass": {
+      "type_id": "String"
+    },
+    "w9_line4_exemptpayee": {
+      "type_id": "Integer"
+    },
+    "w9_line4_exemptfatca": {
+      "type_id": "Integer"
+    },
+    "w9_line3_1_other_specify": {
+      "type_id": "String"
+    },
+    "foreignpartner_group": {
+      "type_id": "MultipleCheckbox",
+      "all_option_keys_in_order": [
+        "foreignpartner"
+      ],
+      "all_option_labels_in_order": [
+        "check"
+      ]
+    },
+    "w9_line5": {
+      "type_id": "NumberAndStreet"
+    },
+    "w9_requesterinformation": {
+      "type_id": "String"
+    },
+    "w9_city_line6": {
+      "type_id": "City"
+    },
+    "w9_state_line6": {
+      "type_id": "StateProvince"
+    },
+    "w9_zip_line6": {
+      "type_id": "PostalZipCode"
+    },
+    "w9_country_line6": {
+      "type_id": "Country"
+    },
+    "w9_line7": {
+      "type_id": "String"
+    },
+    "w9_parti_ssn1": {
+      "type_id": "Ssn"
+    },
+    "w9_parti_ein1": {
+      "type_id": "Ein"
+    },
+    "w9_signature_date": {
+      "type_id": "DateTimeString"
+    }
+  },
+  "field_keys_in_order": [
+    "w9_line1",
+    "w9_line2",
+    "w9_line3_1",
+    "w9_line3_1_LLCclass",
+    "w9_line4_exemptpayee",
+    "w9_line4_exemptfatca",
+    "w9_line3_1_other_specify",
+    "foreignpartner_group",
+    "w9_line5",
+    "w9_requesterinformation",
+    "w9_city_line6",
+    "w9_state_line6",
+    "w9_zip_line6",
+    "w9_country_line6",
+    "w9_line7",
+    "w9_parti_ssn1",
+    "w9_parti_ein1",
+    "w9_signature_date"
+  ],
+  "label": "Form W-9"
+}

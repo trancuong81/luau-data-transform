@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package ocaml_data_transform;
+
+import "data_types.proto";
+import "luauoptions/luau_options.proto";
+
+option (luau.luau_generator) = "schema";
+
+message SourceW9TableFieldsMap {
+  StringType w9_line1 = 1;
+  StringType w9_line2 = 2;
+  MultipleCheckboxType w9_line3_1 = 3;
+  StringType w9_line3_1_LLCclass = 4;
+  StringType w9_line4_exemptpayee = 5;
+  StringType w9_line4_exemptfatca = 6;
+  StringType w9_line3_1_other_specify = 7;
+  MultipleCheckboxType foreignpartner_group = 8;
+  StringType w9_line5 = 9;
+  StringType w9_requesterinformation = 10;
+  StringType w9_city_line6 = 11;
+  StringType w9_state_line6 = 12;
+  StringType w9_zip_line6 = 13;
+  StringType w9_country_line6 = 14;
+  StringType w9_line7 = 15;
+  StringType w9_parti_ssn1 = 16;
+  StringType w9_parti_ein1 = 17;
+  StringType w9_signature_date = 18;
+}
+
+message SourceW9TableSchema {
+  SourceW9TableFieldsMap fields_map = 1;
+  repeated string field_keys_in_order = 2;
+  string label = 3;
+}
