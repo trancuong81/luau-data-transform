@@ -6,6 +6,7 @@ local Schema = require("@lib/schema")
 local SourceFeederTable = require("@lib/source_feeder_table")
 local SourceMasterTable = require("@lib/source_master_table")
 local SourceW9Table = require("@lib/source_w9_table")
+local SourceContactTable = require("@lib/source_contact_table")
 local FullTargetTable = require("@lib/full_target_table")
 local CarlyleMappings = require("@lib/carlyle_mappings")
 
@@ -36,10 +37,10 @@ if input.w9 ~= nil then
 	w9 = SourceW9Table.decodeJsonSourceW9TableFieldsMap(Schema.camelcaseKeys(input.w9))
 end
 
--- Contact passed as raw JSON (contactInfo is an array)
+-- Decode contact through protobuf decoder (same as other source tables)
 local contact = nil
 if input.contact ~= nil then
-	contact = Schema.camelcaseKeys(input.contact)
+	contact = SourceContactTable.decodeJsonSourceContactTableFieldsMap(Schema.camelcaseKeys(input.contact))
 end
 
 -- Run transform
@@ -52,7 +53,7 @@ local arrayData: {[string]: {any}} = {}
 for _, camelKey in COMPOUND_ARRAY_FIELDS do
 	if resultAny[camelKey] ~= nil then
 		arrayData[camelKey] = resultAny[camelKey]
-		resultAny[camelKey] = nil
+		resultAny[camelKey] = {}  -- set to empty array so encoder can iterate (arrays are non-optional)
 	end
 end
 

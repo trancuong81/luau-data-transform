@@ -1410,15 +1410,15 @@ end
 
 --
 -- mapContact: builds an array of FullTargetTableSfContactType
--- from the raw contact JSON data where contactInfo is an array.
+-- from decoded contact source table data.
 --
-local function mapContact(contactData: any): { any }
+local function mapContact(contactData: SourceContactTable.SourceContactTableFieldsMap?): { FullTargetTable.FullTargetTableSfContactType }
 	if contactData == nil then
 		return {}
 	end
 
-	local contactInfo = getField(contactData, "contactInfo")
-	if contactInfo == nil or type(contactInfo) ~= "table" then
+	local contactInfo = contactData.contactInfo
+	if #contactInfo == 0 then
 		return {}
 	end
 
@@ -1458,139 +1458,79 @@ local function mapContact(contactData: any): { any }
 		"taxinfo_contactnotification_part3_duediligencequestionnaire",
 	}
 
-	local result: { any } = {}
+	local result: { FullTargetTable.FullTargetTableSfContactType } = {}
 
-	for _, row in contactInfo :: { any } do
-		if row == nil then
+	for _, row in contactInfo do
+		local vsf = row.valueSubFields
+		if vsf == nil then
 			continue
 		end
-		-- Each row has a rawValue or is the sub-field dict directly.
-		-- In stripped fixtures, each row is: { rawValue: { subFieldName: { rawValue: {value/selectedKeys} } } }
-		-- But we need to handle both SV-wrapped and SV-stripped formats.
-		-- The CUE says: subValue = row.rawValue, then subValue.name_contact_...rawValue.value
-		-- In our Luau SV-stripped format, the contact row's sub-fields are accessed like:
-		-- row.valueSubFields.nameContactPart3Duediligencequestionnaire.value
-		-- But the spec says contactData is raw JSON, so let's handle the raw (SV-wrapped) case:
-		-- row.rawValue.name_contact_part3_duediligencequestionnaire.rawValue.value
-		--
-		-- We handle both: check for valueSubFields (typed) or rawValue (raw JSON CUE output)
-		local subValue: { [string]: any }
-		local rawVal = (row :: { [string]: any }).rawValue
-		local vsf = (row :: { [string]: any }).valueSubFields
-		if rawVal ~= nil and type(rawVal) == "table" then
-			subValue = rawVal :: { [string]: any }
-		elseif vsf ~= nil and type(vsf) == "table" then
-			subValue = vsf :: { [string]: any }
-		else
-			-- row IS the sub-field dict (may have snake_case keys from raw JSON)
-			subValue = row :: { [string]: any }
-		end
 
-		-- Convert snake_case keys to camelCase so field lookups work uniformly.
-		-- Raw JSON contact data uses snake_case (e.g. name_contact_part3_...).
-		subValue = Schema.camelcaseKeys(subValue) :: { [string]: any }
-
-		-- Helper to get a string value from a sub-field
-		-- Handles both: subValue[key].rawValue.value (CUE raw) and subValue[key].value (stripped)
-		local function getContactStringValue(fieldName: string): string
-			local field = subValue[fieldName]
+		-- Extract string value from a typed StringType sub-field
+		local function getStr(field: DataTypes.StringType?): string
 			if field == nil then return "" end
-			local fMap = field :: { [string]: any }
-			-- Check rawValue wrapper
-			if fMap.rawValue ~= nil and type(fMap.rawValue) == "table" then
-				local rv = fMap.rawValue :: { [string]: any }
-				if rv.value ~= nil then
-					return rv.value :: string
-				end
-			end
-			-- Direct value
-			if fMap.value ~= nil then
-				return fMap.value :: string
-			end
-			return ""
+			return field.value or ""
 		end
 
-		-- Helper to get selectedKeys from a sub-field
-		local function getContactSelectedKeys(fieldName: string): { string }
-			local field = subValue[fieldName]
+		-- Extract selectedKeys from a typed MultipleCheckboxType sub-field
+		local function getKeys(field: DataTypes.MultipleCheckboxType?): { string }
 			if field == nil then return {} end
-			local fMap = field :: { [string]: any }
-			-- Check rawValue wrapper
-			if fMap.rawValue ~= nil and type(fMap.rawValue) == "table" then
-				local rv = fMap.rawValue :: { [string]: any }
-				if rv.selectedKeys ~= nil then
-					return rv.selectedKeys :: { string }
-				end
-			end
-			-- Direct selectedKeys
-			if fMap.selectedKeys ~= nil then
-				return fMap.selectedKeys :: { string }
-			end
-			return {}
+			return field.selectedKeys or {}
 		end
 
-		-- Extract name and split
-		local fullName = getContactStringValue("nameContactPart3Duediligencequestionnaire")
+		local fullName = getStr(vsf.nameContactPart3Duediligencequestionnaire)
 		local nameParts = CarlyleMappings.splitName(fullName)
 
-		-- Extract role and notification selected keys
-		local selectedRoles = getContactSelectedKeys("contactrolePart3Duediligencequestionnaire")
-		local selectedNotis = getContactSelectedKeys("contactnotificationPart3Duediligencequestionnaire")
+		local selectedRoles = getKeys(vsf.contactrolePart3Duediligencequestionnaire)
+		local selectedNotis = getKeys(vsf.contactnotificationPart3Duediligencequestionnaire)
 
-		-- Build role set for quick lookup
+		-- Build role/noti sets
 		local roleSet: { [string]: boolean } = {}
-		for _, k in selectedRoles do
-			roleSet[k] = true
-		end
+		for _, k in selectedRoles do roleSet[k] = true end
 		local notiSet: { [string]: boolean } = {}
-		for _, k in selectedNotis do
-			notiSet[k] = true
-		end
+		for _, k in selectedNotis do notiSet[k] = true end
 
-		-- Build output sub-fields
-		local subFields: { [string]: any } = {
-			-- Name fields
+		-- Build sub-fields using typed constructor
+		local subFields = FullTargetTable.makeFullTargetTableSfContactFields({
 			sfContactNullFirstName = DataTypes.makeStringType({ typeId = "String", value = nameParts.firstName }),
 			sfContactNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = nameParts.middleName }),
 			sfContactNullLastName = DataTypes.makeStringType({ typeId = "String", value = nameParts.lastName }),
 			sfContactNullName = DataTypes.makeStringType({ typeId = "String", value = fullName }),
-			-- Address fields
 			sfContactNullMailingAddress = DataTypes.makeStringType({
 				typeId = "String",
-				value = getContactStringValue("addressContactPart3Duediligencequestionnaire"),
+				value = getStr(vsf.addressContactPart3Duediligencequestionnaire),
 			}),
 			sfContactNullMailingStreet = DataTypes.makeStringType({
 				typeId = "String",
-				value = getContactStringValue("numberandstreetAddressContactPart3Duediligencequestionnaire"),
+				value = getStr(vsf.numberandstreetAddressContactPart3Duediligencequestionnaire),
 			}),
 			sfContactNullMailingCity = DataTypes.makeStringType({
 				typeId = "String",
-				value = getContactStringValue("cityAddressContactPart3Duediligencequestionnaire"),
+				value = getStr(vsf.cityAddressContactPart3Duediligencequestionnaire),
 			}),
 			sfContactNullMailingState = DataTypes.makeStringType({
 				typeId = "String",
-				value = getContactStringValue("stateAddressContactPart3Duediligencequestionnaire"),
+				value = getStr(vsf.stateAddressContactPart3Duediligencequestionnaire),
 			}),
 			sfContactNullMailingPostalCode = DataTypes.makeStringType({
 				typeId = "String",
-				value = getContactStringValue("zipAddressContactPart3Duediligencequestionnaire"),
+				value = getStr(vsf.zipAddressContactPart3Duediligencequestionnaire),
 			}),
 			sfContactNullMailingCountry = DataTypes.makeStringType({
 				typeId = "String",
-				value = getContactStringValue("countryAddressContactPart3Duediligencequestionnaire"),
+				value = getStr(vsf.countryAddressContactPart3Duediligencequestionnaire),
 			}),
-			-- Contact details
 			sfContactNullOpBusinessPhoneC = DataTypes.makeStringType({
 				typeId = "String",
-				value = getContactStringValue("phoneContactPart3Duediligencequestionnaire"),
+				value = getStr(vsf.phoneContactPart3Duediligencequestionnaire),
 			}),
 			sfContactNullFax = DataTypes.makeStringType({
 				typeId = "String",
-				value = getContactStringValue("faxContactPart3Duediligencequestionnaire"),
+				value = getStr(vsf.faxContactPart3Duediligencequestionnaire),
 			}),
 			sfContactNullOpEmailPrimaryC = DataTypes.makeStringType({
 				typeId = "String",
-				value = getContactStringValue("emailContactPart3Duediligencequestionnaire"),
+				value = getStr(vsf.emailContactPart3Duediligencequestionnaire),
 			}),
 			-- Static empty fields
 			sfContactNullAccountId = makeEmptyStringType(),
@@ -1603,26 +1543,28 @@ local function mapContact(contactData: any): { any }
 			sfContactIFCNotificationsC = makeEmptyMultipleCheckboxType(),
 			anduinContactNotification = makeEmptyMultipleCheckboxType(),
 			anduinContactRole = makeEmptyMultipleCheckboxType(),
-		}
+		})
 
-		-- Set role boolean fields
+		-- Set role boolean fields (string-indexed, localized cast)
 		for _, rk in roleKeys do
-			local targetField = roleMap[rk]
-			subFields[targetField] = makeBoolCheckbox(roleSet[rk] == true)
+			local targetField = roleMap[rk];
+			(subFields :: any)[targetField] = makeBoolCheckbox(roleSet[rk] == true)
+			-- TODO: type-narrow when Luau supports string-literal struct indexing
 		end
 
-		-- Set notification boolean fields
+		-- Set notification boolean fields (string-indexed, localized cast)
 		for _, nk in notiKeys do
-			local targetField = notiMap[nk]
-			subFields[targetField] = makeBoolCheckbox(notiSet[nk] == true)
+			local targetField = notiMap[nk];
+			(subFields :: any)[targetField] = makeBoolCheckbox(notiSet[nk] == true)
+			-- TODO: type-narrow when Luau supports string-literal struct indexing
 		end
 
-		table.insert(result, {
+		table.insert(result, FullTargetTable.makeFullTargetTableSfContactType({
 			typeId = "CustomCompound",
 			valueSubFields = subFields,
 			subFieldKeysInOrder = {},
-			label = nil,
-		})
+			label = "",
+		}))
 	end
 
 	return result
@@ -1837,7 +1779,7 @@ end
 --------------------------------------------------------------------------------
 
 function CarlyleMappings.transform(
-	contact: any, -- raw JSON, not typed (contactInfo is array)
+	contact: SourceContactTable.SourceContactTableFieldsMap?,
 	w9: SourceW9Table.SourceW9TableFieldsMap?,
 	feeder: SourceFeederTable.SourceFeederTableFieldsMap?,
 	master: SourceMasterTable.SourceMasterTableFieldsMap?

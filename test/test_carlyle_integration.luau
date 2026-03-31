@@ -6,6 +6,7 @@ local CM = require("@lib/carlyle_mappings")
 local SourceFeederTable = require("@lib/source_feeder_table")
 local SourceMasterTable = require("@lib/source_master_table")
 local SourceW9Table = require("@lib/source_w9_table")
+local SourceContactTable = require("@lib/source_contact_table")
 local FullTargetTable = require("@lib/full_target_table")
 local Schema = require("@lib/schema")
 
@@ -276,7 +277,8 @@ T.describe("carlyle_integration", function()
 		local w9 = SourceW9Table.decodeJsonSourceW9TableFieldsMap(input.w9)
 
 		-- 3. Transform
-		local result = CM.transform(input.contact, w9, feeder, nil)
+		local contactDecoded = if input.contact ~= nil then SourceContactTable.decodeJsonSourceContactTableFieldsMap(input.contact) else nil
+		local result = CM.transform(contactDecoded, w9, feeder, nil)
 
 		-- 4. Extract compound array fields before encoding (encoder treats them as single objects)
 		local resultAny = result :: any
@@ -353,7 +355,8 @@ T.describe("carlyle_integration", function()
 		local master = SourceMasterTable.decodeJsonSourceMasterTableFieldsMap(input.master)
 
 		-- 3. Transform (no feeder, no w9)
-		local result = CM.transform(input.contact, nil, nil, master)
+		local contactDecoded = if input.contact ~= nil then SourceContactTable.decodeJsonSourceContactTableFieldsMap(input.contact) else nil
+		local result = CM.transform(contactDecoded, nil, nil, master)
 
 		-- 4. Extract compound array fields before encoding
 		local resultAny = result :: any
