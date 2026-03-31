@@ -26,7 +26,7 @@ export type SourceContactTableContactinfoType = {
 }
 
 export type SourceContactTableFieldsMap = {
-	contactInfo: SourceContactTableContactinfoType?,
+	contactInfo: {SourceContactTableContactinfoType},
 }
 
 export type SourceContactTableSchema = {
@@ -82,11 +82,11 @@ function SourceContactTable.makeSourceContactTableContactinfoType(config: {
 end
 
 function SourceContactTable.makeSourceContactTableFieldsMap(config: {
-	contactInfo: SourceContactTableContactinfoType?,
+	contactInfo: {SourceContactTableContactinfoType}?,
 }?): SourceContactTableFieldsMap
 	local c = config or {}
 	return {
-		contactInfo = c.contactInfo,
+		contactInfo = c.contactInfo or {},
 	}
 end
 
@@ -178,17 +178,24 @@ function SourceContactTable.decodeJsonSourceContactTableContactinfoType(json: {[
 end
 
 function SourceContactTable.encodeJsonSourceContactTableFieldsMap(so: SourceContactTableFieldsMap): {[string]: any}
-	local result: {[string]: any} = {
-	}
-	if so.contactInfo ~= nil then
-		result.contactInfo = SourceContactTable.encodeJsonSourceContactTableContactinfoType(so.contactInfo)
+	local contactInfoEncoded: {any} = {}
+	for _, item in so.contactInfo do
+		table.insert(contactInfoEncoded, SourceContactTable.encodeJsonSourceContactTableContactinfoType(item))
 	end
-	return result
+	return {
+		contactInfo = contactInfoEncoded,
+	}
 end
 
 function SourceContactTable.decodeJsonSourceContactTableFieldsMap(json: {[string]: any}): SourceContactTableFieldsMap
+	local contactInfo: {SourceContactTableContactinfoType} = {}
+	if json.contactInfo ~= nil then
+		for _, item in json.contactInfo :: {{[string]: any}} do
+			table.insert(contactInfo, SourceContactTable.decodeJsonSourceContactTableContactinfoType(item))
+		end
+	end
 	return {
-		contactInfo = if json.contactInfo then SourceContactTable.decodeJsonSourceContactTableContactinfoType(json.contactInfo) else nil,
+		contactInfo = contactInfo,
 	}
 end
 

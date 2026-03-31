@@ -166,7 +166,7 @@ export type FullTargetTableSfFundSelectionType = {
 
 export type FullTargetTableFieldsMap = {
 	sfInvestorAccountNullTCGGlobalIdC: DataTypes.StringType?,
-	sfFundSelection: FullTargetTableSfFundSelectionType?,
+	sfFundSelection: {FullTargetTableSfFundSelectionType},
 	sfAccountInvestorAccountTCGGlobalIdC: DataTypes.StringType?,
 	sfAccountCommonNameName: DataTypes.StringType?,
 	sfAccountCommonNameTypeC: DataTypes.StringType?,
@@ -568,8 +568,8 @@ export type FullTargetTableFieldsMap = {
 	sfFundFundCloseCloseDateC: DataTypes.StringType?,
 	sfFundFundCloseRecordTypeId: DataTypes.StringType?,
 	sfFundNullTCGGlobalIdC: DataTypes.StringType?,
-	sfBeneficialOwner: FullTargetTableSfBeneficialownerType?,
-	sfControllingPersons: FullTargetTableSfControllingpersonsType?,
+	sfBeneficialOwner: {FullTargetTableSfBeneficialownerType},
+	sfControllingPersons: {FullTargetTableSfControllingpersonsType},
 	sfIFCNullEmailC: DataTypes.StringType?,
 	sfIFCNullStatusC: DataTypes.StringType?,
 	sfIFCNullCommonNameC: DataTypes.StringType?,
@@ -589,7 +589,7 @@ export type FullTargetTableFieldsMap = {
 	sfIFCNullContactRecordTypeNameC: DataTypes.StringType?,
 	sfIFCNullContactTCGGlobalIDC: DataTypes.StringType?,
 	sfIFCNullContactSCNRegisteredCountryC: DataTypes.StringType?,
-	sfContact: FullTargetTableSfContactType?,
+	sfContact: {FullTargetTableSfContactType},
 	sfTaxFormW9TaxAccountOwner: DataTypes.StringType?,
 	sfTaxFormW9DisregardedEntityName: DataTypes.StringType?,
 	sfTaxFormW9TAOTaxAccountOwner: DataTypes.StringType?,
@@ -998,7 +998,7 @@ end
 
 function FullTargetTable.makeFullTargetTableFieldsMap(config: {
 	sfInvestorAccountNullTCGGlobalIdC: DataTypes.StringType?,
-	sfFundSelection: FullTargetTableSfFundSelectionType?,
+	sfFundSelection: {FullTargetTableSfFundSelectionType}?,
 	sfAccountInvestorAccountTCGGlobalIdC: DataTypes.StringType?,
 	sfAccountCommonNameName: DataTypes.StringType?,
 	sfAccountCommonNameTypeC: DataTypes.StringType?,
@@ -1400,8 +1400,8 @@ function FullTargetTable.makeFullTargetTableFieldsMap(config: {
 	sfFundFundCloseCloseDateC: DataTypes.StringType?,
 	sfFundFundCloseRecordTypeId: DataTypes.StringType?,
 	sfFundNullTCGGlobalIdC: DataTypes.StringType?,
-	sfBeneficialOwner: FullTargetTableSfBeneficialownerType?,
-	sfControllingPersons: FullTargetTableSfControllingpersonsType?,
+	sfBeneficialOwner: {FullTargetTableSfBeneficialownerType}?,
+	sfControllingPersons: {FullTargetTableSfControllingpersonsType}?,
 	sfIFCNullEmailC: DataTypes.StringType?,
 	sfIFCNullStatusC: DataTypes.StringType?,
 	sfIFCNullCommonNameC: DataTypes.StringType?,
@@ -1421,7 +1421,7 @@ function FullTargetTable.makeFullTargetTableFieldsMap(config: {
 	sfIFCNullContactRecordTypeNameC: DataTypes.StringType?,
 	sfIFCNullContactTCGGlobalIDC: DataTypes.StringType?,
 	sfIFCNullContactSCNRegisteredCountryC: DataTypes.StringType?,
-	sfContact: FullTargetTableSfContactType?,
+	sfContact: {FullTargetTableSfContactType}?,
 	sfTaxFormW9TaxAccountOwner: DataTypes.StringType?,
 	sfTaxFormW9DisregardedEntityName: DataTypes.StringType?,
 	sfTaxFormW9TAOTaxAccountOwner: DataTypes.StringType?,
@@ -1494,7 +1494,7 @@ function FullTargetTable.makeFullTargetTableFieldsMap(config: {
 	local c = config or {}
 	return {
 		sfInvestorAccountNullTCGGlobalIdC = c.sfInvestorAccountNullTCGGlobalIdC,
-		sfFundSelection = c.sfFundSelection,
+		sfFundSelection = c.sfFundSelection or {},
 		sfAccountInvestorAccountTCGGlobalIdC = c.sfAccountInvestorAccountTCGGlobalIdC,
 		sfAccountCommonNameName = c.sfAccountCommonNameName,
 		sfAccountCommonNameTypeC = c.sfAccountCommonNameTypeC,
@@ -1896,8 +1896,8 @@ function FullTargetTable.makeFullTargetTableFieldsMap(config: {
 		sfFundFundCloseCloseDateC = c.sfFundFundCloseCloseDateC,
 		sfFundFundCloseRecordTypeId = c.sfFundFundCloseRecordTypeId,
 		sfFundNullTCGGlobalIdC = c.sfFundNullTCGGlobalIdC,
-		sfBeneficialOwner = c.sfBeneficialOwner,
-		sfControllingPersons = c.sfControllingPersons,
+		sfBeneficialOwner = c.sfBeneficialOwner or {},
+		sfControllingPersons = c.sfControllingPersons or {},
 		sfIFCNullEmailC = c.sfIFCNullEmailC,
 		sfIFCNullStatusC = c.sfIFCNullStatusC,
 		sfIFCNullCommonNameC = c.sfIFCNullCommonNameC,
@@ -1917,7 +1917,7 @@ function FullTargetTable.makeFullTargetTableFieldsMap(config: {
 		sfIFCNullContactRecordTypeNameC = c.sfIFCNullContactRecordTypeNameC,
 		sfIFCNullContactTCGGlobalIDC = c.sfIFCNullContactTCGGlobalIDC,
 		sfIFCNullContactSCNRegisteredCountryC = c.sfIFCNullContactSCNRegisteredCountryC,
-		sfContact = c.sfContact,
+		sfContact = c.sfContact or {},
 		sfTaxFormW9TaxAccountOwner = c.sfTaxFormW9TaxAccountOwner,
 		sfTaxFormW9DisregardedEntityName = c.sfTaxFormW9DisregardedEntityName,
 		sfTaxFormW9TAOTaxAccountOwner = c.sfTaxFormW9TAOTaxAccountOwner,
@@ -2394,12 +2394,29 @@ function FullTargetTable.decodeJsonFullTargetTableSfFundSelectionType(json: {[st
 end
 
 function FullTargetTable.encodeJsonFullTargetTableFieldsMap(f: FullTargetTableFieldsMap): {[string]: any}
+	local sfFundSelectionEncoded: {any} = {}
+	for _, item in f.sfFundSelection do
+		table.insert(sfFundSelectionEncoded, FullTargetTable.encodeJsonFullTargetTableSfFundSelectionType(item))
+	end
+	local sfBeneficialOwnerEncoded: {any} = {}
+	for _, item in f.sfBeneficialOwner do
+		table.insert(sfBeneficialOwnerEncoded, FullTargetTable.encodeJsonFullTargetTableSfBeneficialownerType(item))
+	end
+	local sfControllingPersonsEncoded: {any} = {}
+	for _, item in f.sfControllingPersons do
+		table.insert(sfControllingPersonsEncoded, FullTargetTable.encodeJsonFullTargetTableSfControllingpersonsType(item))
+	end
+	local sfContactEncoded: {any} = {}
+	for _, item in f.sfContact do
+		table.insert(sfContactEncoded, FullTargetTable.encodeJsonFullTargetTableSfContactType(item))
+	end
 	local result: {[string]: any} = {
+		sfFundSelection = sfFundSelectionEncoded,
+		sfBeneficialOwner = sfBeneficialOwnerEncoded,
+		sfControllingPersons = sfControllingPersonsEncoded,
+		sfContact = sfContactEncoded,
 	}
 	result.sfInvestorAccountNullTCGGlobalIdC = encodeOptionalStringType(f.sfInvestorAccountNullTCGGlobalIdC)
-	if f.sfFundSelection ~= nil then
-		result.sfFundSelection = FullTargetTable.encodeJsonFullTargetTableSfFundSelectionType(f.sfFundSelection)
-	end
 	result.sfAccountInvestorAccountTCGGlobalIdC = encodeOptionalStringType(f.sfAccountInvestorAccountTCGGlobalIdC)
 	result.sfAccountCommonNameName = encodeOptionalStringType(f.sfAccountCommonNameName)
 	result.sfAccountCommonNameTypeC = encodeOptionalStringType(f.sfAccountCommonNameTypeC)
@@ -2801,12 +2818,6 @@ function FullTargetTable.encodeJsonFullTargetTableFieldsMap(f: FullTargetTableFi
 	result.sfFundFundCloseCloseDateC = encodeOptionalStringType(f.sfFundFundCloseCloseDateC)
 	result.sfFundFundCloseRecordTypeId = encodeOptionalStringType(f.sfFundFundCloseRecordTypeId)
 	result.sfFundNullTCGGlobalIdC = encodeOptionalStringType(f.sfFundNullTCGGlobalIdC)
-	if f.sfBeneficialOwner ~= nil then
-		result.sfBeneficialOwner = FullTargetTable.encodeJsonFullTargetTableSfBeneficialownerType(f.sfBeneficialOwner)
-	end
-	if f.sfControllingPersons ~= nil then
-		result.sfControllingPersons = FullTargetTable.encodeJsonFullTargetTableSfControllingpersonsType(f.sfControllingPersons)
-	end
 	result.sfIFCNullEmailC = encodeOptionalStringType(f.sfIFCNullEmailC)
 	result.sfIFCNullStatusC = encodeOptionalStringType(f.sfIFCNullStatusC)
 	result.sfIFCNullCommonNameC = encodeOptionalStringType(f.sfIFCNullCommonNameC)
@@ -2826,9 +2837,6 @@ function FullTargetTable.encodeJsonFullTargetTableFieldsMap(f: FullTargetTableFi
 	result.sfIFCNullContactRecordTypeNameC = encodeOptionalStringType(f.sfIFCNullContactRecordTypeNameC)
 	result.sfIFCNullContactTCGGlobalIDC = encodeOptionalStringType(f.sfIFCNullContactTCGGlobalIDC)
 	result.sfIFCNullContactSCNRegisteredCountryC = encodeOptionalStringType(f.sfIFCNullContactSCNRegisteredCountryC)
-	if f.sfContact ~= nil then
-		result.sfContact = FullTargetTable.encodeJsonFullTargetTableSfContactType(f.sfContact)
-	end
 	result.sfTaxFormW9TaxAccountOwner = encodeOptionalStringType(f.sfTaxFormW9TaxAccountOwner)
 	result.sfTaxFormW9DisregardedEntityName = encodeOptionalStringType(f.sfTaxFormW9DisregardedEntityName)
 	result.sfTaxFormW9TAOTaxAccountOwner = encodeOptionalStringType(f.sfTaxFormW9TAOTaxAccountOwner)
@@ -2901,9 +2909,33 @@ function FullTargetTable.encodeJsonFullTargetTableFieldsMap(f: FullTargetTableFi
 end
 
 function FullTargetTable.decodeJsonFullTargetTableFieldsMap(json: {[string]: any}): FullTargetTableFieldsMap
+	local sfFundSelection: {FullTargetTableSfFundSelectionType} = {}
+	if json.sfFundSelection ~= nil then
+		for _, item in json.sfFundSelection :: {{[string]: any}} do
+			table.insert(sfFundSelection, FullTargetTable.decodeJsonFullTargetTableSfFundSelectionType(item))
+		end
+	end
+	local sfBeneficialOwner: {FullTargetTableSfBeneficialownerType} = {}
+	if json.sfBeneficialOwner ~= nil then
+		for _, item in json.sfBeneficialOwner :: {{[string]: any}} do
+			table.insert(sfBeneficialOwner, FullTargetTable.decodeJsonFullTargetTableSfBeneficialownerType(item))
+		end
+	end
+	local sfControllingPersons: {FullTargetTableSfControllingpersonsType} = {}
+	if json.sfControllingPersons ~= nil then
+		for _, item in json.sfControllingPersons :: {{[string]: any}} do
+			table.insert(sfControllingPersons, FullTargetTable.decodeJsonFullTargetTableSfControllingpersonsType(item))
+		end
+	end
+	local sfContact: {FullTargetTableSfContactType} = {}
+	if json.sfContact ~= nil then
+		for _, item in json.sfContact :: {{[string]: any}} do
+			table.insert(sfContact, FullTargetTable.decodeJsonFullTargetTableSfContactType(item))
+		end
+	end
 	return {
 		sfInvestorAccountNullTCGGlobalIdC = decodeOptionalStringType(json.sfInvestorAccountNullTCGGlobalIdC),
-		sfFundSelection = if json.sfFundSelection then FullTargetTable.decodeJsonFullTargetTableSfFundSelectionType(json.sfFundSelection) else nil,
+		sfFundSelection = sfFundSelection,
 		sfAccountInvestorAccountTCGGlobalIdC = decodeOptionalStringType(json.sfAccountInvestorAccountTCGGlobalIdC),
 		sfAccountCommonNameName = decodeOptionalStringType(json.sfAccountCommonNameName),
 		sfAccountCommonNameTypeC = decodeOptionalStringType(json.sfAccountCommonNameTypeC),
@@ -3305,8 +3337,8 @@ function FullTargetTable.decodeJsonFullTargetTableFieldsMap(json: {[string]: any
 		sfFundFundCloseCloseDateC = decodeOptionalStringType(json.sfFundFundCloseCloseDateC),
 		sfFundFundCloseRecordTypeId = decodeOptionalStringType(json.sfFundFundCloseRecordTypeId),
 		sfFundNullTCGGlobalIdC = decodeOptionalStringType(json.sfFundNullTCGGlobalIdC),
-		sfBeneficialOwner = if json.sfBeneficialOwner then FullTargetTable.decodeJsonFullTargetTableSfBeneficialownerType(json.sfBeneficialOwner) else nil,
-		sfControllingPersons = if json.sfControllingPersons then FullTargetTable.decodeJsonFullTargetTableSfControllingpersonsType(json.sfControllingPersons) else nil,
+		sfBeneficialOwner = sfBeneficialOwner,
+		sfControllingPersons = sfControllingPersons,
 		sfIFCNullEmailC = decodeOptionalStringType(json.sfIFCNullEmailC),
 		sfIFCNullStatusC = decodeOptionalStringType(json.sfIFCNullStatusC),
 		sfIFCNullCommonNameC = decodeOptionalStringType(json.sfIFCNullCommonNameC),
@@ -3326,7 +3358,7 @@ function FullTargetTable.decodeJsonFullTargetTableFieldsMap(json: {[string]: any
 		sfIFCNullContactRecordTypeNameC = decodeOptionalStringType(json.sfIFCNullContactRecordTypeNameC),
 		sfIFCNullContactTCGGlobalIDC = decodeOptionalStringType(json.sfIFCNullContactTCGGlobalIDC),
 		sfIFCNullContactSCNRegisteredCountryC = decodeOptionalStringType(json.sfIFCNullContactSCNRegisteredCountryC),
-		sfContact = if json.sfContact then FullTargetTable.decodeJsonFullTargetTableSfContactType(json.sfContact) else nil,
+		sfContact = sfContact,
 		sfTaxFormW9TaxAccountOwner = decodeOptionalStringType(json.sfTaxFormW9TaxAccountOwner),
 		sfTaxFormW9DisregardedEntityName = decodeOptionalStringType(json.sfTaxFormW9DisregardedEntityName),
 		sfTaxFormW9TAOTaxAccountOwner = decodeOptionalStringType(json.sfTaxFormW9TAOTaxAccountOwner),
