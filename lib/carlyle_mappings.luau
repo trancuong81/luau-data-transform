@@ -1277,9 +1277,9 @@ end
 -- from source master/feeder fields with index suffixes.
 -- Maps 12 sub-fields: 3 name, 5 address, 4 direct.
 --
-local function mapBeneficialOwner(sources: MergedSources): { any }
+local function mapBeneficialOwner(sources: MergedSources): { FullTargetTable.FullTargetTableSfBeneficialownerType }
 	local namespaces = { "master", "feeder" }
-	local result: { any } = {}
+	local result: { FullTargetTable.FullTargetTableSfBeneficialownerType } = {}
 
 	-- Address sub-field base names (without index suffix)
 	local addressSubFieldBases = {
@@ -1317,7 +1317,7 @@ local function mapBeneficialOwner(sources: MergedSources): { any }
 		}
 
 		-- Build sub-fields dict
-		local subFields: { [string]: any } = {
+		local subFields = FullTargetTable.makeFullTargetTableSfBeneficialownerFields({
 			-- Name split
 			sfBeneficialOwnerNullFirstName = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
 			sfBeneficialOwnerNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
@@ -1353,7 +1353,7 @@ local function mapBeneficialOwner(sources: MergedSources): { any }
 			sfBeneficialOwnerNullPoliticallyExposedPersonC = makeEmptyMultipleCheckboxType(),
 			sfBeneficialOwnerNullIsActiveC = makeEmptyMultipleCheckboxType(),
 			sfBeneficialOwnerNullKYCRefreshC = makeEmptyMultipleCheckboxType(),
-		}
+		})
 
 		-- Fill direct mapped fields
 		for _, dm in directMappings do
@@ -1371,7 +1371,8 @@ local function mapBeneficialOwner(sources: MergedSources): { any }
 					end
 				end
 			end
-			subFields[dm.target] = DataTypes.makeStringType({ typeId = "String", value = value })
+			(subFields :: any)[dm.target] = DataTypes.makeStringType({ typeId = "String", value = value })
+			-- TODO: type-narrow when Luau supports string-literal struct indexing
 		end
 
 		-- Fill address sub-fields from addressUbo compound
@@ -1392,15 +1393,16 @@ local function mapBeneficialOwner(sources: MergedSources): { any }
 					end
 				end
 			end
-			subFields[targetField] = DataTypes.makeStringType({ typeId = "String", value = value })
+			(subFields :: any)[targetField] = DataTypes.makeStringType({ typeId = "String", value = value })
+			-- TODO: type-narrow when Luau supports string-literal struct indexing
 		end
 
-		table.insert(result, {
+		table.insert(result, FullTargetTable.makeFullTargetTableSfBeneficialownerType({
 			typeId = "CustomCompound",
 			valueSubFields = subFields,
 			subFieldKeysInOrder = {},
-			label = nil,
-		})
+			label = "",
+		}))
 	end
 
 	return result
