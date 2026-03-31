@@ -9,6 +9,15 @@ local Schema = require("@lib/schema")
 
 local CarlyleMappings = {}
 
+-- Typed container for source table FieldsMap objects, keyed by namespace.
+-- Helpers index this by string key (src.ns), requiring localized :: any casts
+-- at those access points. The variable itself carries the correct types.
+type MergedSources = {
+	master: SourceMasterTable.SourceMasterTableFieldsMap?,
+	feeder: SourceFeederTable.SourceFeederTableFieldsMap?,
+	w9: SourceW9Table.SourceW9TableFieldsMap?,
+}
+
 -- Re-export splitName type for tests
 export type NameParts = {
 	firstName: string,
@@ -42,10 +51,10 @@ end
 -- Source descriptor: {ns: string, field: string, parent: string?}
 type SourceDesc = { ns: string, field: string, parent: string? }
 
-local function collectTextValues(sources: { [string]: any }, srcList: { SourceDesc }): string
+local function collectTextValues(sources: MergedSources, srcList: { SourceDesc }): string
 	local parts: { string } = {}
 	for _, src in srcList do
-		local ns = sources[src.ns]
+		local ns = (sources :: { [string]: any })[src.ns] -- TODO: type-narrow when Luau supports discriminated maps
 		if ns ~= nil then
 			local raw: any
 			if src.parent ~= nil then
@@ -64,10 +73,10 @@ local function collectTextValues(sources: { [string]: any }, srcList: { SourceDe
 	return table.concat(parts, "")
 end
 
-local function collectSelectedKeys(sources: { [string]: any }, srcList: { SourceDesc }): { string }
+local function collectSelectedKeys(sources: MergedSources, srcList: { SourceDesc }): { string }
 	local result: { string } = {}
 	for _, src in srcList do
-		local ns = sources[src.ns]
+		local ns = (sources :: { [string]: any })[src.ns] -- TODO: type-narrow when Luau supports discriminated maps
 		if ns ~= nil then
 			local raw: any
 			if src.parent ~= nil then
@@ -171,7 +180,7 @@ type W9RadioGroupRule = {
 	optionMap: { [string]: string },
 }
 
-local function applyTextbox(sources: { [string]: any }, rule: TextboxRule): DataTypes.StringType?
+local function applyTextbox(sources: MergedSources, rule: TextboxRule): DataTypes.StringType?
 	local value = collectTextValues(sources, rule.sources)
 	if value == "" then
 		return nil
@@ -179,7 +188,7 @@ local function applyTextbox(sources: { [string]: any }, rule: TextboxRule): Data
 	return DataTypes.makeStringType({ typeId = "String", value = value })
 end
 
-local function applyRadioGroup(sources: { [string]: any }, rule: RadioGroupRule): DataTypes.MultipleCheckboxType?
+local function applyRadioGroup(sources: MergedSources, rule: RadioGroupRule): DataTypes.MultipleCheckboxType?
 	local keys = collectSelectedKeys(sources, rule.sources)
 	local mapped = mapAndDedup(keys, rule.optionMap)
 	if #mapped == 0 then
@@ -188,7 +197,7 @@ local function applyRadioGroup(sources: { [string]: any }, rule: RadioGroupRule)
 	return DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
 end
 
-local function applyCheckboxBoolean(sources: { [string]: any }, rule: CheckboxBooleanRule): DataTypes.MultipleCheckboxType
+local function applyCheckboxBoolean(sources: MergedSources, rule: CheckboxBooleanRule): DataTypes.MultipleCheckboxType
 	local keys = collectSelectedKeys(sources, rule.sources)
 	local trueSet: { [string]: boolean } = {}
 	for _, tk in rule.trueKeys do
@@ -1131,7 +1140,7 @@ local function resolveW9FMTaxId(w9: SourceW9Table.SourceW9TableFieldsMap): strin
 end
 
 -- 894 Eligible: special default-to-false logic
-local function resolve894Eligible(sources: { [string]: any }): DataTypes.MultipleCheckboxType
+local function resolve894Eligible(sources: MergedSources): DataTypes.MultipleCheckboxType
 	local rule894Sources: { SourceDesc } = {
 		{ ns = "master", field = "fiscallytransparentS894benefitsEntityInvestorquestionnaire" },
 		{ ns = "master", field = "caymanfiscallytransparentS894benefitsEntityInvestorquestionnaire" },
@@ -1177,7 +1186,7 @@ end
 -- mapControllingPersons: builds an array of FullTargetTableSfControllingpersonsType
 -- from source master/feeder name fields with index suffixes.
 --
-local function mapControllingPersons(sources: { [string]: any }): { any }
+local function mapControllingPersons(sources: MergedSources): { any }
 	local namespaces = { "master", "feeder" }
 	local result: { any } = {}
 
@@ -1186,7 +1195,7 @@ local function mapControllingPersons(sources: { [string]: any }): { any }
 		-- Collect the full name from the first namespace that has it
 		local fullName = ""
 		for _, ns in namespaces do
-			local nsTable = sources[ns]
+			local nsTable = (sources :: { [string]: any })[ns] -- TODO: type-narrow when Luau supports discriminated maps
 			if nsTable ~= nil then
 				local raw = getField(nsTable, sourceFieldName)
 				if raw ~= nil then
@@ -1268,7 +1277,7 @@ end
 -- from source master/feeder fields with index suffixes.
 -- Maps 12 sub-fields: 3 name, 5 address, 4 direct.
 --
-local function mapBeneficialOwner(sources: { [string]: any }): { any }
+local function mapBeneficialOwner(sources: MergedSources): { any }
 	local namespaces = { "master", "feeder" }
 	local result: { any } = {}
 
@@ -1286,7 +1295,7 @@ local function mapBeneficialOwner(sources: { [string]: any }): { any }
 		local nameField = "asaFullnameBeneficialownerAmlquestionnaire" .. suffix
 		local fullName = ""
 		for _, ns in namespaces do
-			local nsTable = sources[ns]
+			local nsTable = (sources :: { [string]: any })[ns] -- TODO: type-narrow when Luau supports discriminated maps
 			if nsTable ~= nil then
 				local raw = getField(nsTable, nameField)
 				if raw ~= nil then
@@ -1351,7 +1360,7 @@ local function mapBeneficialOwner(sources: { [string]: any }): { any }
 			local sourceField = dm.source .. suffix
 			local value = ""
 			for _, ns in namespaces do
-				local nsTable = sources[ns]
+				local nsTable = (sources :: { [string]: any })[ns] -- TODO: type-narrow when Luau supports discriminated maps
 				if nsTable ~= nil then
 					local raw = getField(nsTable, sourceField)
 					if raw ~= nil then
@@ -1372,7 +1381,7 @@ local function mapBeneficialOwner(sources: { [string]: any }): { any }
 			local addressSubField = addressSubFieldBase .. suffix
 			local value = ""
 			for _, ns in namespaces do
-				local nsTable = sources[ns]
+				local nsTable = (sources :: { [string]: any })[ns] -- TODO: type-narrow when Luau supports discriminated maps
 				if nsTable ~= nil then
 					local raw = getSubField(nsTable, addressParent, addressSubField)
 					if raw ~= nil then
@@ -1626,7 +1635,7 @@ function CarlyleMappings.transformScalars(
 	master: SourceMasterTable.SourceMasterTableFieldsMap?,
 	w9: SourceW9Table.SourceW9TableFieldsMap?
 ): FullTargetTable.FullTargetTableFieldsMap
-	local sources: { [string]: any } = { master = master, feeder = feeder, w9 = w9 }
+	local sources: MergedSources = { master = master, feeder = feeder, w9 = w9 }
 	local output: { [string]: any } = {}
 
 	-- Textbox rules
@@ -1832,7 +1841,7 @@ function CarlyleMappings.transform(
 	master: SourceMasterTable.SourceMasterTableFieldsMap?
 ): FullTargetTable.FullTargetTableFieldsMap
 	local output: { [string]: any } = CarlyleMappings.transformScalars(feeder, master, w9) :: any
-	local sources: { [string]: any } = { master = master, feeder = feeder }
+	local sources: MergedSources = { master = master, feeder = feeder }
 
 	output["sfControllingPersons"] = mapControllingPersons(sources)
 	output["sfBeneficialOwner"] = mapBeneficialOwner(sources)
