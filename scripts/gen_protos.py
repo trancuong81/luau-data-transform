@@ -116,7 +116,9 @@ def emit_fields_map_and_schema(
         else:
             proto_type = get_proto_type(rv) if isinstance(rv, dict) else "StringType"
 
-        lines.append(f"  {proto_type} {name} = {field_num};")
+        is_repeatable = field.get("isRepeatable", False)
+        prefix = "repeated " if is_repeatable else ""
+        lines.append(f"  {prefix}{proto_type} {name} = {field_num};")
         field_num += 1
     lines.append("}")
     lines.append("")
