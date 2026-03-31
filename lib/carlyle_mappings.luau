@@ -1186,9 +1186,9 @@ end
 -- mapControllingPersons: builds an array of FullTargetTableSfControllingpersonsType
 -- from source master/feeder name fields with index suffixes.
 --
-local function mapControllingPersons(sources: MergedSources): { any }
+local function mapControllingPersons(sources: MergedSources): { FullTargetTable.FullTargetTableSfControllingpersonsType }
 	local namespaces = { "master", "feeder" }
-	local result: { any } = {}
+	local result: { FullTargetTable.FullTargetTableSfControllingpersonsType } = {}
 
 	for _, suffix in ARRAY_INDEX_SUFFIXES do
 		local sourceFieldName = "nameControlpersonPart2Duediligencequestionnaire" .. suffix
@@ -1211,7 +1211,7 @@ local function mapControllingPersons(sources: MergedSources): { any }
 
 		-- Build the sub-fields dict: all 45 fields of FullTargetTableSfControllingpersonsFields
 		-- Only 3 are mapped (firstName, middleName, lastName), rest are empty defaults
-		local subFields: { [string]: any } = {
+		local subFields = FullTargetTable.makeFullTargetTableSfControllingpersonsFields({
 			-- Mapped fields
 			sfControllingPersonsNullFirstNameC = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
 			sfControllingPersonsNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
@@ -1259,14 +1259,14 @@ local function mapControllingPersons(sources: MergedSources): { any }
 			sfControllingPersonsNullTaxStatusC = makeEmptyStringType(),
 			-- MultipleCheckboxType field
 			sfControllingPersonsNullInactiveC = makeEmptyMultipleCheckboxType(),
-		}
+		})
 
-		table.insert(result, {
+		table.insert(result, FullTargetTable.makeFullTargetTableSfControllingpersonsType({
 			typeId = "CustomCompound",
 			valueSubFields = subFields,
 			subFieldKeysInOrder = {},
-			label = nil,
-		})
+			label = "",
+		}))
 	end
 
 	return result
