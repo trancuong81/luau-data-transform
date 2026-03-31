@@ -29,7 +29,7 @@ message SourceContactTableContactinfoType {
   string label = 4;
 }
 message SourceContactTableFieldsMap {
-  SourceContactTableContactinfoType contactInfo = 1;
+  repeated SourceContactTableContactinfoType contactInfo = 1;
 }
 
 message SourceContactTableSchema {

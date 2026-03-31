@@ -166,7 +166,7 @@ message FullTargetTableSfContactType {
 }
 message FullTargetTableFieldsMap {
   StringType sf_InvestorAccount_null_TCG_Global_Id_c = 1;
-  FullTargetTableSfFundSelectionType sf_Fund_Selection = 2;
+  repeated FullTargetTableSfFundSelectionType sf_Fund_Selection = 2;
   StringType sf_Account_InvestorAccount_TCG_Global_Id_c = 3;
   StringType sf_Account_CommonName_Name = 4;
   StringType sf_Account_CommonName_Type_c = 5;
@@ -568,8 +568,8 @@ message FullTargetTableFieldsMap {
   StringType sf_Fund_FundClose_Close_Date_c = 401;
   StringType sf_Fund_FundClose_RecordTypeId = 402;
   StringType sf_Fund_null_TCG_Global_Id_c = 403;
-  FullTargetTableSfBeneficialownerType sf_BeneficialOwner = 404;
-  FullTargetTableSfControllingpersonsType sf_ControllingPersons = 405;
+  repeated FullTargetTableSfBeneficialownerType sf_BeneficialOwner = 404;
+  repeated FullTargetTableSfControllingpersonsType sf_ControllingPersons = 405;
   StringType sf_IFC_null_Email_c = 406;
   StringType sf_IFC_null_Status_c = 407;
   StringType sf_IFC_null_Common_Name_c = 408;
@@ -589,7 +589,7 @@ message FullTargetTableFieldsMap {
   StringType sf_IFC_null_Contact_RecordType_Name_c = 422;
   StringType sf_IFC_null_Contact_TCG_Global_ID_c = 423;
   StringType sf_IFC_null_Contact_s_CN_Registered_Country_c = 424;
-  FullTargetTableSfContactType sf_Contact = 425;
+  repeated FullTargetTableSfContactType sf_Contact = 425;
   StringType sf_TaxForm_W9_Tax_Account_Owner = 426;
   StringType sf_TaxForm_W9_Disregarded_Entity_Name = 427;
   StringType sf_TaxForm_W9_TAO_Tax_Account_Owner = 428;
