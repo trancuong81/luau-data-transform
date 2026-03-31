@@ -284,7 +284,7 @@ T.describe("carlyle_integration", function()
 		for _, camelKey in ARRAY_FIELDS do
 			if resultAny[camelKey] ~= nil then
 				arrayData[camelKey] = resultAny[camelKey]
-				resultAny[camelKey] = nil
+				resultAny[camelKey] = {}  -- set to empty array so encoder can iterate (arrays are non-optional)
 			end
 		end
 
@@ -361,7 +361,7 @@ T.describe("carlyle_integration", function()
 		for _, camelKey in ARRAY_FIELDS do
 			if resultAny[camelKey] ~= nil then
 				arrayData[camelKey] = resultAny[camelKey]
-				resultAny[camelKey] = nil
+				resultAny[camelKey] = {}  -- set to empty array so encoder can iterate (arrays are non-optional)
 			end
 		end
 
