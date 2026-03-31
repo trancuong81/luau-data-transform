@@ -1580,13 +1580,13 @@ function CarlyleMappings.transformScalars(
 	w9: SourceW9Table.SourceW9TableFieldsMap?
 ): FullTargetTable.FullTargetTableFieldsMap
 	local sources: MergedSources = { master = master, feeder = feeder, w9 = w9 }
-	local output: { [string]: any } = {}
+	local output = FullTargetTable.makeFullTargetTableFieldsMap({})
 
 	-- Textbox rules
 	for _, rule in textboxRules do
 		local result = applyTextbox(sources, rule)
 		if result ~= nil then
-			output[rule.target] = result
+			(output :: any)[rule.target] = result
 		end
 	end
 
@@ -1594,7 +1594,7 @@ function CarlyleMappings.transformScalars(
 	for _, rule in radioGroupRules do
 		local result = applyRadioGroup(sources, rule)
 		if result ~= nil then
-			output[rule.target] = result
+			(output :: any)[rule.target] = result
 		end
 	end
 
@@ -1602,14 +1602,14 @@ function CarlyleMappings.transformScalars(
 	for _, rule in checkboxGroupRules do
 		local result = applyRadioGroup(sources, rule)
 		if result ~= nil then
-			output[rule.target] = result
+			(output :: any)[rule.target] = result
 		end
 	end
 
 	-- CheckboxBoolean rules (always produces a value)
 	for _, rule in checkboxBooleanRules do
 		local result = applyCheckboxBoolean(sources, rule)
-		output[rule.target] = result
+		;(output :: any)[rule.target] = result
 	end
 
 	-- NameSplit rules
@@ -1617,14 +1617,14 @@ function CarlyleMappings.transformScalars(
 		local value = collectTextValues(sources, rule.sources)
 		if value ~= "" then
 			local parts = CarlyleMappings.splitName(value)
-			output[rule.targetFirst] = DataTypes.makeStringType({ typeId = "String", value = parts.firstName })
-			output[rule.targetMiddle] = DataTypes.makeStringType({ typeId = "String", value = parts.middleName })
-			output[rule.targetLast] = DataTypes.makeStringType({ typeId = "String", value = parts.lastName })
+			;(output :: any)[rule.targetFirst] = DataTypes.makeStringType({ typeId = "String", value = parts.firstName });
+			(output :: any)[rule.targetMiddle] = DataTypes.makeStringType({ typeId = "String", value = parts.middleName });
+			(output :: any)[rule.targetLast] = DataTypes.makeStringType({ typeId = "String", value = parts.lastName })
 		end
 	end
 
 	-- Special: 894 Eligible (defaults to false)
-	output["sfAgreementNullWLC894EligibleC"] = resolve894Eligible(sources)
+	;(output :: any)["sfAgreementNullWLC894EligibleC"] = resolve894Eligible(sources)
 
 	-- Custom: Individual vs Organization detection
 	local indOrg: string? = nil
@@ -1636,7 +1636,7 @@ function CarlyleMappings.transformScalars(
 		if indOrg ~= nil then
 			break
 		end
-		local ns = sources[src.ns]
+		local ns = (sources :: { [string]: any })[src.ns] -- TODO: type-narrow when Luau supports discriminated maps
 		if ns ~= nil then
 			local indRaw = getField(ns, src.indField)
 			if indRaw ~= nil then
@@ -1657,7 +1657,7 @@ function CarlyleMappings.transformScalars(
 		end
 	end
 	if indOrg ~= nil then
-		output["sfAccountSubscriptionInvestorIndividualOrganizationC"] = DataTypes.makeMultipleCheckboxType({
+		(output :: any)["sfAccountSubscriptionInvestorIndividualOrganizationC"] = DataTypes.makeMultipleCheckboxType({
 			typeId = "MultipleCheckbox",
 			selectedKeys = { indOrg :: string },
 		})
@@ -1669,7 +1669,7 @@ function CarlyleMappings.transformScalars(
 		if w9Data.w9Line1 ~= nil then
 			local v = w9Data.w9Line1.value
 			if v ~= nil and v ~= "" then
-				output["sfAccountSubscriptionInvestorFormTypeC"] = DataTypes.makeMultipleCheckboxType({
+				(output :: any)["sfAccountSubscriptionInvestorFormTypeC"] = DataTypes.makeMultipleCheckboxType({
 					typeId = "MultipleCheckbox",
 					selectedKeys = { "W-9" },
 				})
@@ -1694,7 +1694,7 @@ function CarlyleMappings.transformScalars(
 		for _, rule in w9AlwaysTextboxRules do
 			local result = applyW9Textbox(w9Data, rule)
 			if result ~= nil then
-				output[rule.target] = result
+				(output :: any)[rule.target] = result
 			end
 		end
 
@@ -1703,14 +1703,14 @@ function CarlyleMappings.transformScalars(
 			for _, rule in w9TaoTextboxRules do
 				local result = applyW9Textbox(w9Data, rule)
 				if result ~= nil then
-					output[rule.target] = result
+					(output :: any)[rule.target] = result
 				end
 			end
 
 			-- TAO Tax Status (special LLC logic)
 			local taoTaxStatus = resolveW9TaxStatus(w9Data)
 			if taoTaxStatus ~= nil then
-				output["sfTaxFormW9TAOTaxStatusC"] = DataTypes.makeMultipleCheckboxType({
+				(output :: any)["sfTaxFormW9TAOTaxStatusC"] = DataTypes.makeMultipleCheckboxType({
 					typeId = "MultipleCheckbox",
 					selectedKeys = taoTaxStatus,
 				})
@@ -1719,7 +1719,7 @@ function CarlyleMappings.transformScalars(
 			-- TAO TIN Type
 			local taoTinType = resolveW9TINType(w9Data)
 			if taoTinType ~= nil then
-				output["sfTaxFormW9TAOUSTINTypeC"] = DataTypes.makeMultipleCheckboxType({
+				(output :: any)["sfTaxFormW9TAOUSTINTypeC"] = DataTypes.makeMultipleCheckboxType({
 					typeId = "MultipleCheckbox",
 					selectedKeys = taoTinType,
 				})
@@ -1728,7 +1728,7 @@ function CarlyleMappings.transformScalars(
 			-- TAO US Tax ID
 			local taoTaxId = resolveW9FMTaxId(w9Data)
 			if taoTaxId ~= "" then
-				output["sfTaxFormW9TAOUSTaxIDC"] = DataTypes.makeStringType({
+				(output :: any)["sfTaxFormW9TAOUSTaxIDC"] = DataTypes.makeStringType({
 					typeId = "String",
 					value = taoTaxId,
 				})
@@ -1738,14 +1738,14 @@ function CarlyleMappings.transformScalars(
 			for _, rule in w9DirectTextboxRules do
 				local result = applyW9Textbox(w9Data, rule)
 				if result ~= nil then
-					output[rule.target] = result
+					(output :: any)[rule.target] = result
 				end
 			end
 
 			-- Direct Tax Status (special LLC logic)
 			local directTaxStatus = resolveW9TaxStatus(w9Data)
 			if directTaxStatus ~= nil then
-				output["sfTaxFormW9TaxStatusC"] = DataTypes.makeMultipleCheckboxType({
+				(output :: any)["sfTaxFormW9TaxStatusC"] = DataTypes.makeMultipleCheckboxType({
 					typeId = "MultipleCheckbox",
 					selectedKeys = directTaxStatus,
 				})
@@ -1754,7 +1754,7 @@ function CarlyleMappings.transformScalars(
 			-- Direct TIN Type
 			local directTinType = resolveW9TINType(w9Data)
 			if directTinType ~= nil then
-				output["sfTaxFormW9USTINTypeC"] = DataTypes.makeMultipleCheckboxType({
+				(output :: any)["sfTaxFormW9USTINTypeC"] = DataTypes.makeMultipleCheckboxType({
 					typeId = "MultipleCheckbox",
 					selectedKeys = directTinType,
 				})
@@ -1763,7 +1763,7 @@ function CarlyleMappings.transformScalars(
 			-- Direct FM Tax Id
 			local directTaxId = resolveW9FMTaxId(w9Data)
 			if directTaxId ~= "" then
-				output["sfTaxFormW9FMTaxIdC"] = DataTypes.makeStringType({
+				(output :: any)["sfTaxFormW9FMTaxIdC"] = DataTypes.makeStringType({
 					typeId = "String",
 					value = directTaxId,
 				})
@@ -1771,7 +1771,7 @@ function CarlyleMappings.transformScalars(
 		end
 	end
 
-	return FullTargetTable.makeFullTargetTableFieldsMap(output :: any)
+	return output
 end
 
 --------------------------------------------------------------------------------
@@ -1784,14 +1784,14 @@ function CarlyleMappings.transform(
 	feeder: SourceFeederTable.SourceFeederTableFieldsMap?,
 	master: SourceMasterTable.SourceMasterTableFieldsMap?
 ): FullTargetTable.FullTargetTableFieldsMap
-	local output: { [string]: any } = CarlyleMappings.transformScalars(feeder, master, w9) :: any
+	local result = CarlyleMappings.transformScalars(feeder, master, w9)
 	local sources: MergedSources = { master = master, feeder = feeder }
 
-	output["sfControllingPersons"] = mapControllingPersons(sources)
-	output["sfBeneficialOwner"] = mapBeneficialOwner(sources)
-	output["sfContact"] = mapContact(contact)
+	result.sfControllingPersons = mapControllingPersons(sources)
+	result.sfBeneficialOwner = mapBeneficialOwner(sources)
+	result.sfContact = mapContact(contact)
 
-	return FullTargetTable.makeFullTargetTableFieldsMap(output :: any)
+	return result
 end
 
 return CarlyleMappings
