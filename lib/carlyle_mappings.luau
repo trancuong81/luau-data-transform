@@ -1042,42 +1042,6 @@ local function mapContact(contactData: SourceContactTable.SourceContactTableFiel
 		return {}
 	end
 
-	-- Role key → target field mapping
-	local roleMap = {
-		["primarycontact_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCPrimaryContactC",
-		["secondarycontact_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCSecondaryContactC",
-		["taxadvisor_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCTaxAdvisorC",
-		["legaladvisor_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCLegalAdvisorC",
-		["financecontact_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCFinanceContactC",
-		["amlkyccontact_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCAMLKYCContactC",
-		["wireapprover_contactrole_part3_duediligencequestionnaire"] = "sfContactIFCWireApproverC",
-	}
-	local roleKeys = {
-		"primarycontact_contactrole_part3_duediligencequestionnaire",
-		"secondarycontact_contactrole_part3_duediligencequestionnaire",
-		"taxadvisor_contactrole_part3_duediligencequestionnaire",
-		"legaladvisor_contactrole_part3_duediligencequestionnaire",
-		"financecontact_contactrole_part3_duediligencequestionnaire",
-		"amlkyccontact_contactrole_part3_duediligencequestionnaire",
-		"wireapprover_contactrole_part3_duediligencequestionnaire",
-	}
-
-	-- Notification key → target field mapping
-	local notiMap = {
-		["capitalcallnotices_contactnotification_part3_duediligencequestionnaire"] = "sfContactIFCCapitalCallManagementNotC",
-		["distributionnotices_contactnotification_part3_duediligencequestionnaire"] = "sfContactIFCDistributionManagementNotC",
-		["financialreporting_contactnotification_part3_duediligencequestionnaire"] = "sfContactIFCFinancialReportingNotC",
-		["legalinfo_contactnotification_part3_duediligencequestionnaire"] = "sfContactIFCLegalInformationNotC",
-		["taxinfo_contactnotification_part3_duediligencequestionnaire"] = "sfContactIFCTaxInformationNotC",
-	}
-	local notiKeys = {
-		"capitalcallnotices_contactnotification_part3_duediligencequestionnaire",
-		"distributionnotices_contactnotification_part3_duediligencequestionnaire",
-		"financialreporting_contactnotification_part3_duediligencequestionnaire",
-		"legalinfo_contactnotification_part3_duediligencequestionnaire",
-		"taxinfo_contactnotification_part3_duediligencequestionnaire",
-	}
-
 	local result: { FullTargetTable.FullTargetTableSfContactType } = {}
 
 	for _, row in contactInfo do
@@ -1112,10 +1076,12 @@ local function mapContact(contactData: SourceContactTable.SourceContactTableFiel
 
 		-- Build sub-fields using typed constructor
 		local subFields = FullTargetTable.makeFullTargetTableSfContactFields({
+			-- Name fields
 			sfContactNullFirstName = DataTypes.makeStringType({ typeId = "String", value = nameParts.firstName }),
 			sfContactNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = nameParts.middleName }),
 			sfContactNullLastName = DataTypes.makeStringType({ typeId = "String", value = nameParts.lastName }),
 			sfContactNullName = DataTypes.makeStringType({ typeId = "String", value = fullName }),
+			-- Address/contact fields
 			sfContactNullMailingAddress = DataTypes.makeStringType({
 				typeId = "String",
 				value = getStr(vsf.addressContactPart3Duediligencequestionnaire),
@@ -1163,21 +1129,21 @@ local function mapContact(contactData: SourceContactTable.SourceContactTableFiel
 			sfContactIFCNotificationsC = makeEmptyMultipleCheckboxType(),
 			anduinContactNotification = makeEmptyMultipleCheckboxType(),
 			anduinContactRole = makeEmptyMultipleCheckboxType(),
+			-- Role boolean fields (7 fields)
+			sfContactIFCPrimaryContactC = makeBoolCheckbox(roleSet["primarycontact_contactrole_part3_duediligencequestionnaire"] == true),
+			sfContactIFCSecondaryContactC = makeBoolCheckbox(roleSet["secondarycontact_contactrole_part3_duediligencequestionnaire"] == true),
+			sfContactIFCTaxAdvisorC = makeBoolCheckbox(roleSet["taxadvisor_contactrole_part3_duediligencequestionnaire"] == true),
+			sfContactIFCLegalAdvisorC = makeBoolCheckbox(roleSet["legaladvisor_contactrole_part3_duediligencequestionnaire"] == true),
+			sfContactIFCFinanceContactC = makeBoolCheckbox(roleSet["financecontact_contactrole_part3_duediligencequestionnaire"] == true),
+			sfContactIFCAMLKYCContactC = makeBoolCheckbox(roleSet["amlkyccontact_contactrole_part3_duediligencequestionnaire"] == true),
+			sfContactIFCWireApproverC = makeBoolCheckbox(roleSet["wireapprover_contactrole_part3_duediligencequestionnaire"] == true),
+			-- Notification boolean fields (5 fields)
+			sfContactIFCCapitalCallManagementNotC = makeBoolCheckbox(notiSet["capitalcallnotices_contactnotification_part3_duediligencequestionnaire"] == true),
+			sfContactIFCDistributionManagementNotC = makeBoolCheckbox(notiSet["distributionnotices_contactnotification_part3_duediligencequestionnaire"] == true),
+			sfContactIFCFinancialReportingNotC = makeBoolCheckbox(notiSet["financialreporting_contactnotification_part3_duediligencequestionnaire"] == true),
+			sfContactIFCLegalInformationNotC = makeBoolCheckbox(notiSet["legalinfo_contactnotification_part3_duediligencequestionnaire"] == true),
+			sfContactIFCTaxInformationNotC = makeBoolCheckbox(notiSet["taxinfo_contactnotification_part3_duediligencequestionnaire"] == true),
 		})
-
-		-- Set role boolean fields (string-indexed, localized cast)
-		for _, rk in roleKeys do
-			local targetField = roleMap[rk];
-			(subFields :: any)[targetField] = makeBoolCheckbox(roleSet[rk] == true)
-			-- TODO: type-narrow when Luau supports string-literal struct indexing
-		end
-
-		-- Set notification boolean fields (string-indexed, localized cast)
-		for _, nk in notiKeys do
-			local targetField = notiMap[nk];
-			(subFields :: any)[targetField] = makeBoolCheckbox(notiSet[nk] == true)
-			-- TODO: type-narrow when Luau supports string-literal struct indexing
-		end
 
 		table.insert(result, FullTargetTable.makeFullTargetTableSfContactType({
 			typeId = "CustomCompound",
