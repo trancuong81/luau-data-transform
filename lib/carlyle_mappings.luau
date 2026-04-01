@@ -162,11 +162,6 @@ end
 -- Pattern Executors
 --------------------------------------------------------------------------------
 
-type TextboxRule = {
-	target: string,
-	sources: { SourceDesc },
-}
-
 type RadioGroupRule = {
 	target: string,
 	sources: { SourceDesc },
@@ -196,14 +191,6 @@ type W9RadioGroupRule = {
 	sources: { SourceDesc },
 	optionMap: { [string]: string },
 }
-
-local function applyTextbox(sources: MergedSources, rule: TextboxRule): DataTypes.StringType?
-	local value = collectTextValues(sources, rule.sources)
-	if value == "" then
-		return nil
-	end
-	return DataTypes.makeStringType({ typeId = "String", value = value })
-end
 
 local function applyRadioGroup(sources: MergedSources, rule: RadioGroupRule): DataTypes.MultipleCheckboxType?
 	local keys = collectSelectedKeys(sources, rule.sources)
@@ -243,232 +230,6 @@ end
 --------------------------------------------------------------------------------
 -- Rule Tables
 --------------------------------------------------------------------------------
-
--- Non-W9 textbox rules (always applied)
-local textboxRules: { TextboxRule } = {
-	-- // textbox: sf_Account_SubscriptionInvestor_Name
-	{
-		target = "sfAccountSubscriptionInvestorName",
-		sources = {
-			{ ns = "master", field = "asaFullnameInvestornameAmlquestionnaire" },
-			{ ns = "master", field = "asaFullnameInvestornameGeneralinfo1" },
-			{ ns = "feeder", field = "asaFullnameInvestornameAmlquestionnaire" },
-			{ ns = "feeder", field = "asaFullnameInvestornameGeneralinfo1" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_WLC_Occupation_c
-	{
-		target = "sfAccountSubscriptionInvestorWLCOccupationC",
-		sources = {
-			{ ns = "master", field = "asaOccupationIndividualAmlquestionnaire" },
-			{ ns = "feeder", field = "asaOccupationIndividualAmlquestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_WLC_Title_c
-	{
-		target = "sfAccountSubscriptionInvestorWLCTitleC",
-		sources = {
-			{ ns = "master", field = "professionalactivityAndTitleIndividualAmlquestionnaire" },
-			{ ns = "feeder", field = "professionalactivityAndTitleIndividualAmlquestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_WLC_Employer_Name_c
-	{
-		target = "sfAccountSubscriptionInvestorWLCEmployerNameC",
-		sources = {
-			{ ns = "master", field = "nameofemployerPart1Duediligencequestionnaire" },
-			{ ns = "feeder", field = "nameofemployerPart1Duediligencequestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_WLC_Subscribing_as_Representative_Details_c
-	{
-		target = "sfAccountSubscriptionInvestorWLCSubscribingAsRepresentativeDetailsC",
-		sources = {
-			{ ns = "master", field = "specifyotherCategoryNomineePart1Duediligencequestionnaire" },
-			{ ns = "feeder", field = "specifyotherCategoryNomineePart1Duediligencequestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_WLC_Trade_Name_c
-	{
-		target = "sfAccountSubscriptionInvestorWLCTradeNameC",
-		sources = {
-			{ ns = "master", field = "tradenamePart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "tradenamePart2Duediligencequestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_AML_Address_Country_c
-	{
-		target = "sfAccountSubscriptionInvestorAMLAddressCountryC",
-		sources = {
-			{ ns = "master", field = "jurisdictionoforganizationPart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "jurisdictionoforganizationPart2Duediligencequestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_Date_of_Organization_Formation_Date_c
-	{
-		target = "sfAccountSubscriptionInvestorDateOfOrganizationFormationDateC",
-		sources = {
-			{ ns = "master", field = "asaDateofestablishmentEntityAmlquestionnaire" },
-			{ ns = "feeder", field = "asaDateofestablishmentEntityAmlquestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_Website
-	{
-		target = "sfAccountSubscriptionInvestorWebsite",
-		sources = {
-			{ ns = "master", field = "websitePart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "websitePart2Duediligencequestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_Equity_Tax_Id_c (appears twice in CUE, only keep once)
-	{
-		target = "sfAccountSubscriptionInvestorEquityTaxIdC",
-		sources = {
-			{ ns = "master", field = "ssnorftiorppnoPart1Duediligencequestionnaire" },
-			{ ns = "master", field = "tinPart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "ssnorftiorppnoPart1Duediligencequestionnaire" },
-			{ ns = "feeder", field = "tinPart2Duediligencequestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_WLC_Regulator_c
-	{
-		target = "sfAccountSubscriptionInvestorWLCRegulatorC",
-		sources = {
-			{ ns = "master", field = "indicateFinancialinstitutionRegulatedstatusPart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "indicateFinancialinstitutionRegulatedstatusPart2Duediligencequestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_WLC_Exchange_c
-	{
-		target = "sfAccountSubscriptionInvestorWLCExchangeC",
-		sources = {
-			{ ns = "master", field = "indicateLuxsentityRegulatedstatusPart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "indicateLuxsentityRegulatedstatusPart2Duediligencequestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_WLC_Ticker_Symbol_c
-	{
-		target = "sfAccountSubscriptionInvestorWLCTickerSymbolC",
-		sources = {
-			{ ns = "master", field = "tickersymbolLuxsentityRegulatedstatusPart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "tickersymbolLuxsentityRegulatedstatusPart2Duediligencequestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_Tax_Country_Jurisdiction_c
-	{
-		target = "sfAccountSubscriptionInvestorTaxCountryJurisdictionC",
-		sources = {
-			{ ns = "master", field = "asaJurisdictionoftaxresidencyGeneralinfo" },
-			{ ns = "feeder", field = "asaJurisdictionoftaxresidencyGeneralinfo" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_Joint_Account_Name_c
-	{
-		target = "sfAccountSubscriptionInvestorJointAccountNameC",
-		sources = {
-			{ ns = "master", field = "jointaccountholdersnamesPart1Duediligencequestionnaire" },
-			{ ns = "feeder", field = "jointaccountholdersnamesPart1Duediligencequestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_Date_Of_Birth_c
-	{
-		target = "sfAccountSubscriptionInvestorDateOfBirthC",
-		sources = {
-			{ ns = "master", field = "asaDateofbirthIndividualAmlquestionnaire" },
-			{ ns = "feeder", field = "asaDateofbirthIndividualAmlquestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_Country_of_Birth_c
-	{
-		target = "sfAccountSubscriptionInvestorCountryOfBirthC",
-		sources = {
-			{ ns = "master", field = "asaPlaceofbirthIndividualAmlquestionnaire" },
-			{ ns = "feeder", field = "asaPlaceofbirthIndividualAmlquestionnaire" },
-		},
-	},
-	-- // textbox: sf_Account_SubscriptionInvestor_Citizenship_Country_c
-	{
-		target = "sfAccountSubscriptionInvestorCitizenshipCountryC",
-		sources = {
-			{ ns = "master", field = "asaNationalityIndividualAmlquestionnaire" },
-			{ ns = "feeder", field = "asaNationalityIndividualAmlquestionnaire" },
-		},
-	},
-	-- // textbox with parent: sf_Account_SubscriptionInvestor_Bank_Name_c
-	{
-		target = "sfAccountSubscriptionInvestorBankNameC",
-		sources = {
-			{ ns = "master", field = "asaBanknameWireinstructionstoWireinfo", parent = "wireInstructions" },
-			{ ns = "feeder", field = "asaBanknameWireinstructionstoWireinfo", parent = "wireInstructions" },
-		},
-	},
-	-- // textbox with parent: sf_Account_SubscriptionInvestor_Bank_Location_c
-	{
-		target = "sfAccountSubscriptionInvestorBankLocationC",
-		sources = {
-			{ ns = "master", field = "asaBanklocationWireinstructionstoWireinfo", parent = "wireInstructions" },
-			{ ns = "feeder", field = "asaBanklocationWireinstructionstoWireinfo", parent = "wireInstructions" },
-		},
-	},
-	-- // textbox with parent: sf_Agreement_null_Commitment_c
-	{
-		target = "sfAgreementNullCommitmentC",
-		sources = {
-			{ ns = "master", field = "asaCommitmentAmount", parent = "lpSignatory" },
-			{ ns = "feeder", field = "asaCommitmentAmount", parent = "lpSignatory" },
-		},
-	},
-	-- // subdoc address: sf_Account_SubscriptionInvestor_BillingStreet
-	{
-		target = "sfAccountSubscriptionInvestorBillingStreet",
-		sources = {
-			{ ns = "master", field = "asaNumberandstreetCurrentresidentialaddressIndividualAmlquestionnaire", parent = "residentialaddressIndividual" },
-			{ ns = "master", field = "asaNumberandstreetCurrentbusinessaddressEntityAmlquestionnaire", parent = "placeofbusinessEntity" },
-			{ ns = "feeder", field = "asaNumberandstreetCurrentresidentialaddressIndividualAmlquestionnaire", parent = "residentialaddressIndividual" },
-			{ ns = "feeder", field = "asaNumberandstreetCurrentbusinessaddressEntityAmlquestionnaire", parent = "placeofbusinessEntity" },
-		},
-	},
-	-- // subdoc address: sf_Account_SubscriptionInvestor_BillingCity
-	{
-		target = "sfAccountSubscriptionInvestorBillingCity",
-		sources = {
-			{ ns = "master", field = "asaCityCurrentresidentialaddressIndividualAmlquestionnaire", parent = "residentialaddressIndividual" },
-			{ ns = "master", field = "asaCityCurrentbusinessaddressEntityAmlquestionnaire", parent = "placeofbusinessEntity" },
-			{ ns = "feeder", field = "asaCityCurrentresidentialaddressIndividualAmlquestionnaire", parent = "residentialaddressIndividual" },
-			{ ns = "feeder", field = "asaCityCurrentbusinessaddressEntityAmlquestionnaire", parent = "placeofbusinessEntity" },
-		},
-	},
-	-- // subdoc address: sf_Account_SubscriptionInvestor_BillingState
-	{
-		target = "sfAccountSubscriptionInvestorBillingState",
-		sources = {
-			{ ns = "master", field = "asaStateCurrentresidentialaddressIndividualAmlquestionnaire", parent = "residentialaddressIndividual" },
-			{ ns = "master", field = "asaStateCurrentbusinessaddressEntityAmlquestionnaire", parent = "placeofbusinessEntity" },
-			{ ns = "feeder", field = "asaStateCurrentresidentialaddressIndividualAmlquestionnaire", parent = "residentialaddressIndividual" },
-			{ ns = "feeder", field = "asaStateCurrentbusinessaddressEntityAmlquestionnaire", parent = "placeofbusinessEntity" },
-		},
-	},
-	-- // subdoc address: sf_Account_SubscriptionInvestor_BillingPostalCode
-	{
-		target = "sfAccountSubscriptionInvestorBillingPostalCode",
-		sources = {
-			{ ns = "master", field = "asaZipCurrentresidentialaddressIndividualAmlquestionnaire", parent = "residentialaddressIndividual" },
-			{ ns = "master", field = "asaZipCurrentbusinessaddressEntityAmlquestionnaire", parent = "placeofbusinessEntity" },
-			{ ns = "feeder", field = "asaZipCurrentresidentialaddressIndividualAmlquestionnaire", parent = "residentialaddressIndividual" },
-			{ ns = "feeder", field = "asaZipCurrentbusinessaddressEntityAmlquestionnaire", parent = "placeofbusinessEntity" },
-		},
-	},
-	-- // subdoc address: sf_Account_SubscriptionInvestor_BillingCountry
-	{
-		target = "sfAccountSubscriptionInvestorBillingCountry",
-		sources = {
-			{ ns = "master", field = "asaCountryCurrentresidentialaddressIndividualAmlquestionnaire", parent = "residentialaddressIndividual" },
-			{ ns = "master", field = "asaCountryCurrentbusinessaddressEntityAmlquestionnaire", parent = "placeofbusinessEntity" },
-			{ ns = "feeder", field = "asaCountryCurrentresidentialaddressIndividualAmlquestionnaire", parent = "residentialaddressIndividual" },
-			{ ns = "feeder", field = "asaCountryCurrentbusinessaddressEntityAmlquestionnaire", parent = "placeofbusinessEntity" },
-		},
-	},
-}
 
 -- Non-W9 radioGroup rules (always applied)
 local radioGroupRules: { RadioGroupRule } = {
@@ -1599,11 +1360,364 @@ function CarlyleMappings.transformScalars(
 	local sources: MergedSources = { master = master, feeder = feeder, w9 = w9 }
 	local output = FullTargetTable.makeFullTargetTableFieldsMap({})
 
-	-- Textbox rules
-	for _, rule in textboxRules do
-		local result = applyTextbox(sources, rule)
-		if result ~= nil then
-			(output :: any)[rule.target] = result
+	-- Textbox rules (inline typed)
+	-- sf_Account_SubscriptionInvestor_Name
+	do
+		local v = ""
+		if master ~= nil then
+			v = strVal(master.asaFullnameInvestornameAmlquestionnaire)
+			if v == "" then v = strVal(master.asaFullnameInvestornameGeneralinfo1) end
+		end
+		if v == "" and feeder ~= nil then
+			v = strVal(feeder.asaFullnameInvestornameAmlquestionnaire)
+			if v == "" then v = strVal(feeder.asaFullnameInvestornameGeneralinfo1) end
+		end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorName = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_WLC_Occupation_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.asaOccupationIndividualAmlquestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.asaOccupationIndividualAmlquestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorWLCOccupationC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_WLC_Title_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.professionalactivityAndTitleIndividualAmlquestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.professionalactivityAndTitleIndividualAmlquestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorWLCTitleC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_WLC_Employer_Name_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.nameofemployerPart1Duediligencequestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.nameofemployerPart1Duediligencequestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorWLCEmployerNameC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_WLC_Subscribing_as_Representative_Details_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.specifyotherCategoryNomineePart1Duediligencequestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.specifyotherCategoryNomineePart1Duediligencequestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorWLCSubscribingAsRepresentativeDetailsC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_WLC_Trade_Name_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.tradenamePart2Duediligencequestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.tradenamePart2Duediligencequestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorWLCTradeNameC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_AML_Address_Country_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.jurisdictionoforganizationPart2Duediligencequestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.jurisdictionoforganizationPart2Duediligencequestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorAMLAddressCountryC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_Date_of_Organization_Formation_Date_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.asaDateofestablishmentEntityAmlquestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.asaDateofestablishmentEntityAmlquestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorDateOfOrganizationFormationDateC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_Website
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.websitePart2Duediligencequestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.websitePart2Duediligencequestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorWebsite = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_Equity_Tax_Id_c
+	do
+		local parts: { string } = {}
+		if master ~= nil then
+			local v1 = strVal(master.ssnorftiorppnoPart1Duediligencequestionnaire)
+			if v1 ~= "" then table.insert(parts, v1) end
+			local v2 = strVal(master.tinPart2Duediligencequestionnaire)
+			if v2 ~= "" then table.insert(parts, v2) end
+		end
+		if feeder ~= nil then
+			local v1 = strVal(feeder.ssnorftiorppnoPart1Duediligencequestionnaire)
+			if v1 ~= "" then table.insert(parts, v1) end
+			local v2 = strVal(feeder.tinPart2Duediligencequestionnaire)
+			if v2 ~= "" then table.insert(parts, v2) end
+		end
+		local v = table.concat(parts, "")
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorEquityTaxIdC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_WLC_Regulator_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.indicateFinancialinstitutionRegulatedstatusPart2Duediligencequestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.indicateFinancialinstitutionRegulatedstatusPart2Duediligencequestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorWLCRegulatorC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_WLC_Exchange_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.indicateLuxsentityRegulatedstatusPart2Duediligencequestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.indicateLuxsentityRegulatedstatusPart2Duediligencequestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorWLCExchangeC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_WLC_Ticker_Symbol_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.tickersymbolLuxsentityRegulatedstatusPart2Duediligencequestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.tickersymbolLuxsentityRegulatedstatusPart2Duediligencequestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorWLCTickerSymbolC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_Tax_Country_Jurisdiction_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.asaJurisdictionoftaxresidencyGeneralinfo) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.asaJurisdictionoftaxresidencyGeneralinfo) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorTaxCountryJurisdictionC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_Joint_Account_Name_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.jointaccountholdersnamesPart1Duediligencequestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.jointaccountholdersnamesPart1Duediligencequestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorJointAccountNameC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_Date_Of_Birth_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.asaDateofbirthIndividualAmlquestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.asaDateofbirthIndividualAmlquestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorDateOfBirthC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_Country_of_Birth_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.asaPlaceofbirthIndividualAmlquestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.asaPlaceofbirthIndividualAmlquestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorCountryOfBirthC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_Citizenship_Country_c
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.asaNationalityIndividualAmlquestionnaire) end
+		if v == "" and feeder ~= nil then v = strVal(feeder.asaNationalityIndividualAmlquestionnaire) end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorCitizenshipCountryC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_Bank_Name_c
+	do
+		local v = ""
+		if master ~= nil and master.wireInstructions ~= nil then
+			local vsf = master.wireInstructions.valueSubFields
+			if vsf ~= nil then v = strVal(vsf.asaBanknameWireinstructionstoWireinfo) end
+		end
+		if v == "" and feeder ~= nil and feeder.wireInstructions ~= nil then
+			local vsf = feeder.wireInstructions.valueSubFields
+			if vsf ~= nil then v = strVal(vsf.asaBanknameWireinstructionstoWireinfo) end
+		end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorBankNameC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_Bank_Location_c
+	do
+		local v = ""
+		if master ~= nil and master.wireInstructions ~= nil then
+			local vsf = master.wireInstructions.valueSubFields
+			if vsf ~= nil then v = strVal(vsf.asaBanklocationWireinstructionstoWireinfo) end
+		end
+		if v == "" and feeder ~= nil and feeder.wireInstructions ~= nil then
+			local vsf = feeder.wireInstructions.valueSubFields
+			if vsf ~= nil then v = strVal(vsf.asaBanklocationWireinstructionstoWireinfo) end
+		end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorBankLocationC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Agreement_null_Commitment_c
+	do
+		local v = ""
+		if master ~= nil and master.lpSignatory ~= nil then
+			local vsf = master.lpSignatory.valueSubFields
+			if vsf ~= nil then v = strVal(vsf.asaCommitmentAmount) end
+		end
+		if v == "" and feeder ~= nil and feeder.lpSignatory ~= nil then
+			local vsf = feeder.lpSignatory.valueSubFields
+			if vsf ~= nil then v = strVal(vsf.asaCommitmentAmount) end
+		end
+		if v ~= "" then
+			output.sfAgreementNullCommitmentC = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_BillingStreet
+	do
+		local v = ""
+		if master ~= nil then
+			if master.residentialaddressIndividual ~= nil then
+				local vsf = master.residentialaddressIndividual.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaNumberandstreetCurrentresidentialaddressIndividualAmlquestionnaire) end
+			end
+			if v == "" and master.placeofbusinessEntity ~= nil then
+				local vsf = master.placeofbusinessEntity.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaNumberandstreetCurrentbusinessaddressEntityAmlquestionnaire) end
+			end
+		end
+		if v == "" and feeder ~= nil then
+			if feeder.residentialaddressIndividual ~= nil then
+				local vsf = feeder.residentialaddressIndividual.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaNumberandstreetCurrentresidentialaddressIndividualAmlquestionnaire) end
+			end
+			if v == "" and feeder.placeofbusinessEntity ~= nil then
+				local vsf = feeder.placeofbusinessEntity.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaNumberandstreetCurrentbusinessaddressEntityAmlquestionnaire) end
+			end
+		end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorBillingStreet = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_BillingCity
+	do
+		local v = ""
+		if master ~= nil then
+			if master.residentialaddressIndividual ~= nil then
+				local vsf = master.residentialaddressIndividual.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaCityCurrentresidentialaddressIndividualAmlquestionnaire) end
+			end
+			if v == "" and master.placeofbusinessEntity ~= nil then
+				local vsf = master.placeofbusinessEntity.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaCityCurrentbusinessaddressEntityAmlquestionnaire) end
+			end
+		end
+		if v == "" and feeder ~= nil then
+			if feeder.residentialaddressIndividual ~= nil then
+				local vsf = feeder.residentialaddressIndividual.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaCityCurrentresidentialaddressIndividualAmlquestionnaire) end
+			end
+			if v == "" and feeder.placeofbusinessEntity ~= nil then
+				local vsf = feeder.placeofbusinessEntity.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaCityCurrentbusinessaddressEntityAmlquestionnaire) end
+			end
+		end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorBillingCity = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_BillingState
+	do
+		local v = ""
+		if master ~= nil then
+			if master.residentialaddressIndividual ~= nil then
+				local vsf = master.residentialaddressIndividual.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaStateCurrentresidentialaddressIndividualAmlquestionnaire) end
+			end
+			if v == "" and master.placeofbusinessEntity ~= nil then
+				local vsf = master.placeofbusinessEntity.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaStateCurrentbusinessaddressEntityAmlquestionnaire) end
+			end
+		end
+		if v == "" and feeder ~= nil then
+			if feeder.residentialaddressIndividual ~= nil then
+				local vsf = feeder.residentialaddressIndividual.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaStateCurrentresidentialaddressIndividualAmlquestionnaire) end
+			end
+			if v == "" and feeder.placeofbusinessEntity ~= nil then
+				local vsf = feeder.placeofbusinessEntity.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaStateCurrentbusinessaddressEntityAmlquestionnaire) end
+			end
+		end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorBillingState = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_BillingPostalCode
+	do
+		local v = ""
+		if master ~= nil then
+			if master.residentialaddressIndividual ~= nil then
+				local vsf = master.residentialaddressIndividual.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaZipCurrentresidentialaddressIndividualAmlquestionnaire) end
+			end
+			if v == "" and master.placeofbusinessEntity ~= nil then
+				local vsf = master.placeofbusinessEntity.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaZipCurrentbusinessaddressEntityAmlquestionnaire) end
+			end
+		end
+		if v == "" and feeder ~= nil then
+			if feeder.residentialaddressIndividual ~= nil then
+				local vsf = feeder.residentialaddressIndividual.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaZipCurrentresidentialaddressIndividualAmlquestionnaire) end
+			end
+			if v == "" and feeder.placeofbusinessEntity ~= nil then
+				local vsf = feeder.placeofbusinessEntity.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaZipCurrentbusinessaddressEntityAmlquestionnaire) end
+			end
+		end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorBillingPostalCode = DataTypes.makeStringType({ typeId = "String", value = v })
+		end
+	end
+	-- sf_Account_SubscriptionInvestor_BillingCountry
+	do
+		local v = ""
+		if master ~= nil then
+			if master.residentialaddressIndividual ~= nil then
+				local vsf = master.residentialaddressIndividual.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaCountryCurrentresidentialaddressIndividualAmlquestionnaire) end
+			end
+			if v == "" and master.placeofbusinessEntity ~= nil then
+				local vsf = master.placeofbusinessEntity.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaCountryCurrentbusinessaddressEntityAmlquestionnaire) end
+			end
+		end
+		if v == "" and feeder ~= nil then
+			if feeder.residentialaddressIndividual ~= nil then
+				local vsf = feeder.residentialaddressIndividual.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaCountryCurrentresidentialaddressIndividualAmlquestionnaire) end
+			end
+			if v == "" and feeder.placeofbusinessEntity ~= nil then
+				local vsf = feeder.placeofbusinessEntity.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.asaCountryCurrentbusinessaddressEntityAmlquestionnaire) end
+			end
+		end
+		if v ~= "" then
+			output.sfAccountSubscriptionInvestorBillingCountry = DataTypes.makeStringType({ typeId = "String", value = v })
 		end
 	end
 
