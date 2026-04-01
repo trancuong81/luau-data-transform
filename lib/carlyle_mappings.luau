@@ -9,14 +9,6 @@ local Schema = require("@lib/schema")
 
 local CarlyleMappings = {}
 
--- Typed container for source table FieldsMap objects, keyed by namespace.
--- Helpers index this by string key (src.ns), requiring localized :: any casts
--- at those access points. The variable itself carries the correct types.
-type MergedSources = {
-	master: SourceMasterTable.SourceMasterTableFieldsMap?,
-	feeder: SourceFeederTable.SourceFeederTableFieldsMap?,
-	w9: SourceW9Table.SourceW9TableFieldsMap?,
-}
 
 -- Re-export splitName type for tests
 export type NameParts = {
@@ -45,25 +37,6 @@ end
 --------------------------------------------------------------------------------
 -- Helpers
 --------------------------------------------------------------------------------
-
-local function getField(source: any, fieldName: string): any
-	if source == nil then
-		return nil
-	end
-	return (source :: { [string]: any })[fieldName]
-end
-
-local function getSubField(source: any, parentName: string, fieldName: string): any
-	local parent = getField(source, parentName)
-	if parent == nil then
-		return nil
-	end
-	local vsf = (parent :: { [string]: any }).valueSubFields
-	if vsf == nil then
-		return nil
-	end
-	return (vsf :: { [string]: any })[fieldName]
-end
 
 local function mapAndDedup(keys: { string }, optionMap: { [string]: string }): { string }
 	local result: { string } = {}
@@ -205,10 +178,6 @@ end
 -- Array Mappers
 --------------------------------------------------------------------------------
 
--- Index suffixes matching CUE _indices: ["", "_0", "_1", "_2", "_3"]
--- In camelCase, the underscore prefix is dropped: "", "0", "1", "2", "3"
-local ARRAY_INDEX_SUFFIXES = { "", "0", "1", "2", "3" }
-
 local function makeEmptyStringType(): DataTypes.StringType
 	return DataTypes.makeStringType({ typeId = "String", value = "" })
 end
@@ -224,39 +193,30 @@ end
 
 --
 -- mapControllingPersons: builds an array of FullTargetTableSfControllingpersonsType
--- from source master/feeder name fields with index suffixes.
+-- from source master/feeder name fields. One entry per index suffix ("", "0"–"3").
 --
-local function mapControllingPersons(sources: MergedSources): { FullTargetTable.FullTargetTableSfControllingpersonsType }
-	local namespaces = { "master", "feeder" }
+local function mapControllingPersons(
+	master: SourceMasterTable.SourceMasterTableFieldsMap?,
+	feeder: SourceFeederTable.SourceFeederTableFieldsMap?
+): { FullTargetTable.FullTargetTableSfControllingpersonsType }
 	local result: { FullTargetTable.FullTargetTableSfControllingpersonsType } = {}
 
-	for _, suffix in ARRAY_INDEX_SUFFIXES do
-		local sourceFieldName = "nameControlpersonPart2Duediligencequestionnaire" .. suffix
-		-- Collect the full name from the first namespace that has it
+	-- Suffix ""
+	do
 		local fullName = ""
-		for _, ns in namespaces do
-			local nsTable = (sources :: { [string]: any })[ns] -- TODO: type-narrow when Luau supports discriminated maps
-			if nsTable ~= nil then
-				local raw = getField(nsTable, sourceFieldName)
-				if raw ~= nil then
-					local v = (raw :: { [string]: any }).value
-					if v ~= nil and v ~= "" then
-						fullName = fullName .. (v :: string)
-					end
-				end
-			end
+		if master ~= nil then
+			local v = strVal(master.nameControlpersonPart2Duediligencequestionnaire)
+			if v ~= "" then fullName = fullName .. v end
 		end
-
+		if feeder ~= nil then
+			local v = strVal(feeder.nameControlpersonPart2Duediligencequestionnaire)
+			if v ~= "" then fullName = fullName .. v end
+		end
 		local names = CarlyleMappings.splitName(fullName)
-
-		-- Build the sub-fields dict: all 45 fields of FullTargetTableSfControllingpersonsFields
-		-- Only 3 are mapped (firstName, middleName, lastName), rest are empty defaults
 		local subFields = FullTargetTable.makeFullTargetTableSfControllingpersonsFields({
-			-- Mapped fields
 			sfControllingPersonsNullFirstNameC = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
 			sfControllingPersonsNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
 			sfControllingPersonsNullLastNameC = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
-			-- All StringType fields default to empty
 			sfControllingPersonsNullTINUnavailableC = makeEmptyStringType(),
 			sfControllingPersonsNullMailingStateC = makeEmptyStringType(),
 			sfControllingPersonsNullMailingCityC = makeEmptyStringType(),
@@ -297,15 +257,262 @@ local function mapControllingPersons(sources: MergedSources): { FullTargetTable.
 			sfControllingPersonsNullCRSStatusC = makeEmptyStringType(),
 			sfControllingPersonsNullName = makeEmptyStringType(),
 			sfControllingPersonsNullTaxStatusC = makeEmptyStringType(),
-			-- MultipleCheckboxType field
 			sfControllingPersonsNullInactiveC = makeEmptyMultipleCheckboxType(),
 		})
-
 		table.insert(result, FullTargetTable.makeFullTargetTableSfControllingpersonsType({
-			typeId = "CustomCompound",
-			valueSubFields = subFields,
-			subFieldKeysInOrder = {},
-			label = "",
+			typeId = "CustomCompound", valueSubFields = subFields, subFieldKeysInOrder = {}, label = "",
+		}))
+	end
+
+	-- Suffix "0"
+	do
+		local fullName = ""
+		if master ~= nil then
+			local v = strVal(master.nameControlpersonPart2Duediligencequestionnaire0)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		if feeder ~= nil then
+			local v = strVal(feeder.nameControlpersonPart2Duediligencequestionnaire0)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		local names = CarlyleMappings.splitName(fullName)
+		local subFields = FullTargetTable.makeFullTargetTableSfControllingpersonsFields({
+			sfControllingPersonsNullFirstNameC = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
+			sfControllingPersonsNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
+			sfControllingPersonsNullLastNameC = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
+			sfControllingPersonsNullTINUnavailableC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingStateC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingCityC = makeEmptyStringType(),
+			sfControllingPersonsNullDateOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullSubscriptionInvestorC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSDocumentIDC = makeEmptyStringType(),
+			sfControllingPersonsNullSubscriptionInvestorIDC = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceCountryC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo5C = makeEmptyStringType(),
+			sfControllingPersonsNullCountryOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullEffectiveDateC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingAddress2C = makeEmptyStringType(),
+			sfControllingPersonsNullMailingCountryC = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo5C = makeEmptyStringType(),
+			sfControllingPersonsNullMailingPostalCodeC = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo1C = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo3C = makeEmptyStringType(),
+			sfControllingPersonsNullReportingCountriesC = makeEmptyStringType(),
+			sfControllingPersonsNullResidencePostalCodeC = makeEmptyStringType(),
+			sfControllingPersonsNullTypeC = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceStateC = makeEmptyStringType(),
+			sfControllingPersonsNullType2C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo4C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceStreetC = makeEmptyStringType(),
+			sfControllingPersonsNullControllingPersonPackageC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSReportingThresholdC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo4C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo2C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceCityC = makeEmptyStringType(),
+			sfControllingPersonsNullType3C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo3C = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo1C = makeEmptyStringType(),
+			sfControllingPersonsNullPlaceOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingStreetC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSValidationResultC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo2C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceAddress2C = makeEmptyStringType(),
+			sfControllingPersonsNullCRSStatusC = makeEmptyStringType(),
+			sfControllingPersonsNullName = makeEmptyStringType(),
+			sfControllingPersonsNullTaxStatusC = makeEmptyStringType(),
+			sfControllingPersonsNullInactiveC = makeEmptyMultipleCheckboxType(),
+		})
+		table.insert(result, FullTargetTable.makeFullTargetTableSfControllingpersonsType({
+			typeId = "CustomCompound", valueSubFields = subFields, subFieldKeysInOrder = {}, label = "",
+		}))
+	end
+
+	-- Suffix "1"
+	do
+		local fullName = ""
+		if master ~= nil then
+			local v = strVal(master.nameControlpersonPart2Duediligencequestionnaire1)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		if feeder ~= nil then
+			local v = strVal(feeder.nameControlpersonPart2Duediligencequestionnaire1)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		local names = CarlyleMappings.splitName(fullName)
+		local subFields = FullTargetTable.makeFullTargetTableSfControllingpersonsFields({
+			sfControllingPersonsNullFirstNameC = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
+			sfControllingPersonsNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
+			sfControllingPersonsNullLastNameC = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
+			sfControllingPersonsNullTINUnavailableC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingStateC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingCityC = makeEmptyStringType(),
+			sfControllingPersonsNullDateOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullSubscriptionInvestorC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSDocumentIDC = makeEmptyStringType(),
+			sfControllingPersonsNullSubscriptionInvestorIDC = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceCountryC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo5C = makeEmptyStringType(),
+			sfControllingPersonsNullCountryOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullEffectiveDateC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingAddress2C = makeEmptyStringType(),
+			sfControllingPersonsNullMailingCountryC = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo5C = makeEmptyStringType(),
+			sfControllingPersonsNullMailingPostalCodeC = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo1C = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo3C = makeEmptyStringType(),
+			sfControllingPersonsNullReportingCountriesC = makeEmptyStringType(),
+			sfControllingPersonsNullResidencePostalCodeC = makeEmptyStringType(),
+			sfControllingPersonsNullTypeC = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceStateC = makeEmptyStringType(),
+			sfControllingPersonsNullType2C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo4C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceStreetC = makeEmptyStringType(),
+			sfControllingPersonsNullControllingPersonPackageC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSReportingThresholdC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo4C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo2C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceCityC = makeEmptyStringType(),
+			sfControllingPersonsNullType3C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo3C = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo1C = makeEmptyStringType(),
+			sfControllingPersonsNullPlaceOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingStreetC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSValidationResultC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo2C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceAddress2C = makeEmptyStringType(),
+			sfControllingPersonsNullCRSStatusC = makeEmptyStringType(),
+			sfControllingPersonsNullName = makeEmptyStringType(),
+			sfControllingPersonsNullTaxStatusC = makeEmptyStringType(),
+			sfControllingPersonsNullInactiveC = makeEmptyMultipleCheckboxType(),
+		})
+		table.insert(result, FullTargetTable.makeFullTargetTableSfControllingpersonsType({
+			typeId = "CustomCompound", valueSubFields = subFields, subFieldKeysInOrder = {}, label = "",
+		}))
+	end
+
+	-- Suffix "2"
+	do
+		local fullName = ""
+		if master ~= nil then
+			local v = strVal(master.nameControlpersonPart2Duediligencequestionnaire2)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		if feeder ~= nil then
+			local v = strVal(feeder.nameControlpersonPart2Duediligencequestionnaire2)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		local names = CarlyleMappings.splitName(fullName)
+		local subFields = FullTargetTable.makeFullTargetTableSfControllingpersonsFields({
+			sfControllingPersonsNullFirstNameC = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
+			sfControllingPersonsNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
+			sfControllingPersonsNullLastNameC = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
+			sfControllingPersonsNullTINUnavailableC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingStateC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingCityC = makeEmptyStringType(),
+			sfControllingPersonsNullDateOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullSubscriptionInvestorC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSDocumentIDC = makeEmptyStringType(),
+			sfControllingPersonsNullSubscriptionInvestorIDC = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceCountryC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo5C = makeEmptyStringType(),
+			sfControllingPersonsNullCountryOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullEffectiveDateC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingAddress2C = makeEmptyStringType(),
+			sfControllingPersonsNullMailingCountryC = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo5C = makeEmptyStringType(),
+			sfControllingPersonsNullMailingPostalCodeC = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo1C = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo3C = makeEmptyStringType(),
+			sfControllingPersonsNullReportingCountriesC = makeEmptyStringType(),
+			sfControllingPersonsNullResidencePostalCodeC = makeEmptyStringType(),
+			sfControllingPersonsNullTypeC = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceStateC = makeEmptyStringType(),
+			sfControllingPersonsNullType2C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo4C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceStreetC = makeEmptyStringType(),
+			sfControllingPersonsNullControllingPersonPackageC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSReportingThresholdC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo4C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo2C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceCityC = makeEmptyStringType(),
+			sfControllingPersonsNullType3C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo3C = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo1C = makeEmptyStringType(),
+			sfControllingPersonsNullPlaceOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingStreetC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSValidationResultC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo2C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceAddress2C = makeEmptyStringType(),
+			sfControllingPersonsNullCRSStatusC = makeEmptyStringType(),
+			sfControllingPersonsNullName = makeEmptyStringType(),
+			sfControllingPersonsNullTaxStatusC = makeEmptyStringType(),
+			sfControllingPersonsNullInactiveC = makeEmptyMultipleCheckboxType(),
+		})
+		table.insert(result, FullTargetTable.makeFullTargetTableSfControllingpersonsType({
+			typeId = "CustomCompound", valueSubFields = subFields, subFieldKeysInOrder = {}, label = "",
+		}))
+	end
+
+	-- Suffix "3"
+	do
+		local fullName = ""
+		if master ~= nil then
+			local v = strVal(master.nameControlpersonPart2Duediligencequestionnaire3)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		if feeder ~= nil then
+			local v = strVal(feeder.nameControlpersonPart2Duediligencequestionnaire3)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		local names = CarlyleMappings.splitName(fullName)
+		local subFields = FullTargetTable.makeFullTargetTableSfControllingpersonsFields({
+			sfControllingPersonsNullFirstNameC = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
+			sfControllingPersonsNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
+			sfControllingPersonsNullLastNameC = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
+			sfControllingPersonsNullTINUnavailableC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingStateC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingCityC = makeEmptyStringType(),
+			sfControllingPersonsNullDateOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullSubscriptionInvestorC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSDocumentIDC = makeEmptyStringType(),
+			sfControllingPersonsNullSubscriptionInvestorIDC = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceCountryC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo5C = makeEmptyStringType(),
+			sfControllingPersonsNullCountryOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullEffectiveDateC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingAddress2C = makeEmptyStringType(),
+			sfControllingPersonsNullMailingCountryC = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo5C = makeEmptyStringType(),
+			sfControllingPersonsNullMailingPostalCodeC = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo1C = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo3C = makeEmptyStringType(),
+			sfControllingPersonsNullReportingCountriesC = makeEmptyStringType(),
+			sfControllingPersonsNullResidencePostalCodeC = makeEmptyStringType(),
+			sfControllingPersonsNullTypeC = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceStateC = makeEmptyStringType(),
+			sfControllingPersonsNullType2C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo4C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceStreetC = makeEmptyStringType(),
+			sfControllingPersonsNullControllingPersonPackageC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSReportingThresholdC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo4C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo2C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceCityC = makeEmptyStringType(),
+			sfControllingPersonsNullType3C = makeEmptyStringType(),
+			sfControllingPersonsNullTINNo3C = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo1C = makeEmptyStringType(),
+			sfControllingPersonsNullPlaceOfBirthC = makeEmptyStringType(),
+			sfControllingPersonsNullMailingStreetC = makeEmptyStringType(),
+			sfControllingPersonsNullCRSValidationResultC = makeEmptyStringType(),
+			sfControllingPersonsNullTINCountryNo2C = makeEmptyStringType(),
+			sfControllingPersonsNullResidenceAddress2C = makeEmptyStringType(),
+			sfControllingPersonsNullCRSStatusC = makeEmptyStringType(),
+			sfControllingPersonsNullName = makeEmptyStringType(),
+			sfControllingPersonsNullTaxStatusC = makeEmptyStringType(),
+			sfControllingPersonsNullInactiveC = makeEmptyMultipleCheckboxType(),
+		})
+		table.insert(result, FullTargetTable.makeFullTargetTableSfControllingpersonsType({
+			typeId = "CustomCompound", valueSubFields = subFields, subFieldKeysInOrder = {}, label = "",
 		}))
 	end
 
@@ -314,55 +521,79 @@ end
 
 --
 -- mapBeneficialOwner: builds an array of FullTargetTableSfBeneficialownerType
--- from source master/feeder fields with index suffixes.
+-- from source master/feeder fields. One entry per index suffix ("", "0"–"3").
 -- Maps 12 sub-fields: 3 name, 5 address, 4 direct.
 --
-local function mapBeneficialOwner(sources: MergedSources): { FullTargetTable.FullTargetTableSfBeneficialownerType }
-	local namespaces = { "master", "feeder" }
+local function mapBeneficialOwner(
+	master: SourceMasterTable.SourceMasterTableFieldsMap?,
+	feeder: SourceFeederTable.SourceFeederTableFieldsMap?
+): { FullTargetTable.FullTargetTableSfBeneficialownerType }
 	local result: { FullTargetTable.FullTargetTableSfBeneficialownerType } = {}
 
-	-- Address sub-field base names (without index suffix)
-	local addressSubFieldBases = {
-		sfBeneficialOwnerNullInvestorRegisteredStreetAddressC = "numberandstreetResidentialaddressBeneficialownerAmlquestionnaire",
-		sfBeneficialOwnerNullInvestorRegisteredCityC = "cityResidentialaddressBeneficialownerAmlquestionnaire",
-		sfBeneficialOwnerNullInvestorRegisteredStateProvinceC = "stateResidentialaddressBeneficialownerAmlquestionnaire",
-		sfBeneficialOwnerNullInvestorRegisteredPostalCodeC = "zipResidentialaddressBeneficialownerAmlquestionnaire",
-		sfBeneficialOwnerNullInvestorRegisteredCountryC = "countryResidentialaddressBeneficialownerAmlquestionnaire",
-	}
-
-	for _, suffix in ARRAY_INDEX_SUFFIXES do
-		-- 1. Name fields: split full name
-		local nameField = "asaFullnameBeneficialownerAmlquestionnaire" .. suffix
+	-- Suffix ""
+	do
 		local fullName = ""
-		for _, ns in namespaces do
-			local nsTable = (sources :: { [string]: any })[ns] -- TODO: type-narrow when Luau supports discriminated maps
-			if nsTable ~= nil then
-				local raw = getField(nsTable, nameField)
-				if raw ~= nil then
-					local v = (raw :: { [string]: any }).value
-					if v ~= nil and v ~= "" then
-						fullName = fullName .. (v :: string)
-					end
-				end
-			end
+		if master ~= nil then
+			local v = strVal(master.asaFullnameBeneficialownerAmlquestionnaire)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		if feeder ~= nil then
+			local v = strVal(feeder.asaFullnameBeneficialownerAmlquestionnaire)
+			if v ~= "" then fullName = fullName .. v end
 		end
 		local names = CarlyleMappings.splitName(fullName)
 
-		-- 2. Direct mapped fields (simple value lookup)
-		local directMappings = {
-			{ target = "sfBeneficialOwnerNullDateOfBirthC", source = "asaDateofbirthBeneficialownerAmlquestionnaire" },
-			{ target = "anduinBeneficialOwnerNullInvestorRegisteredFullAddress", source = "asaResidentialaddressBeneficialownerAmlquestionnaire" },
-			{ target = "sfBeneficialOwnerNullPEPStatusC", source = "pepBeneficialownerPart2Duediligencequestionnaire" },
-			{ target = "sfBeneficialOwnerNullUSTaxIDC", source = "idBeneficialownerPart2Duediligencequestionnaire" },
-		}
+		local dob = ""
+		if master ~= nil then local v = strVal(master.asaDateofbirthBeneficialownerAmlquestionnaire); if v ~= "" then dob = dob .. v end end
+		if feeder ~= nil then local v = strVal(feeder.asaDateofbirthBeneficialownerAmlquestionnaire); if v ~= "" then dob = dob .. v end end
 
-		-- Build sub-fields dict
+		local fullAddr = ""
+		if master ~= nil then local v = strVal(master.asaResidentialaddressBeneficialownerAmlquestionnaire); if v ~= "" then fullAddr = fullAddr .. v end end
+		if feeder ~= nil then local v = strVal(feeder.asaResidentialaddressBeneficialownerAmlquestionnaire); if v ~= "" then fullAddr = fullAddr .. v end end
+
+		local pep = ""
+		if master ~= nil then local v = strVal(master.pepBeneficialownerPart2Duediligencequestionnaire); if v ~= "" then pep = pep .. v end end
+		if feeder ~= nil then local v = strVal(feeder.pepBeneficialownerPart2Duediligencequestionnaire); if v ~= "" then pep = pep .. v end end
+
+		local taxId = ""
+		if master ~= nil then local v = strVal(master.idBeneficialownerPart2Duediligencequestionnaire); if v ~= "" then taxId = taxId .. v end end
+		if feeder ~= nil then local v = strVal(feeder.idBeneficialownerPart2Duediligencequestionnaire); if v ~= "" then taxId = taxId .. v end end
+
+		local street, city, state, zip, country = "", "", "", "", ""
+		if master ~= nil and master.addressUbo ~= nil then
+			local vsf = master.addressUbo.valueSubFields
+			if vsf ~= nil then
+				street = strVal(vsf.numberandstreetResidentialaddressBeneficialownerAmlquestionnaire)
+				city = strVal(vsf.cityResidentialaddressBeneficialownerAmlquestionnaire)
+				state = strVal(vsf.stateResidentialaddressBeneficialownerAmlquestionnaire)
+				zip = strVal(vsf.zipResidentialaddressBeneficialownerAmlquestionnaire)
+				country = strVal(vsf.countryResidentialaddressBeneficialownerAmlquestionnaire)
+			end
+		end
+		if feeder ~= nil and feeder.addressUbo ~= nil then
+			local vsf = feeder.addressUbo.valueSubFields
+			if vsf ~= nil then
+				if street == "" then street = strVal(vsf.numberandstreetResidentialaddressBeneficialownerAmlquestionnaire) end
+				if city == "" then city = strVal(vsf.cityResidentialaddressBeneficialownerAmlquestionnaire) end
+				if state == "" then state = strVal(vsf.stateResidentialaddressBeneficialownerAmlquestionnaire) end
+				if zip == "" then zip = strVal(vsf.zipResidentialaddressBeneficialownerAmlquestionnaire) end
+				if country == "" then country = strVal(vsf.countryResidentialaddressBeneficialownerAmlquestionnaire) end
+			end
+		end
+
 		local subFields = FullTargetTable.makeFullTargetTableSfBeneficialownerFields({
-			-- Name split
 			sfBeneficialOwnerNullFirstName = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
 			sfBeneficialOwnerNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
 			sfBeneficialOwnerNullLastName = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
-			-- All other StringType fields: empty defaults
+			sfBeneficialOwnerNullDateOfBirthC = DataTypes.makeStringType({ typeId = "String", value = dob }),
+			anduinBeneficialOwnerNullInvestorRegisteredFullAddress = DataTypes.makeStringType({ typeId = "String", value = fullAddr }),
+			sfBeneficialOwnerNullPEPStatusC = DataTypes.makeStringType({ typeId = "String", value = pep }),
+			sfBeneficialOwnerNullUSTaxIDC = DataTypes.makeStringType({ typeId = "String", value = taxId }),
+			sfBeneficialOwnerNullInvestorRegisteredStreetAddressC = DataTypes.makeStringType({ typeId = "String", value = street }),
+			sfBeneficialOwnerNullInvestorRegisteredCityC = DataTypes.makeStringType({ typeId = "String", value = city }),
+			sfBeneficialOwnerNullInvestorRegisteredStateProvinceC = DataTypes.makeStringType({ typeId = "String", value = state }),
+			sfBeneficialOwnerNullInvestorRegisteredPostalCodeC = DataTypes.makeStringType({ typeId = "String", value = zip }),
+			sfBeneficialOwnerNullInvestorRegisteredCountryC = DataTypes.makeStringType({ typeId = "String", value = country }),
 			sfBeneficialOwnerNullWebsiteC = makeEmptyStringType(),
 			sfBeneficialOwnerNullNonUSTaxIDCountryC = makeEmptyStringType(),
 			sfBeneficialOwnerNullTCGGlobalIdC = makeEmptyStringType(),
@@ -388,60 +619,409 @@ local function mapBeneficialOwner(sources: MergedSources): { FullTargetTable.Ful
 			sfBeneficialOwnerNullBeneficialCountryC = makeEmptyStringType(),
 			sfBeneficialOwnerNullCreatedById = makeEmptyStringType(),
 			sfBeneficialOwnerNullGovernmentIDJurisdictionStateC = makeEmptyStringType(),
-			-- MultipleCheckboxType fields: empty defaults
 			sfBeneficialOwnerNullAMLMonitoringC = makeEmptyMultipleCheckboxType(),
 			sfBeneficialOwnerNullPoliticallyExposedPersonC = makeEmptyMultipleCheckboxType(),
 			sfBeneficialOwnerNullIsActiveC = makeEmptyMultipleCheckboxType(),
 			sfBeneficialOwnerNullKYCRefreshC = makeEmptyMultipleCheckboxType(),
 		})
-
-		-- Fill direct mapped fields
-		for _, dm in directMappings do
-			local sourceField = dm.source .. suffix
-			local value = ""
-			for _, ns in namespaces do
-				local nsTable = (sources :: { [string]: any })[ns] -- TODO: type-narrow when Luau supports discriminated maps
-				if nsTable ~= nil then
-					local raw = getField(nsTable, sourceField)
-					if raw ~= nil then
-						local v = (raw :: { [string]: any }).value
-						if v ~= nil and v ~= "" then
-							value = value .. (v :: string)
-						end
-					end
-				end
-			end
-			(subFields :: any)[dm.target] = DataTypes.makeStringType({ typeId = "String", value = value })
-			-- TODO: type-narrow when Luau supports string-literal struct indexing
-		end
-
-		-- Fill address sub-fields from addressUbo compound
-		local addressParent = "addressUbo" .. suffix
-		for targetField, addressSubFieldBase in addressSubFieldBases do
-			-- The sub-field name within the compound includes the index suffix
-			local addressSubField = addressSubFieldBase .. suffix
-			local value = ""
-			for _, ns in namespaces do
-				local nsTable = (sources :: { [string]: any })[ns] -- TODO: type-narrow when Luau supports discriminated maps
-				if nsTable ~= nil then
-					local raw = getSubField(nsTable, addressParent, addressSubField)
-					if raw ~= nil then
-						local v = (raw :: { [string]: any }).value
-						if v ~= nil and v ~= "" then
-							value = value .. (v :: string)
-						end
-					end
-				end
-			end
-			(subFields :: any)[targetField] = DataTypes.makeStringType({ typeId = "String", value = value })
-			-- TODO: type-narrow when Luau supports string-literal struct indexing
-		end
-
 		table.insert(result, FullTargetTable.makeFullTargetTableSfBeneficialownerType({
-			typeId = "CustomCompound",
-			valueSubFields = subFields,
-			subFieldKeysInOrder = {},
-			label = "",
+			typeId = "CustomCompound", valueSubFields = subFields, subFieldKeysInOrder = {}, label = "",
+		}))
+	end
+
+	-- Suffix "0"
+	do
+		local fullName = ""
+		if master ~= nil then
+			local v = strVal(master.asaFullnameBeneficialownerAmlquestionnaire0)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		if feeder ~= nil then
+			local v = strVal(feeder.asaFullnameBeneficialownerAmlquestionnaire0)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		local names = CarlyleMappings.splitName(fullName)
+
+		local dob = ""
+		if master ~= nil then local v = strVal(master.asaDateofbirthBeneficialownerAmlquestionnaire0); if v ~= "" then dob = dob .. v end end
+		if feeder ~= nil then local v = strVal(feeder.asaDateofbirthBeneficialownerAmlquestionnaire0); if v ~= "" then dob = dob .. v end end
+
+		local fullAddr = ""
+		if master ~= nil then local v = strVal(master.asaResidentialaddressBeneficialownerAmlquestionnaire0); if v ~= "" then fullAddr = fullAddr .. v end end
+		if feeder ~= nil then local v = strVal(feeder.asaResidentialaddressBeneficialownerAmlquestionnaire0); if v ~= "" then fullAddr = fullAddr .. v end end
+
+		local pep = ""
+		if master ~= nil then local v = strVal(master.pepBeneficialownerPart2Duediligencequestionnaire0); if v ~= "" then pep = pep .. v end end
+		if feeder ~= nil then local v = strVal(feeder.pepBeneficialownerPart2Duediligencequestionnaire0); if v ~= "" then pep = pep .. v end end
+
+		local taxId = ""
+		if master ~= nil then local v = strVal(master.idBeneficialownerPart2Duediligencequestionnaire0); if v ~= "" then taxId = taxId .. v end end
+		if feeder ~= nil then local v = strVal(feeder.idBeneficialownerPart2Duediligencequestionnaire0); if v ~= "" then taxId = taxId .. v end end
+
+		local street, city, state, zip, country = "", "", "", "", ""
+		if master ~= nil and master.addressUbo0 ~= nil then
+			local vsf = master.addressUbo0.valueSubFields
+			if vsf ~= nil then
+				street = strVal(vsf.numberandstreetResidentialaddressBeneficialownerAmlquestionnaire0)
+				city = strVal(vsf.cityResidentialaddressBeneficialownerAmlquestionnaire0)
+				state = strVal(vsf.stateResidentialaddressBeneficialownerAmlquestionnaire0)
+				zip = strVal(vsf.zipResidentialaddressBeneficialownerAmlquestionnaire0)
+				country = strVal(vsf.countryResidentialaddressBeneficialownerAmlquestionnaire0)
+			end
+		end
+		if feeder ~= nil and feeder.addressUbo0 ~= nil then
+			local vsf = feeder.addressUbo0.valueSubFields
+			if vsf ~= nil then
+				if street == "" then street = strVal(vsf.numberandstreetResidentialaddressBeneficialownerAmlquestionnaire0) end
+				if city == "" then city = strVal(vsf.cityResidentialaddressBeneficialownerAmlquestionnaire0) end
+				if state == "" then state = strVal(vsf.stateResidentialaddressBeneficialownerAmlquestionnaire0) end
+				if zip == "" then zip = strVal(vsf.zipResidentialaddressBeneficialownerAmlquestionnaire0) end
+				if country == "" then country = strVal(vsf.countryResidentialaddressBeneficialownerAmlquestionnaire0) end
+			end
+		end
+
+		local subFields = FullTargetTable.makeFullTargetTableSfBeneficialownerFields({
+			sfBeneficialOwnerNullFirstName = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
+			sfBeneficialOwnerNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
+			sfBeneficialOwnerNullLastName = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
+			sfBeneficialOwnerNullDateOfBirthC = DataTypes.makeStringType({ typeId = "String", value = dob }),
+			anduinBeneficialOwnerNullInvestorRegisteredFullAddress = DataTypes.makeStringType({ typeId = "String", value = fullAddr }),
+			sfBeneficialOwnerNullPEPStatusC = DataTypes.makeStringType({ typeId = "String", value = pep }),
+			sfBeneficialOwnerNullUSTaxIDC = DataTypes.makeStringType({ typeId = "String", value = taxId }),
+			sfBeneficialOwnerNullInvestorRegisteredStreetAddressC = DataTypes.makeStringType({ typeId = "String", value = street }),
+			sfBeneficialOwnerNullInvestorRegisteredCityC = DataTypes.makeStringType({ typeId = "String", value = city }),
+			sfBeneficialOwnerNullInvestorRegisteredStateProvinceC = DataTypes.makeStringType({ typeId = "String", value = state }),
+			sfBeneficialOwnerNullInvestorRegisteredPostalCodeC = DataTypes.makeStringType({ typeId = "String", value = zip }),
+			sfBeneficialOwnerNullInvestorRegisteredCountryC = DataTypes.makeStringType({ typeId = "String", value = country }),
+			sfBeneficialOwnerNullWebsiteC = makeEmptyStringType(),
+			sfBeneficialOwnerNullNonUSTaxIDCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullTCGGlobalIdC = makeEmptyStringType(),
+			sfBeneficialOwnerNullLastModifiedById = makeEmptyStringType(),
+			sfBeneficialOwnerNullName = makeEmptyStringType(),
+			sfBeneficialOwnerNullOwnerId = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLRefreshNotesC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIssuedIDOnFileC = makeEmptyStringType(),
+			sfBeneficialOwnerNullIndividualOrganizationC = makeEmptyStringType(),
+			sfBeneficialOwnerNullCountryOfBirthC = makeEmptyStringType(),
+			sfBeneficialOwnerNullPercentageOfOwnershipC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDNumberC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDExpirationDateC = makeEmptyStringType(),
+			sfBeneficialOwnerNullNonUSTaxIDC = makeEmptyStringType(),
+			sfBeneficialOwnerNullBeneficialOwnerLongNameC = makeEmptyStringType(),
+			sfBeneficialOwnerNullUSTaxIDTypeC = makeEmptyStringType(),
+			sfBeneficialOwnerNullLastTriggeredTimestampC = makeEmptyStringType(),
+			sfBeneficialOwnerNullRiskRatingC = makeEmptyStringType(),
+			sfBeneficialOwnerNullSourceOfWealthC = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLNotesC = makeEmptyStringType(),
+			sfBeneficialOwnerNullMaxComplyIdC = makeEmptyStringType(),
+			sfBeneficialOwnerNullBeneficialCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullCreatedById = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDJurisdictionStateC = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLMonitoringC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullPoliticallyExposedPersonC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullIsActiveC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullKYCRefreshC = makeEmptyMultipleCheckboxType(),
+		})
+		table.insert(result, FullTargetTable.makeFullTargetTableSfBeneficialownerType({
+			typeId = "CustomCompound", valueSubFields = subFields, subFieldKeysInOrder = {}, label = "",
+		}))
+	end
+
+	-- Suffix "1"
+	do
+		local fullName = ""
+		if master ~= nil then
+			local v = strVal(master.asaFullnameBeneficialownerAmlquestionnaire1)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		if feeder ~= nil then
+			local v = strVal(feeder.asaFullnameBeneficialownerAmlquestionnaire1)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		local names = CarlyleMappings.splitName(fullName)
+
+		local dob = ""
+		if master ~= nil then local v = strVal(master.asaDateofbirthBeneficialownerAmlquestionnaire1); if v ~= "" then dob = dob .. v end end
+		if feeder ~= nil then local v = strVal(feeder.asaDateofbirthBeneficialownerAmlquestionnaire1); if v ~= "" then dob = dob .. v end end
+
+		local fullAddr = ""
+		if master ~= nil then local v = strVal(master.asaResidentialaddressBeneficialownerAmlquestionnaire1); if v ~= "" then fullAddr = fullAddr .. v end end
+		if feeder ~= nil then local v = strVal(feeder.asaResidentialaddressBeneficialownerAmlquestionnaire1); if v ~= "" then fullAddr = fullAddr .. v end end
+
+		local pep = ""
+		if master ~= nil then local v = strVal(master.pepBeneficialownerPart2Duediligencequestionnaire1); if v ~= "" then pep = pep .. v end end
+		if feeder ~= nil then local v = strVal(feeder.pepBeneficialownerPart2Duediligencequestionnaire1); if v ~= "" then pep = pep .. v end end
+
+		local taxId = ""
+		if master ~= nil then local v = strVal(master.idBeneficialownerPart2Duediligencequestionnaire1); if v ~= "" then taxId = taxId .. v end end
+		if feeder ~= nil then local v = strVal(feeder.idBeneficialownerPart2Duediligencequestionnaire1); if v ~= "" then taxId = taxId .. v end end
+
+		local street, city, state, zip, country = "", "", "", "", ""
+		if master ~= nil and master.addressUbo1 ~= nil then
+			local vsf = master.addressUbo1.valueSubFields
+			if vsf ~= nil then
+				street = strVal(vsf.numberandstreetResidentialaddressBeneficialownerAmlquestionnaire1)
+				city = strVal(vsf.cityResidentialaddressBeneficialownerAmlquestionnaire1)
+				state = strVal(vsf.stateResidentialaddressBeneficialownerAmlquestionnaire1)
+				zip = strVal(vsf.zipResidentialaddressBeneficialownerAmlquestionnaire1)
+				country = strVal(vsf.countryResidentialaddressBeneficialownerAmlquestionnaire1)
+			end
+		end
+		if feeder ~= nil and feeder.addressUbo1 ~= nil then
+			local vsf = feeder.addressUbo1.valueSubFields
+			if vsf ~= nil then
+				if street == "" then street = strVal(vsf.numberandstreetResidentialaddressBeneficialownerAmlquestionnaire1) end
+				if city == "" then city = strVal(vsf.cityResidentialaddressBeneficialownerAmlquestionnaire1) end
+				if state == "" then state = strVal(vsf.stateResidentialaddressBeneficialownerAmlquestionnaire1) end
+				if zip == "" then zip = strVal(vsf.zipResidentialaddressBeneficialownerAmlquestionnaire1) end
+				if country == "" then country = strVal(vsf.countryResidentialaddressBeneficialownerAmlquestionnaire1) end
+			end
+		end
+
+		local subFields = FullTargetTable.makeFullTargetTableSfBeneficialownerFields({
+			sfBeneficialOwnerNullFirstName = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
+			sfBeneficialOwnerNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
+			sfBeneficialOwnerNullLastName = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
+			sfBeneficialOwnerNullDateOfBirthC = DataTypes.makeStringType({ typeId = "String", value = dob }),
+			anduinBeneficialOwnerNullInvestorRegisteredFullAddress = DataTypes.makeStringType({ typeId = "String", value = fullAddr }),
+			sfBeneficialOwnerNullPEPStatusC = DataTypes.makeStringType({ typeId = "String", value = pep }),
+			sfBeneficialOwnerNullUSTaxIDC = DataTypes.makeStringType({ typeId = "String", value = taxId }),
+			sfBeneficialOwnerNullInvestorRegisteredStreetAddressC = DataTypes.makeStringType({ typeId = "String", value = street }),
+			sfBeneficialOwnerNullInvestorRegisteredCityC = DataTypes.makeStringType({ typeId = "String", value = city }),
+			sfBeneficialOwnerNullInvestorRegisteredStateProvinceC = DataTypes.makeStringType({ typeId = "String", value = state }),
+			sfBeneficialOwnerNullInvestorRegisteredPostalCodeC = DataTypes.makeStringType({ typeId = "String", value = zip }),
+			sfBeneficialOwnerNullInvestorRegisteredCountryC = DataTypes.makeStringType({ typeId = "String", value = country }),
+			sfBeneficialOwnerNullWebsiteC = makeEmptyStringType(),
+			sfBeneficialOwnerNullNonUSTaxIDCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullTCGGlobalIdC = makeEmptyStringType(),
+			sfBeneficialOwnerNullLastModifiedById = makeEmptyStringType(),
+			sfBeneficialOwnerNullName = makeEmptyStringType(),
+			sfBeneficialOwnerNullOwnerId = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLRefreshNotesC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIssuedIDOnFileC = makeEmptyStringType(),
+			sfBeneficialOwnerNullIndividualOrganizationC = makeEmptyStringType(),
+			sfBeneficialOwnerNullCountryOfBirthC = makeEmptyStringType(),
+			sfBeneficialOwnerNullPercentageOfOwnershipC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDNumberC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDExpirationDateC = makeEmptyStringType(),
+			sfBeneficialOwnerNullNonUSTaxIDC = makeEmptyStringType(),
+			sfBeneficialOwnerNullBeneficialOwnerLongNameC = makeEmptyStringType(),
+			sfBeneficialOwnerNullUSTaxIDTypeC = makeEmptyStringType(),
+			sfBeneficialOwnerNullLastTriggeredTimestampC = makeEmptyStringType(),
+			sfBeneficialOwnerNullRiskRatingC = makeEmptyStringType(),
+			sfBeneficialOwnerNullSourceOfWealthC = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLNotesC = makeEmptyStringType(),
+			sfBeneficialOwnerNullMaxComplyIdC = makeEmptyStringType(),
+			sfBeneficialOwnerNullBeneficialCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullCreatedById = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDJurisdictionStateC = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLMonitoringC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullPoliticallyExposedPersonC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullIsActiveC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullKYCRefreshC = makeEmptyMultipleCheckboxType(),
+		})
+		table.insert(result, FullTargetTable.makeFullTargetTableSfBeneficialownerType({
+			typeId = "CustomCompound", valueSubFields = subFields, subFieldKeysInOrder = {}, label = "",
+		}))
+	end
+
+	-- Suffix "2"
+	do
+		local fullName = ""
+		if master ~= nil then
+			local v = strVal(master.asaFullnameBeneficialownerAmlquestionnaire2)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		if feeder ~= nil then
+			local v = strVal(feeder.asaFullnameBeneficialownerAmlquestionnaire2)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		local names = CarlyleMappings.splitName(fullName)
+
+		local dob = ""
+		if master ~= nil then local v = strVal(master.asaDateofbirthBeneficialownerAmlquestionnaire2); if v ~= "" then dob = dob .. v end end
+		if feeder ~= nil then local v = strVal(feeder.asaDateofbirthBeneficialownerAmlquestionnaire2); if v ~= "" then dob = dob .. v end end
+
+		local fullAddr = ""
+		if master ~= nil then local v = strVal(master.asaResidentialaddressBeneficialownerAmlquestionnaire2); if v ~= "" then fullAddr = fullAddr .. v end end
+		if feeder ~= nil then local v = strVal(feeder.asaResidentialaddressBeneficialownerAmlquestionnaire2); if v ~= "" then fullAddr = fullAddr .. v end end
+
+		local pep = ""
+		if master ~= nil then local v = strVal(master.pepBeneficialownerPart2Duediligencequestionnaire2); if v ~= "" then pep = pep .. v end end
+		if feeder ~= nil then local v = strVal(feeder.pepBeneficialownerPart2Duediligencequestionnaire2); if v ~= "" then pep = pep .. v end end
+
+		local taxId = ""
+		if master ~= nil then local v = strVal(master.idBeneficialownerPart2Duediligencequestionnaire2); if v ~= "" then taxId = taxId .. v end end
+		if feeder ~= nil then local v = strVal(feeder.idBeneficialownerPart2Duediligencequestionnaire2); if v ~= "" then taxId = taxId .. v end end
+
+		local street, city, state, zip, country = "", "", "", "", ""
+		if master ~= nil and master.addressUbo2 ~= nil then
+			local vsf = master.addressUbo2.valueSubFields
+			if vsf ~= nil then
+				street = strVal(vsf.numberandstreetResidentialaddressBeneficialownerAmlquestionnaire2)
+				city = strVal(vsf.cityResidentialaddressBeneficialownerAmlquestionnaire2)
+				state = strVal(vsf.stateResidentialaddressBeneficialownerAmlquestionnaire2)
+				zip = strVal(vsf.zipResidentialaddressBeneficialownerAmlquestionnaire2)
+				country = strVal(vsf.countryResidentialaddressBeneficialownerAmlquestionnaire2)
+			end
+		end
+		if feeder ~= nil and feeder.addressUbo2 ~= nil then
+			local vsf = feeder.addressUbo2.valueSubFields
+			if vsf ~= nil then
+				if street == "" then street = strVal(vsf.numberandstreetResidentialaddressBeneficialownerAmlquestionnaire2) end
+				if city == "" then city = strVal(vsf.cityResidentialaddressBeneficialownerAmlquestionnaire2) end
+				if state == "" then state = strVal(vsf.stateResidentialaddressBeneficialownerAmlquestionnaire2) end
+				if zip == "" then zip = strVal(vsf.zipResidentialaddressBeneficialownerAmlquestionnaire2) end
+				if country == "" then country = strVal(vsf.countryResidentialaddressBeneficialownerAmlquestionnaire2) end
+			end
+		end
+
+		local subFields = FullTargetTable.makeFullTargetTableSfBeneficialownerFields({
+			sfBeneficialOwnerNullFirstName = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
+			sfBeneficialOwnerNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
+			sfBeneficialOwnerNullLastName = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
+			sfBeneficialOwnerNullDateOfBirthC = DataTypes.makeStringType({ typeId = "String", value = dob }),
+			anduinBeneficialOwnerNullInvestorRegisteredFullAddress = DataTypes.makeStringType({ typeId = "String", value = fullAddr }),
+			sfBeneficialOwnerNullPEPStatusC = DataTypes.makeStringType({ typeId = "String", value = pep }),
+			sfBeneficialOwnerNullUSTaxIDC = DataTypes.makeStringType({ typeId = "String", value = taxId }),
+			sfBeneficialOwnerNullInvestorRegisteredStreetAddressC = DataTypes.makeStringType({ typeId = "String", value = street }),
+			sfBeneficialOwnerNullInvestorRegisteredCityC = DataTypes.makeStringType({ typeId = "String", value = city }),
+			sfBeneficialOwnerNullInvestorRegisteredStateProvinceC = DataTypes.makeStringType({ typeId = "String", value = state }),
+			sfBeneficialOwnerNullInvestorRegisteredPostalCodeC = DataTypes.makeStringType({ typeId = "String", value = zip }),
+			sfBeneficialOwnerNullInvestorRegisteredCountryC = DataTypes.makeStringType({ typeId = "String", value = country }),
+			sfBeneficialOwnerNullWebsiteC = makeEmptyStringType(),
+			sfBeneficialOwnerNullNonUSTaxIDCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullTCGGlobalIdC = makeEmptyStringType(),
+			sfBeneficialOwnerNullLastModifiedById = makeEmptyStringType(),
+			sfBeneficialOwnerNullName = makeEmptyStringType(),
+			sfBeneficialOwnerNullOwnerId = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLRefreshNotesC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIssuedIDOnFileC = makeEmptyStringType(),
+			sfBeneficialOwnerNullIndividualOrganizationC = makeEmptyStringType(),
+			sfBeneficialOwnerNullCountryOfBirthC = makeEmptyStringType(),
+			sfBeneficialOwnerNullPercentageOfOwnershipC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDNumberC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDExpirationDateC = makeEmptyStringType(),
+			sfBeneficialOwnerNullNonUSTaxIDC = makeEmptyStringType(),
+			sfBeneficialOwnerNullBeneficialOwnerLongNameC = makeEmptyStringType(),
+			sfBeneficialOwnerNullUSTaxIDTypeC = makeEmptyStringType(),
+			sfBeneficialOwnerNullLastTriggeredTimestampC = makeEmptyStringType(),
+			sfBeneficialOwnerNullRiskRatingC = makeEmptyStringType(),
+			sfBeneficialOwnerNullSourceOfWealthC = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLNotesC = makeEmptyStringType(),
+			sfBeneficialOwnerNullMaxComplyIdC = makeEmptyStringType(),
+			sfBeneficialOwnerNullBeneficialCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullCreatedById = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDJurisdictionStateC = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLMonitoringC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullPoliticallyExposedPersonC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullIsActiveC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullKYCRefreshC = makeEmptyMultipleCheckboxType(),
+		})
+		table.insert(result, FullTargetTable.makeFullTargetTableSfBeneficialownerType({
+			typeId = "CustomCompound", valueSubFields = subFields, subFieldKeysInOrder = {}, label = "",
+		}))
+	end
+
+	-- Suffix "3"
+	do
+		local fullName = ""
+		if master ~= nil then
+			local v = strVal(master.asaFullnameBeneficialownerAmlquestionnaire3)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		if feeder ~= nil then
+			local v = strVal(feeder.asaFullnameBeneficialownerAmlquestionnaire3)
+			if v ~= "" then fullName = fullName .. v end
+		end
+		local names = CarlyleMappings.splitName(fullName)
+
+		local dob = ""
+		if master ~= nil then local v = strVal(master.asaDateofbirthBeneficialownerAmlquestionnaire3); if v ~= "" then dob = dob .. v end end
+		if feeder ~= nil then local v = strVal(feeder.asaDateofbirthBeneficialownerAmlquestionnaire3); if v ~= "" then dob = dob .. v end end
+
+		local fullAddr = ""
+		if master ~= nil then local v = strVal(master.asaResidentialaddressBeneficialownerAmlquestionnaire3); if v ~= "" then fullAddr = fullAddr .. v end end
+		if feeder ~= nil then local v = strVal(feeder.asaResidentialaddressBeneficialownerAmlquestionnaire3); if v ~= "" then fullAddr = fullAddr .. v end end
+
+		local pep = ""
+		if master ~= nil then local v = strVal(master.pepBeneficialownerPart2Duediligencequestionnaire3); if v ~= "" then pep = pep .. v end end
+		if feeder ~= nil then local v = strVal(feeder.pepBeneficialownerPart2Duediligencequestionnaire3); if v ~= "" then pep = pep .. v end end
+
+		local taxId = ""
+		if master ~= nil then local v = strVal(master.idBeneficialownerPart2Duediligencequestionnaire3); if v ~= "" then taxId = taxId .. v end end
+		if feeder ~= nil then local v = strVal(feeder.idBeneficialownerPart2Duediligencequestionnaire3); if v ~= "" then taxId = taxId .. v end end
+
+		local street, city, state, zip, country = "", "", "", "", ""
+		if master ~= nil and master.addressUbo3 ~= nil then
+			local vsf = master.addressUbo3.valueSubFields
+			if vsf ~= nil then
+				street = strVal(vsf.numberandstreetResidentialaddressBeneficialownerAmlquestionnaire3)
+				city = strVal(vsf.cityResidentialaddressBeneficialownerAmlquestionnaire3)
+				state = strVal(vsf.stateResidentialaddressBeneficialownerAmlquestionnaire3)
+				zip = strVal(vsf.zipResidentialaddressBeneficialownerAmlquestionnaire3)
+				country = strVal(vsf.countryResidentialaddressBeneficialownerAmlquestionnaire3)
+			end
+		end
+		if feeder ~= nil and feeder.addressUbo3 ~= nil then
+			local vsf = feeder.addressUbo3.valueSubFields
+			if vsf ~= nil then
+				if street == "" then street = strVal(vsf.numberandstreetResidentialaddressBeneficialownerAmlquestionnaire3) end
+				if city == "" then city = strVal(vsf.cityResidentialaddressBeneficialownerAmlquestionnaire3) end
+				if state == "" then state = strVal(vsf.stateResidentialaddressBeneficialownerAmlquestionnaire3) end
+				if zip == "" then zip = strVal(vsf.zipResidentialaddressBeneficialownerAmlquestionnaire3) end
+				if country == "" then country = strVal(vsf.countryResidentialaddressBeneficialownerAmlquestionnaire3) end
+			end
+		end
+
+		local subFields = FullTargetTable.makeFullTargetTableSfBeneficialownerFields({
+			sfBeneficialOwnerNullFirstName = DataTypes.makeStringType({ typeId = "String", value = names.firstName }),
+			sfBeneficialOwnerNullMiddleNameC = DataTypes.makeStringType({ typeId = "String", value = names.middleName }),
+			sfBeneficialOwnerNullLastName = DataTypes.makeStringType({ typeId = "String", value = names.lastName }),
+			sfBeneficialOwnerNullDateOfBirthC = DataTypes.makeStringType({ typeId = "String", value = dob }),
+			anduinBeneficialOwnerNullInvestorRegisteredFullAddress = DataTypes.makeStringType({ typeId = "String", value = fullAddr }),
+			sfBeneficialOwnerNullPEPStatusC = DataTypes.makeStringType({ typeId = "String", value = pep }),
+			sfBeneficialOwnerNullUSTaxIDC = DataTypes.makeStringType({ typeId = "String", value = taxId }),
+			sfBeneficialOwnerNullInvestorRegisteredStreetAddressC = DataTypes.makeStringType({ typeId = "String", value = street }),
+			sfBeneficialOwnerNullInvestorRegisteredCityC = DataTypes.makeStringType({ typeId = "String", value = city }),
+			sfBeneficialOwnerNullInvestorRegisteredStateProvinceC = DataTypes.makeStringType({ typeId = "String", value = state }),
+			sfBeneficialOwnerNullInvestorRegisteredPostalCodeC = DataTypes.makeStringType({ typeId = "String", value = zip }),
+			sfBeneficialOwnerNullInvestorRegisteredCountryC = DataTypes.makeStringType({ typeId = "String", value = country }),
+			sfBeneficialOwnerNullWebsiteC = makeEmptyStringType(),
+			sfBeneficialOwnerNullNonUSTaxIDCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullTCGGlobalIdC = makeEmptyStringType(),
+			sfBeneficialOwnerNullLastModifiedById = makeEmptyStringType(),
+			sfBeneficialOwnerNullName = makeEmptyStringType(),
+			sfBeneficialOwnerNullOwnerId = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLRefreshNotesC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIssuedIDOnFileC = makeEmptyStringType(),
+			sfBeneficialOwnerNullIndividualOrganizationC = makeEmptyStringType(),
+			sfBeneficialOwnerNullCountryOfBirthC = makeEmptyStringType(),
+			sfBeneficialOwnerNullPercentageOfOwnershipC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDNumberC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDExpirationDateC = makeEmptyStringType(),
+			sfBeneficialOwnerNullNonUSTaxIDC = makeEmptyStringType(),
+			sfBeneficialOwnerNullBeneficialOwnerLongNameC = makeEmptyStringType(),
+			sfBeneficialOwnerNullUSTaxIDTypeC = makeEmptyStringType(),
+			sfBeneficialOwnerNullLastTriggeredTimestampC = makeEmptyStringType(),
+			sfBeneficialOwnerNullRiskRatingC = makeEmptyStringType(),
+			sfBeneficialOwnerNullSourceOfWealthC = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLNotesC = makeEmptyStringType(),
+			sfBeneficialOwnerNullMaxComplyIdC = makeEmptyStringType(),
+			sfBeneficialOwnerNullBeneficialCountryC = makeEmptyStringType(),
+			sfBeneficialOwnerNullCreatedById = makeEmptyStringType(),
+			sfBeneficialOwnerNullGovernmentIDJurisdictionStateC = makeEmptyStringType(),
+			sfBeneficialOwnerNullAMLMonitoringC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullPoliticallyExposedPersonC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullIsActiveC = makeEmptyMultipleCheckboxType(),
+			sfBeneficialOwnerNullKYCRefreshC = makeEmptyMultipleCheckboxType(),
+		})
+		table.insert(result, FullTargetTable.makeFullTargetTableSfBeneficialownerType({
+			typeId = "CustomCompound", valueSubFields = subFields, subFieldKeysInOrder = {}, label = "",
 		}))
 	end
 
@@ -1840,10 +2420,9 @@ function CarlyleMappings.transform(
 	master: SourceMasterTable.SourceMasterTableFieldsMap?
 ): FullTargetTable.FullTargetTableFieldsMap
 	local result = CarlyleMappings.transformScalars(feeder, master, w9)
-	local sources: MergedSources = { master = master, feeder = feeder }
 
-	result.sfControllingPersons = mapControllingPersons(sources)
-	result.sfBeneficialOwner = mapBeneficialOwner(sources)
+	result.sfControllingPersons = mapControllingPersons(master, feeder)
+	result.sfBeneficialOwner = mapBeneficialOwner(master, feeder)
 	result.sfContact = mapContact(contact)
 
 	return result
