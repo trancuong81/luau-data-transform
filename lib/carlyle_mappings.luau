@@ -25,6 +25,23 @@ export type NameParts = {
 	lastName: string,
 }
 
+local function strVal(field: DataTypes.StringType?): string
+	if field == nil then return "" end
+	return field.value or ""
+end
+
+local function collectKeysTyped(fields: { DataTypes.MultipleCheckboxType? }): { string }
+	local keys: { string } = {}
+	for _, f in fields do
+		if f ~= nil and f.selectedKeys ~= nil then
+			for _, k in f.selectedKeys do
+				table.insert(keys, k)
+			end
+		end
+	end
+	return keys
+end
+
 --------------------------------------------------------------------------------
 -- Helpers
 --------------------------------------------------------------------------------
