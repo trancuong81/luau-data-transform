@@ -65,33 +65,6 @@ local function getSubField(source: any, parentName: string, fieldName: string): 
 	return (vsf :: { [string]: any })[fieldName]
 end
 
--- Source descriptor: {ns: string, field: string, parent: string?}
-type SourceDesc = { ns: string, field: string, parent: string? }
-
-local function collectSelectedKeys(sources: MergedSources, srcList: { SourceDesc }): { string }
-	local result: { string } = {}
-	for _, src in srcList do
-		local ns = (sources :: { [string]: any })[src.ns] -- TODO: type-narrow when Luau supports discriminated maps
-		if ns ~= nil then
-			local raw: any
-			if src.parent ~= nil then
-				raw = getSubField(ns, src.parent :: string, src.field)
-			else
-				raw = getField(ns, src.field)
-			end
-			if raw ~= nil then
-				local keys = (raw :: { [string]: any }).selectedKeys
-				if keys ~= nil then
-					for _, k in keys :: { string } do
-						table.insert(result, k)
-					end
-				end
-			end
-		end
-	end
-	return result
-end
-
 local function mapAndDedup(keys: { string }, optionMap: { [string]: string }): { string }
 	local result: { string } = {}
 	local seen: { [string]: boolean } = {}
@@ -135,65 +108,6 @@ function CarlyleMappings.splitName(fullname: string): NameParts
 		return { firstName = first, middleName = middle, lastName = last }
 	end
 end
-
---------------------------------------------------------------------------------
--- Pattern Executors
---------------------------------------------------------------------------------
-
-type W9TextboxRule = {
-	target: string,
-	w9Field: string,
-}
-
-type W9RadioGroupRule = {
-	target: string,
-	sources: { SourceDesc },
-	optionMap: { [string]: string },
-}
-
-local function applyW9Textbox(w9: SourceW9Table.SourceW9TableFieldsMap, rule: W9TextboxRule): DataTypes.StringType?
-	local raw = getField(w9, rule.w9Field)
-	if raw == nil then
-		return nil
-	end
-	local v = (raw :: { [string]: any }).value
-	if v == nil or v == "" then
-		return nil
-	end
-	return DataTypes.makeStringType({ typeId = "String", value = v :: string })
-end
-
---------------------------------------------------------------------------------
--- Rule Tables
---------------------------------------------------------------------------------
-
--- W9 rules: direct (no disregarded entity), TAO (with disregarded entity), always
-local w9DirectTextboxRules: { W9TextboxRule } = {
-	{ target = "sfTaxFormW9TaxAccountOwner", w9Field = "w9Line1" },
-	{ target = "sfTaxFormW9ExemptPayeeCodeC", w9Field = "w9Line4Exemptpayee" },
-	{ target = "sfTaxFormW9ExemptionFromFATCAReportingCodeC", w9Field = "w9Line4Exemptfatca" },
-	{ target = "sfTaxFormW9BillingStreet", w9Field = "w9Line5" },
-	{ target = "sfTaxFormW9BillingCity", w9Field = "w9CityLine6" },
-	{ target = "sfTaxFormW9BillingState", w9Field = "w9StateLine6" },
-	{ target = "sfTaxFormW9BillingPostalCode", w9Field = "w9ZipLine6" },
-	{ target = "sfTaxFormW9BillingCountry", w9Field = "w9CountryLine6" },
-}
-
-local w9TaoTextboxRules: { W9TextboxRule } = {
-	{ target = "sfTaxFormW9TAOTaxAccountOwner", w9Field = "w9Line1" },
-	{ target = "sfTaxFormW9TAOExemptPayeeCodeC", w9Field = "w9Line4Exemptpayee" },
-	{ target = "sfTaxFormW9TAOExemptionFromFATCAReportingCodeC", w9Field = "w9Line4Exemptfatca" },
-	{ target = "sfTaxFormW9TAOBillingStreetC", w9Field = "w9Line5" },
-	{ target = "sfTaxFormW9TAOBillingCityC", w9Field = "w9CityLine6" },
-	{ target = "sfTaxFormW9TAOBillingStateC", w9Field = "w9StateLine6" },
-	{ target = "sfTaxFormW9TAOBillingPostalCodeC", w9Field = "w9ZipLine6" },
-	{ target = "sfTaxFormW9TAOBillingCountryC", w9Field = "w9CountryLine6" },
-}
-
-local w9AlwaysTextboxRules: { W9TextboxRule } = {
-	{ target = "sfTaxFormW9DisregardedEntityName", w9Field = "w9Line2" },
-	{ target = "sfTaxFormW9TaxEntityTypeC", w9Field = "w9Line31OtherSpecify" },
-}
 
 --------------------------------------------------------------------------------
 -- W9 special-case helpers
@@ -285,28 +199,6 @@ local function resolveW9FMTaxId(w9: SourceW9Table.SourceW9TableFieldsMap): strin
 		end
 	end
 	return table.concat(parts, "")
-end
-
--- 894 Eligible: special default-to-false logic
-local function resolve894Eligible(sources: MergedSources): DataTypes.MultipleCheckboxType
-	local rule894Sources: { SourceDesc } = {
-		{ ns = "master", field = "fiscallytransparentS894benefitsEntityInvestorquestionnaire" },
-		{ ns = "master", field = "caymanfiscallytransparentS894benefitsEntityInvestorquestionnaire" },
-		{ ns = "feeder", field = "fiscallytransparentS894benefitsEntityInvestorquestionnaire" },
-		{ ns = "feeder", field = "caymanfiscallytransparentS894benefitsEntityInvestorquestionnaire" },
-	}
-	local optionMap894: { [string]: string } = {
-		["yes_fiscallytransparent_s894benefits_entity_investorquestionnaire"] = "true",
-		["yes_caymanfiscallytransparent_s894benefits_entity_investorquestionnaire"] = "true",
-	}
-
-	local keys = collectSelectedKeys(sources, rule894Sources)
-	local mapped = mapAndDedup(keys, optionMap894)
-	if #mapped == 1 then
-		return DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
-	end
-	-- Default to false
-	return DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = { "false" } })
 end
 
 --------------------------------------------------------------------------------
@@ -727,7 +619,6 @@ function CarlyleMappings.transformScalars(
 	master: SourceMasterTable.SourceMasterTableFieldsMap?,
 	w9: SourceW9Table.SourceW9TableFieldsMap?
 ): FullTargetTable.FullTargetTableFieldsMap
-	local sources: MergedSources = { master = master, feeder = feeder, w9 = w9 }
 	local output = FullTargetTable.makeFullTargetTableFieldsMap({})
 
 	-- Textbox rules (inline typed)
@@ -1753,53 +1644,69 @@ function CarlyleMappings.transformScalars(
 		end
 	end
 
-	-- Special: 894 Eligible (defaults to false)
-	;(output :: any)["sfAgreementNullWLC894EligibleC"] = resolve894Eligible(sources)
-
-	-- Custom: Individual vs Organization detection
-	local indOrg: string? = nil
-	local indOrgSources: { { ns: string, indField: string, orgField: string } } = {
-		{ ns = "master", indField = "asaFullnameInvestornameAmlquestionnaire", orgField = "asaFullnameInvestornameGeneralinfo1" },
-		{ ns = "feeder", indField = "asaFullnameInvestornameAmlquestionnaire", orgField = "asaFullnameInvestornameGeneralinfo1" },
-	}
-	for _, src in indOrgSources do
-		if indOrg ~= nil then
-			break
+	-- 894 Eligible (defaults to false)
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then
+			table.insert(keys, master.fiscallytransparentS894benefitsEntityInvestorquestionnaire)
+			table.insert(keys, master.caymanfiscallytransparentS894benefitsEntityInvestorquestionnaire)
 		end
-		local ns = (sources :: { [string]: any })[src.ns] -- TODO: type-narrow when Luau supports discriminated maps
-		if ns ~= nil then
-			local indRaw = getField(ns, src.indField)
-			if indRaw ~= nil then
-				local v = (indRaw :: { [string]: any }).value
-				if v ~= nil and v ~= "" then
-					indOrg = "Individual"
-				end
+		if feeder ~= nil then
+			table.insert(keys, feeder.fiscallytransparentS894benefitsEntityInvestorquestionnaire)
+			table.insert(keys, feeder.caymanfiscallytransparentS894benefitsEntityInvestorquestionnaire)
+		end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_fiscallytransparent_s894benefits_entity_investorquestionnaire"] = "true",
+			["yes_caymanfiscallytransparent_s894benefits_entity_investorquestionnaire"] = "true",
+		})
+		if #mapped == 1 then
+			output.sfAgreementNullWLC894EligibleC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		else
+			output.sfAgreementNullWLC894EligibleC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = { "false" } })
+		end
+	end
+
+	-- Individual vs Organization detection
+	do
+		local indOrg: string? = nil
+		if master ~= nil then
+			local indField = master.asaFullnameInvestornameAmlquestionnaire
+			if indField ~= nil and indField.value ~= nil and indField.value ~= "" then
+				indOrg = "Individual"
 			end
 			if indOrg == nil then
-				local orgRaw = getField(ns, src.orgField)
-				if orgRaw ~= nil then
-					local v = (orgRaw :: { [string]: any }).value
-					if v ~= nil and v ~= "" then
-						indOrg = "Organization"
-					end
+				local orgField = master.asaFullnameInvestornameGeneralinfo1
+				if orgField ~= nil and orgField.value ~= nil and orgField.value ~= "" then
+					indOrg = "Organization"
 				end
 			end
 		end
-	end
-	if indOrg ~= nil then
-		(output :: any)["sfAccountSubscriptionInvestorIndividualOrganizationC"] = DataTypes.makeMultipleCheckboxType({
-			typeId = "MultipleCheckbox",
-			selectedKeys = { indOrg :: string },
-		})
+		if indOrg == nil and feeder ~= nil then
+			local indField = feeder.asaFullnameInvestornameAmlquestionnaire
+			if indField ~= nil and indField.value ~= nil and indField.value ~= "" then
+				indOrg = "Individual"
+			end
+			if indOrg == nil then
+				local orgField = feeder.asaFullnameInvestornameGeneralinfo1
+				if orgField ~= nil and orgField.value ~= nil and orgField.value ~= "" then
+					indOrg = "Organization"
+				end
+			end
+		end
+		if indOrg ~= nil then
+			output.sfAccountSubscriptionInvestorIndividualOrganizationC = DataTypes.makeMultipleCheckboxType({
+				typeId = "MultipleCheckbox",
+				selectedKeys = { indOrg :: string },
+			})
+		end
 	end
 
-	-- Custom: Form Type detection (w9_line1 non-empty -> "W-9")
+	-- Form Type detection (w9_line1 non-empty -> "W-9")
 	if w9 ~= nil then
-		local w9Data = w9 :: SourceW9Table.SourceW9TableFieldsMap
-		if w9Data.w9Line1 ~= nil then
-			local v = w9Data.w9Line1.value
+		if w9.w9Line1 ~= nil then
+			local v = w9.w9Line1.value
 			if v ~= nil and v ~= "" then
-				(output :: any)["sfAccountSubscriptionInvestorFormTypeC"] = DataTypes.makeMultipleCheckboxType({
+				output.sfAccountSubscriptionInvestorFormTypeC = DataTypes.makeMultipleCheckboxType({
 					typeId = "MultipleCheckbox",
 					selectedKeys = { "W-9" },
 				})
@@ -1809,91 +1716,109 @@ function CarlyleMappings.transformScalars(
 
 	-- W9 conditional rules
 	if w9 ~= nil then
-		local w9Data = w9 :: SourceW9Table.SourceW9TableFieldsMap
-
 		-- Determine if disregarded entity exists
 		local hasDisregardedEntity = false
-		if w9Data.w9Line2 ~= nil then
-			local v = w9Data.w9Line2.value
+		if w9.w9Line2 ~= nil then
+			local v = w9.w9Line2.value
 			if v ~= nil and v ~= "" then
 				hasDisregardedEntity = true
 			end
 		end
 
-		-- Always rules
-		for _, rule in w9AlwaysTextboxRules do
-			local result = applyW9Textbox(w9Data, rule)
-			if result ~= nil then
-				(output :: any)[rule.target] = result
-			end
+		-- W9 Always rules
+		local w9Line2Val = strVal(w9.w9Line2)
+		if w9Line2Val ~= "" then
+			output.sfTaxFormW9DisregardedEntityName = DataTypes.makeStringType({ typeId = "String", value = w9Line2Val })
+		end
+		local w9Line31Other = strVal(w9.w9Line31OtherSpecify)
+		if w9Line31Other ~= "" then
+			output.sfTaxFormW9TaxEntityTypeC = DataTypes.makeStringType({ typeId = "String", value = w9Line31Other })
 		end
 
 		if hasDisregardedEntity then
-			-- TAO textbox rules (with disregarded entity)
-			for _, rule in w9TaoTextboxRules do
-				local result = applyW9Textbox(w9Data, rule)
-				if result ~= nil then
-					(output :: any)[rule.target] = result
-				end
-			end
+			-- TAO textbox rules
+			local v: string
+			v = strVal(w9.w9Line1)
+			if v ~= "" then output.sfTaxFormW9TAOTaxAccountOwner = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9Line4Exemptpayee)
+			if v ~= "" then output.sfTaxFormW9TAOExemptPayeeCodeC = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9Line4Exemptfatca)
+			if v ~= "" then output.sfTaxFormW9TAOExemptionFromFATCAReportingCodeC = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9Line5)
+			if v ~= "" then output.sfTaxFormW9TAOBillingStreetC = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9CityLine6)
+			if v ~= "" then output.sfTaxFormW9TAOBillingCityC = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9StateLine6)
+			if v ~= "" then output.sfTaxFormW9TAOBillingStateC = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9ZipLine6)
+			if v ~= "" then output.sfTaxFormW9TAOBillingPostalCodeC = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9CountryLine6)
+			if v ~= "" then output.sfTaxFormW9TAOBillingCountryC = DataTypes.makeStringType({ typeId = "String", value = v }) end
 
-			-- TAO Tax Status (special LLC logic)
-			local taoTaxStatus = resolveW9TaxStatus(w9Data)
+			-- TAO Tax Status
+			local taoTaxStatus = resolveW9TaxStatus(w9)
 			if taoTaxStatus ~= nil then
-				(output :: any)["sfTaxFormW9TAOTaxStatusC"] = DataTypes.makeMultipleCheckboxType({
+				output.sfTaxFormW9TAOTaxStatusC = DataTypes.makeMultipleCheckboxType({
 					typeId = "MultipleCheckbox",
 					selectedKeys = taoTaxStatus,
 				})
 			end
-
 			-- TAO TIN Type
-			local taoTinType = resolveW9TINType(w9Data)
+			local taoTinType = resolveW9TINType(w9)
 			if taoTinType ~= nil then
-				(output :: any)["sfTaxFormW9TAOUSTINTypeC"] = DataTypes.makeMultipleCheckboxType({
+				output.sfTaxFormW9TAOUSTINTypeC = DataTypes.makeMultipleCheckboxType({
 					typeId = "MultipleCheckbox",
 					selectedKeys = taoTinType,
 				})
 			end
-
 			-- TAO US Tax ID
-			local taoTaxId = resolveW9FMTaxId(w9Data)
+			local taoTaxId = resolveW9FMTaxId(w9)
 			if taoTaxId ~= "" then
-				(output :: any)["sfTaxFormW9TAOUSTaxIDC"] = DataTypes.makeStringType({
+				output.sfTaxFormW9TAOUSTaxIDC = DataTypes.makeStringType({
 					typeId = "String",
 					value = taoTaxId,
 				})
 			end
 		else
-			-- Direct textbox rules (no disregarded entity)
-			for _, rule in w9DirectTextboxRules do
-				local result = applyW9Textbox(w9Data, rule)
-				if result ~= nil then
-					(output :: any)[rule.target] = result
-				end
-			end
+			-- Direct textbox rules
+			local v: string
+			v = strVal(w9.w9Line1)
+			if v ~= "" then output.sfTaxFormW9TaxAccountOwner = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9Line4Exemptpayee)
+			if v ~= "" then output.sfTaxFormW9ExemptPayeeCodeC = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9Line4Exemptfatca)
+			if v ~= "" then output.sfTaxFormW9ExemptionFromFATCAReportingCodeC = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9Line5)
+			if v ~= "" then output.sfTaxFormW9BillingStreet = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9CityLine6)
+			if v ~= "" then output.sfTaxFormW9BillingCity = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9StateLine6)
+			if v ~= "" then output.sfTaxFormW9BillingState = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9ZipLine6)
+			if v ~= "" then output.sfTaxFormW9BillingPostalCode = DataTypes.makeStringType({ typeId = "String", value = v }) end
+			v = strVal(w9.w9CountryLine6)
+			if v ~= "" then output.sfTaxFormW9BillingCountry = DataTypes.makeStringType({ typeId = "String", value = v }) end
 
-			-- Direct Tax Status (special LLC logic)
-			local directTaxStatus = resolveW9TaxStatus(w9Data)
+			-- Direct Tax Status
+			local directTaxStatus = resolveW9TaxStatus(w9)
 			if directTaxStatus ~= nil then
-				(output :: any)["sfTaxFormW9TaxStatusC"] = DataTypes.makeMultipleCheckboxType({
+				output.sfTaxFormW9TaxStatusC = DataTypes.makeMultipleCheckboxType({
 					typeId = "MultipleCheckbox",
 					selectedKeys = directTaxStatus,
 				})
 			end
-
 			-- Direct TIN Type
-			local directTinType = resolveW9TINType(w9Data)
+			local directTinType = resolveW9TINType(w9)
 			if directTinType ~= nil then
-				(output :: any)["sfTaxFormW9USTINTypeC"] = DataTypes.makeMultipleCheckboxType({
+				output.sfTaxFormW9USTINTypeC = DataTypes.makeMultipleCheckboxType({
 					typeId = "MultipleCheckbox",
 					selectedKeys = directTinType,
 				})
 			end
-
 			-- Direct FM Tax Id
-			local directTaxId = resolveW9FMTaxId(w9Data)
+			local directTaxId = resolveW9FMTaxId(w9)
 			if directTaxId ~= "" then
-				(output :: any)["sfTaxFormW9FMTaxIdC"] = DataTypes.makeStringType({
+				output.sfTaxFormW9FMTaxIdC = DataTypes.makeStringType({
 					typeId = "String",
 					value = directTaxId,
 				})
