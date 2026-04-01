@@ -68,28 +68,6 @@ end
 -- Source descriptor: {ns: string, field: string, parent: string?}
 type SourceDesc = { ns: string, field: string, parent: string? }
 
-local function collectTextValues(sources: MergedSources, srcList: { SourceDesc }): string
-	local parts: { string } = {}
-	for _, src in srcList do
-		local ns = (sources :: { [string]: any })[src.ns] -- TODO: type-narrow when Luau supports discriminated maps
-		if ns ~= nil then
-			local raw: any
-			if src.parent ~= nil then
-				raw = getSubField(ns, src.parent :: string, src.field)
-			else
-				raw = getField(ns, src.field)
-			end
-			if raw ~= nil then
-				local v = (raw :: { [string]: any }).value
-				if v ~= nil and v ~= "" then
-					table.insert(parts, v :: string)
-				end
-			end
-		end
-	end
-	return table.concat(parts, "")
-end
-
 local function collectSelectedKeys(sources: MergedSources, srcList: { SourceDesc }): { string }
 	local result: { string } = {}
 	for _, src in srcList do
@@ -162,25 +140,6 @@ end
 -- Pattern Executors
 --------------------------------------------------------------------------------
 
-type RadioGroupRule = {
-	target: string,
-	sources: { SourceDesc },
-	optionMap: { [string]: string },
-}
-
-type CheckboxBooleanRule = {
-	target: string,
-	sources: { SourceDesc },
-	trueKeys: { string },
-}
-
-type NameSplitRule = {
-	targetFirst: string,
-	targetMiddle: string,
-	targetLast: string,
-	sources: { SourceDesc },
-}
-
 type W9TextboxRule = {
 	target: string,
 	w9Field: string,
@@ -191,29 +150,6 @@ type W9RadioGroupRule = {
 	sources: { SourceDesc },
 	optionMap: { [string]: string },
 }
-
-local function applyRadioGroup(sources: MergedSources, rule: RadioGroupRule): DataTypes.MultipleCheckboxType?
-	local keys = collectSelectedKeys(sources, rule.sources)
-	local mapped = mapAndDedup(keys, rule.optionMap)
-	if #mapped == 0 then
-		return nil
-	end
-	return DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
-end
-
-local function applyCheckboxBoolean(sources: MergedSources, rule: CheckboxBooleanRule): DataTypes.MultipleCheckboxType
-	local keys = collectSelectedKeys(sources, rule.sources)
-	local trueSet: { [string]: boolean } = {}
-	for _, tk in rule.trueKeys do
-		trueSet[tk] = true
-	end
-	for _, k in keys do
-		if trueSet[k] then
-			return DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = { "true" } })
-		end
-	end
-	return DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = { "false" } })
-end
 
 local function applyW9Textbox(w9: SourceW9Table.SourceW9TableFieldsMap, rule: W9TextboxRule): DataTypes.StringType?
 	local raw = getField(w9, rule.w9Field)
@@ -230,163 +166,6 @@ end
 --------------------------------------------------------------------------------
 -- Rule Tables
 --------------------------------------------------------------------------------
-
--- checkboxGroup rules (standard multi-select with option mapping)
-local checkboxGroupRules: { RadioGroupRule } = {
-	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Source_of_Wealth_Category_c
-	{
-		target = "sfAccountSubscriptionInvestorSourceOfWealthCategoryC",
-		sources = {
-			{ ns = "master", field = "sourceofwealthPart1Duediligencequestionnaire" },
-			{ ns = "master", field = "sourceoffundsPart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "sourceofwealthPart1Duediligencequestionnaire" },
-			{ ns = "feeder", field = "sourceoffundsPart2Duediligencequestionnaire" },
-		},
-		optionMap = {
-			["businessprofit_sourceofwealth_part1_duediligencequestionnaire"] = "Business profits or dividends",
-			["businessprofits_sourceoffunds_part2_duediligencequestionnaire"] = "Business profits or dividends",
-			["compensation_sourceofwealth_part1_duediligencequestionnaire"] = "Compensation, payment",
-			["compensation_sourceoffunds_part2_duediligencequestionnaire"] = "Compensation, payment",
-			["gift_sourceofwealth_part1_duediligencequestionnaire"] = "Gift",
-			["gift_sourceoffunds_part2_duediligencequestionnaire"] = "Gift",
-			["income_sourceofwealth_part1_duediligencequestionnaire"] = "Income from  employment",
-			["income_sourceoffunds_part2_duediligencequestionnaire"] = "Income from  employment",
-			["inheritance_sourceofwealth_part1_duediligencequestionnaire"] = "Inheritance",
-			["inheritance_sourceoffunds_part2_duediligencequestionnaire"] = "Inheritance",
-			["investments_sourceofwealth_part1_duediligencequestionnaire"] = "Investments",
-			["investments_sourceoffunds_part2_duediligencequestionnaire"] = "Investments",
-			["liquidation_sourceofwealth_part1_duediligencequestionnaire"] = "Liquidation of investment portfolio",
-			["liquidation_sourceoffunds_part2_duediligencequestionnaire"] = "Liquidation of investment portfolio",
-			["lottery_sourceofwealth_part1_duediligencequestionnaire"] = "Lottery/betting/casino winnings",
-			["lottery_sourceoffunds_part2_duediligencequestionnaire"] = "Lottery/betting/casino winnings",
-			["royalties_sourceofwealth_part1_duediligencequestionnaire"] = "Royalties",
-			["royalties_sourceoffunds_part2_duediligencequestionnaire"] = "Royalties",
-			["saleofbusiness_sourceofwealth_part1_duediligencequestionnaire"] = "Sale of business or partnership",
-			["saleofbusiness_sourceoffunds_part2_duediligencequestionnaire"] = "Sale of business or partnership",
-			["saleofproperty_sourceofwealth_part1_duediligencequestionnaire"] = "Sale of property",
-			["saleofproperty_sourceoffunds_part2_duediligencequestionnaire"] = "Sale of property",
-			["saleofshare_sourceofwealth_part1_duediligencequestionnaire"] = "Sales of shares or other investments",
-			["salesofshare_sourceoffunds_part2_duediligencequestionnaire"] = "Sales of shares or other investments",
-			["savings_sourceofwealth_part1_duediligencequestionnaire"] = "Savings",
-			["savings_sourceoffunds_part2_duediligencequestionnaire"] = "Savings",
-		},
-	},
-	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Accredited_Investor_Status_Individual_c
-	{
-		target = "sfAccountSubscriptionInvestorAccreditedInvestorStatusIndividualC",
-		sources = {
-			{ ns = "master", field = "asaAccreditedinvestorAccreditedinvestor" },
-			{ ns = "feeder", field = "asaAccreditedinvestorAccreditedinvestor" },
-		},
-		optionMap = {
-			["asa_yes_earn200k_naturalperson_accreditedinvestor"] = "Individual - Income",
-			["asa_yes_worth1m_naturalperson_accreditedinvestor"] = "Individual - Net Worth",
-			["asa_yes_procertification_naturalperson_accreditedinvestor"] = "Individual - Holds SEC Designated Licenses",
-			["asa_yes_knowledgeableemployee_naturalperson_accreditedinvestor"] = "Individual - Knowledgeable Employee (3c5 Rule)",
-			["familyclientorfamilyoffice_naturalperson_accreditedinvestor"] = "Individual - Family Client of Qualified Family Office",
-		},
-	},
-	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Accredited_Investor_Status_Entities_c
-	{
-		target = "sfAccountSubscriptionInvestorAccreditedInvestorStatusEntitiesC",
-		sources = {
-			{ ns = "master", field = "asaAccreditedinvestorAccreditedinvestor1" },
-			{ ns = "feeder", field = "asaAccreditedinvestorAccreditedinvestor1" },
-		},
-		optionMap = {
-			["asa_yes_specificown5m_otherentity_accreditedinvestor"] = "Corp/Org/LLC - Assets > $5M",
-			["asa_yes_allequityholder_otherentity_accreditedinvestor"] = "Corp/Org/LLC - All Equity Owners Accredited",
-			["asa_yes_trust_accreditedinvestor"] = "Trust - Assets > $5M Directed by Sophisticated Person",
-			["trustbank_accreditedinvestor_entity_investorquestionnaire"] = "Trust - Bank or Institution Trustee",
-			["asa_yes_revocabletrust_accreditedinvestor"] = "Revocable Trust - All Grantors Accredited",
-			["asa_yes_erisaplan_accreditedinvestor"] = "ERISA Plan - Fiduciary Managed by Bank/Advisor",
-			["excess5mplan_accreditedinvestor_entity_investorquestionnaire"] = "ERISA Plan - Assets > $5M",
-			["asa_yes_plan_accreditedinvestor"] = "Gov't ERISA Plan - State or Municipal",
-			["selfdirectedplan_accreditedinvestor_entity_investorquestionnaire"] = "Self-Directed ERISA Plan - All Participants Accredited",
-			["asa_yes_bank_accreditedinvestor"] = "Bank or Savings Institution (Sec 3(a)(2) / 3(a)(5))",
-			["asa_yes_insurancecompany_accreditedinvestor"] = "Insurance Company - Securities Act Section 2(13)",
-			["investmentcompany_accreditedinvestor_entity_investorquestionnaire"] = "Investment Company - SEC Registered",
-			["asa_yes_sec2a48company_accreditedinvestor"] = "Business Development Company - SEC Defined",
-			["asa_yes_smallbusinessinvestmentcompany_accreditedinvestor"] = "Small Business Investment Company (SBA 301)",
-			["asa_yes_rbic_accreditedinvestor"] = "Rural Business Investment Company (USDA 384A)",
-			["asa_yes_broker_accreditedinvestor"] = "Broker-Dealer - Registered under Exchange Act Sec 15",
-			["asa_yes_regsec203_investmentadviser_accreditedinvestor"] = "Investment Adviser - Registered under SEC/State Law",
-			["asa_yes_exemptsec203_investmentadviser_accreditedinvestor"] = "Investment Adviser - Exempt under SEC 203(l)/(m)",
-			["asa_yes_otherown5m_otherentity_accreditedinvestor"] = "Other Entity - Owns Investments > $5M",
-			["asa_yes_familyoffice_accreditedinvestor"] = "Family Office - AUM > $5M Directed by Qualified Person",
-			["asa_yes_familyclient_accreditedinvestor"] = "Family Client - Directed by Qualified Family Office",
-			["none_accreditedinvestor_entity_investorquestionnaire"] = "None of the Above Categories",
-		},
-	},
-}
-
--- checkboxBoolean rules (any match -> true, else false)
-local checkboxBooleanRules: { CheckboxBooleanRule } = {
-	-- // checkboxGroup: sf_Agreement_Onboarding_Is_ERISA_Title_I_c
-	{
-		target = "sfAgreementOnboardingIsERISATitleIC",
-		sources = {
-			{ ns = "master", field = "asaErisaErisa" },
-			{ ns = "feeder", field = "asaErisaErisa" },
-		},
-		trueKeys = { "asa_employeebenefitplan_erisa", "asa_plandescribedunder4975_erisa" },
-	},
-	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Does_the_Entity_Have_Controlling_Persons_c
-	{
-		target = "sfAccountSubscriptionInvestorDoesTheEntityHaveControllingPersonsC",
-		sources = {
-			{ ns = "master", field = "skipFinraIndividualsInvestorquestionnaire" },
-			{ ns = "feeder", field = "skipFinraIndividualsInvestorquestionnaire" },
-		},
-		trueKeys = { "yes_skip_finra_individuals_investorquestionnaire" },
-	},
-	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Broker_Dealer_c
-	{
-		target = "sfAccountSubscriptionInvestorBrokerDealerC",
-		sources = {
-			{ ns = "master", field = "finraIndividualsInvestorquestionnaire" },
-			{ ns = "feeder", field = "finraIndividualsInvestorquestionnaire" },
-		},
-		trueKeys = { "brokerdealer_finra_individuals_investorquestionnaire", "brokerdealerpersonnel_finra_individuals_investorquestionnaire" },
-	},
-}
-
--- Name split rules
-local nameSplitRules: { NameSplitRule } = {
-	-- // textbox split first/middle/last name: sf_Agreement_null_Signer_*
-	{
-		targetFirst = "sfAgreementNullSignerFirstName",
-		targetMiddle = "sfAgreementNullSignerMiddleName",
-		targetLast = "sfAgreementNullSignerLastName",
-		sources = {
-			{ ns = "master", field = "individualSubscribernameSignaturepage", parent = "lpSignatory" },
-			{ ns = "master", field = "entityAuthorizednameSignaturepage", parent = "lpSignatory" },
-			{ ns = "feeder", field = "individualSubscribernameSignaturepage", parent = "lpSignatory" },
-			{ ns = "feeder", field = "entityAuthorizednameSignaturepage", parent = "lpSignatory" },
-		},
-	},
-	-- // textbox split first/middle/last name: sf_Account_SubscriptionInvestor_Signer_*
-	{
-		targetFirst = "sfAccountSubscriptionInvestorSignerFirstName",
-		targetMiddle = "sfAccountSubscriptionInvestorSignerMiddleName",
-		targetLast = "sfAccountSubscriptionInvestorSignerLastName",
-		sources = {
-			{ ns = "master", field = "signernamePart1Duediligencequestionnaire", parent = "clientquestionnairePart1Signatory" },
-			{ ns = "master", field = "signernamePart2Duediligencequestionnaire", parent = "clientquestionnairePart2Signatory" },
-			{ ns = "feeder", field = "signernamePart1Duediligencequestionnaire", parent = "clientquestionnairePart1Signatory" },
-			{ ns = "feeder", field = "signernamePart2Duediligencequestionnaire", parent = "clientquestionnairePart2Signatory" },
-		},
-	},
-	-- // textbox split first/middle/last name: sf_Agreement_Onboarding_Signer_*
-	{
-		targetFirst = "sfAgreementOnboardingSignerFirstName",
-		targetMiddle = "sfAgreementOnboardingSignerMiddleName",
-		targetLast = "sfAgreementOnboardingSignerLastName",
-		sources = {
-			{ ns = "master", field = "nameAuthorizedsignatoryConsentstatement" },
-		},
-	},
-}
 
 -- W9 rules: direct (no disregarded entity), TAO (with disregarded entity), always
 local w9DirectTextboxRules: { W9TextboxRule } = {
@@ -1768,28 +1547,209 @@ function CarlyleMappings.transformScalars(
 		end
 	end
 
-	-- CheckboxGroup rules (same logic as radioGroup but multi-select)
-	for _, rule in checkboxGroupRules do
-		local result = applyRadioGroup(sources, rule)
-		if result ~= nil then
-			(output :: any)[rule.target] = result
+	-- CheckboxGroup rules (inline typed)
+	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Source_of_Wealth_Category_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.sourceofwealthPart1Duediligencequestionnaire) end
+		if master ~= nil then table.insert(keys, master.sourceoffundsPart2Duediligencequestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.sourceofwealthPart1Duediligencequestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.sourceoffundsPart2Duediligencequestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["businessprofit_sourceofwealth_part1_duediligencequestionnaire"] = "Business profits or dividends",
+			["businessprofits_sourceoffunds_part2_duediligencequestionnaire"] = "Business profits or dividends",
+			["compensation_sourceofwealth_part1_duediligencequestionnaire"] = "Compensation, payment",
+			["compensation_sourceoffunds_part2_duediligencequestionnaire"] = "Compensation, payment",
+			["gift_sourceofwealth_part1_duediligencequestionnaire"] = "Gift",
+			["gift_sourceoffunds_part2_duediligencequestionnaire"] = "Gift",
+			["income_sourceofwealth_part1_duediligencequestionnaire"] = "Income from  employment",
+			["income_sourceoffunds_part2_duediligencequestionnaire"] = "Income from  employment",
+			["inheritance_sourceofwealth_part1_duediligencequestionnaire"] = "Inheritance",
+			["inheritance_sourceoffunds_part2_duediligencequestionnaire"] = "Inheritance",
+			["investments_sourceofwealth_part1_duediligencequestionnaire"] = "Investments",
+			["investments_sourceoffunds_part2_duediligencequestionnaire"] = "Investments",
+			["liquidation_sourceofwealth_part1_duediligencequestionnaire"] = "Liquidation of investment portfolio",
+			["liquidation_sourceoffunds_part2_duediligencequestionnaire"] = "Liquidation of investment portfolio",
+			["lottery_sourceofwealth_part1_duediligencequestionnaire"] = "Lottery/betting/casino winnings",
+			["lottery_sourceoffunds_part2_duediligencequestionnaire"] = "Lottery/betting/casino winnings",
+			["royalties_sourceofwealth_part1_duediligencequestionnaire"] = "Royalties",
+			["royalties_sourceoffunds_part2_duediligencequestionnaire"] = "Royalties",
+			["saleofbusiness_sourceofwealth_part1_duediligencequestionnaire"] = "Sale of business or partnership",
+			["saleofbusiness_sourceoffunds_part2_duediligencequestionnaire"] = "Sale of business or partnership",
+			["saleofproperty_sourceofwealth_part1_duediligencequestionnaire"] = "Sale of property",
+			["saleofproperty_sourceoffunds_part2_duediligencequestionnaire"] = "Sale of property",
+			["saleofshare_sourceofwealth_part1_duediligencequestionnaire"] = "Sales of shares or other investments",
+			["salesofshare_sourceoffunds_part2_duediligencequestionnaire"] = "Sales of shares or other investments",
+			["savings_sourceofwealth_part1_duediligencequestionnaire"] = "Savings",
+			["savings_sourceoffunds_part2_duediligencequestionnaire"] = "Savings",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorSourceOfWealthCategoryC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Accredited_Investor_Status_Individual_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.asaAccreditedinvestorAccreditedinvestor) end
+		if feeder ~= nil then table.insert(keys, feeder.asaAccreditedinvestorAccreditedinvestor) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["asa_yes_earn200k_naturalperson_accreditedinvestor"] = "Individual - Income",
+			["asa_yes_worth1m_naturalperson_accreditedinvestor"] = "Individual - Net Worth",
+			["asa_yes_procertification_naturalperson_accreditedinvestor"] = "Individual - Holds SEC Designated Licenses",
+			["asa_yes_knowledgeableemployee_naturalperson_accreditedinvestor"] = "Individual - Knowledgeable Employee (3c5 Rule)",
+			["familyclientorfamilyoffice_naturalperson_accreditedinvestor"] = "Individual - Family Client of Qualified Family Office",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorAccreditedInvestorStatusIndividualC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Accredited_Investor_Status_Entities_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.asaAccreditedinvestorAccreditedinvestor1) end
+		if feeder ~= nil then table.insert(keys, feeder.asaAccreditedinvestorAccreditedinvestor1) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["asa_yes_specificown5m_otherentity_accreditedinvestor"] = "Corp/Org/LLC - Assets > $5M",
+			["asa_yes_allequityholder_otherentity_accreditedinvestor"] = "Corp/Org/LLC - All Equity Owners Accredited",
+			["asa_yes_trust_accreditedinvestor"] = "Trust - Assets > $5M Directed by Sophisticated Person",
+			["trustbank_accreditedinvestor_entity_investorquestionnaire"] = "Trust - Bank or Institution Trustee",
+			["asa_yes_revocabletrust_accreditedinvestor"] = "Revocable Trust - All Grantors Accredited",
+			["asa_yes_erisaplan_accreditedinvestor"] = "ERISA Plan - Fiduciary Managed by Bank/Advisor",
+			["excess5mplan_accreditedinvestor_entity_investorquestionnaire"] = "ERISA Plan - Assets > $5M",
+			["asa_yes_plan_accreditedinvestor"] = "Gov't ERISA Plan - State or Municipal",
+			["selfdirectedplan_accreditedinvestor_entity_investorquestionnaire"] = "Self-Directed ERISA Plan - All Participants Accredited",
+			["asa_yes_bank_accreditedinvestor"] = "Bank or Savings Institution (Sec 3(a)(2) / 3(a)(5))",
+			["asa_yes_insurancecompany_accreditedinvestor"] = "Insurance Company - Securities Act Section 2(13)",
+			["investmentcompany_accreditedinvestor_entity_investorquestionnaire"] = "Investment Company - SEC Registered",
+			["asa_yes_sec2a48company_accreditedinvestor"] = "Business Development Company - SEC Defined",
+			["asa_yes_smallbusinessinvestmentcompany_accreditedinvestor"] = "Small Business Investment Company (SBA 301)",
+			["asa_yes_rbic_accreditedinvestor"] = "Rural Business Investment Company (USDA 384A)",
+			["asa_yes_broker_accreditedinvestor"] = "Broker-Dealer - Registered under Exchange Act Sec 15",
+			["asa_yes_regsec203_investmentadviser_accreditedinvestor"] = "Investment Adviser - Registered under SEC/State Law",
+			["asa_yes_exemptsec203_investmentadviser_accreditedinvestor"] = "Investment Adviser - Exempt under SEC 203(l)/(m)",
+			["asa_yes_otherown5m_otherentity_accreditedinvestor"] = "Other Entity - Owns Investments > $5M",
+			["asa_yes_familyoffice_accreditedinvestor"] = "Family Office - AUM > $5M Directed by Qualified Person",
+			["asa_yes_familyclient_accreditedinvestor"] = "Family Client - Directed by Qualified Family Office",
+			["none_accreditedinvestor_entity_investorquestionnaire"] = "None of the Above Categories",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorAccreditedInvestorStatusEntitiesC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
 		end
 	end
 
-	-- CheckboxBoolean rules (always produces a value)
-	for _, rule in checkboxBooleanRules do
-		local result = applyCheckboxBoolean(sources, rule)
-		;(output :: any)[rule.target] = result
+	-- CheckboxBoolean rules (inline typed)
+	-- // checkboxGroup: sf_Agreement_Onboarding_Is_ERISA_Title_I_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.asaErisaErisa) end
+		if feeder ~= nil then table.insert(keys, feeder.asaErisaErisa) end
+		local allKeys = collectKeysTyped(keys)
+		local trueSet: { [string]: boolean } = {
+			["asa_employeebenefitplan_erisa"] = true,
+			["asa_plandescribedunder4975_erisa"] = true,
+		}
+		local found = false
+		for _, k in allKeys do
+			if trueSet[k] then found = true; break end
+		end
+		output.sfAgreementOnboardingIsERISATitleIC = makeBoolCheckbox(found)
+	end
+	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Does_the_Entity_Have_Controlling_Persons_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.skipFinraIndividualsInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.skipFinraIndividualsInvestorquestionnaire) end
+		local allKeys = collectKeysTyped(keys)
+		local trueSet: { [string]: boolean } = {
+			["yes_skip_finra_individuals_investorquestionnaire"] = true,
+		}
+		local found = false
+		for _, k in allKeys do
+			if trueSet[k] then found = true; break end
+		end
+		output.sfAccountSubscriptionInvestorDoesTheEntityHaveControllingPersonsC = makeBoolCheckbox(found)
+	end
+	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Broker_Dealer_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.finraIndividualsInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.finraIndividualsInvestorquestionnaire) end
+		local allKeys = collectKeysTyped(keys)
+		local trueSet: { [string]: boolean } = {
+			["brokerdealer_finra_individuals_investorquestionnaire"] = true,
+			["brokerdealerpersonnel_finra_individuals_investorquestionnaire"] = true,
+		}
+		local found = false
+		for _, k in allKeys do
+			if trueSet[k] then found = true; break end
+		end
+		output.sfAccountSubscriptionInvestorBrokerDealerC = makeBoolCheckbox(found)
 	end
 
-	-- NameSplit rules
-	for _, rule in nameSplitRules do
-		local value = collectTextValues(sources, rule.sources)
-		if value ~= "" then
-			local parts = CarlyleMappings.splitName(value)
-			;(output :: any)[rule.targetFirst] = DataTypes.makeStringType({ typeId = "String", value = parts.firstName });
-			(output :: any)[rule.targetMiddle] = DataTypes.makeStringType({ typeId = "String", value = parts.middleName });
-			(output :: any)[rule.targetLast] = DataTypes.makeStringType({ typeId = "String", value = parts.lastName })
+	-- NameSplit rules (inline typed)
+	-- // textbox split first/middle/last name: sf_Agreement_null_Signer_*
+	do
+		local v = ""
+		if master ~= nil and master.lpSignatory ~= nil then
+			local vsf = master.lpSignatory.valueSubFields
+			if vsf ~= nil then
+				v = strVal(vsf.individualSubscribernameSignaturepage)
+				if v == "" then v = strVal(vsf.entityAuthorizednameSignaturepage) end
+			end
+		end
+		if v == "" and feeder ~= nil and feeder.lpSignatory ~= nil then
+			local vsf = feeder.lpSignatory.valueSubFields
+			if vsf ~= nil then
+				v = strVal(vsf.individualSubscribernameSignaturepage)
+				if v == "" then v = strVal(vsf.entityAuthorizednameSignaturepage) end
+			end
+		end
+		if v ~= "" then
+			local parts = CarlyleMappings.splitName(v)
+			output.sfAgreementNullSignerFirstName = DataTypes.makeStringType({ typeId = "String", value = parts.firstName })
+			output.sfAgreementNullSignerMiddleName = DataTypes.makeStringType({ typeId = "String", value = parts.middleName })
+			output.sfAgreementNullSignerLastName = DataTypes.makeStringType({ typeId = "String", value = parts.lastName })
+		end
+	end
+	-- // textbox split first/middle/last name: sf_Account_SubscriptionInvestor_Signer_*
+	do
+		local v = ""
+		if master ~= nil then
+			if master.clientquestionnairePart1Signatory ~= nil then
+				local vsf = master.clientquestionnairePart1Signatory.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.signernamePart1Duediligencequestionnaire) end
+			end
+			if v == "" and master.clientquestionnairePart2Signatory ~= nil then
+				local vsf = master.clientquestionnairePart2Signatory.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.signernamePart2Duediligencequestionnaire) end
+			end
+		end
+		if v == "" and feeder ~= nil then
+			if feeder.clientquestionnairePart1Signatory ~= nil then
+				local vsf = feeder.clientquestionnairePart1Signatory.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.signernamePart1Duediligencequestionnaire) end
+			end
+			if v == "" and feeder.clientquestionnairePart2Signatory ~= nil then
+				local vsf = feeder.clientquestionnairePart2Signatory.valueSubFields
+				if vsf ~= nil then v = strVal(vsf.signernamePart2Duediligencequestionnaire) end
+			end
+		end
+		if v ~= "" then
+			local parts = CarlyleMappings.splitName(v)
+			output.sfAccountSubscriptionInvestorSignerFirstName = DataTypes.makeStringType({ typeId = "String", value = parts.firstName })
+			output.sfAccountSubscriptionInvestorSignerMiddleName = DataTypes.makeStringType({ typeId = "String", value = parts.middleName })
+			output.sfAccountSubscriptionInvestorSignerLastName = DataTypes.makeStringType({ typeId = "String", value = parts.lastName })
+		end
+	end
+	-- // textbox split first/middle/last name: sf_Agreement_Onboarding_Signer_*
+	do
+		local v = ""
+		if master ~= nil then v = strVal(master.nameAuthorizedsignatoryConsentstatement) end
+		if v ~= "" then
+			local parts = CarlyleMappings.splitName(v)
+			output.sfAgreementOnboardingSignerFirstName = DataTypes.makeStringType({ typeId = "String", value = parts.firstName })
+			output.sfAgreementOnboardingSignerMiddleName = DataTypes.makeStringType({ typeId = "String", value = parts.middleName })
+			output.sfAgreementOnboardingSignerLastName = DataTypes.makeStringType({ typeId = "String", value = parts.lastName })
 		end
 	end
 
