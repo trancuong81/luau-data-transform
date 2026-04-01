@@ -231,415 +231,6 @@ end
 -- Rule Tables
 --------------------------------------------------------------------------------
 
--- Non-W9 radioGroup rules (always applied)
-local radioGroupRules: { RadioGroupRule } = {
-	-- // radioGroup: sf_Account_SubscriptionInvestor_WLC_Publicly_Listed_On_A_Stock_Exchange_c
-	{
-		target = "sfAccountSubscriptionInvestorWLCPubliclyListedOnAStockExchangeC",
-		sources = {
-			{ ns = "master", field = "luxsentityRegulatedstatusPart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "luxsentityRegulatedstatusPart2Duediligencequestionnaire" },
-		},
-		optionMap = {
-			["yes_luxsentity_regulatedstatus_part2_duediligencequestionnaire"] = "true",
-			["no_luxsentity_regulatedstatus_part2_duediligencequestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Agreement_null_WLC_International_Supplements_c
-	{
-		target = "sfAgreementNullWLCInternationalSupplementsC",
-		sources = {
-			{ ns = "master", field = "indiInternationalsupplementsPart1Duediligencequestionnaire" },
-			{ ns = "master", field = "entityInternationalsupplementsPart1Duediligencequestionnaire" },
-			{ ns = "feeder", field = "indiInternationalsupplementsPart1Duediligencequestionnaire" },
-			{ ns = "feeder", field = "entityInternationalsupplementsPart1Duediligencequestionnaire" },
-		},
-		optionMap = {
-			["eea_indi_internationalsupplements_part1_duediligencequestionnaire"] = "European Economic Area - Supplement",
-			["eea_entity_internationalsupplements_part1_duediligencequestionnaire"] = "European Economic Area - Supplement",
-			["uk_indi_internationalsupplements_part1_duediligencequestionnaire"] = "United Kingdom - Supplement",
-			["uk_entity_internationalsupplements_part1_duediligencequestionnaire"] = "United Kingdom - Supplement",
-			["swiss_indi_internationalsupplements_part1_duediligencequestionnaire"] = "Swiss - Supplement",
-			["swiss_entity_internationalsupplements_part1_duediligencequestionnaire"] = "Swiss - Supplement",
-			["canada_indi_internationalsupplements_part1_duediligencequestionnaire"] = "Canadian - Supplement",
-			["canada_entity_internationalsupplements_part1_duediligencequestionnaire"] = "Canadian - Supplement",
-			["japan_indi_internationalsupplements_part1_duediligencequestionnaire"] = "Japanese - Supplement",
-			["japan_entity_internationalsupplements_part1_duediligencequestionnaire"] = "Japanese - Supplement",
-			["none_indi_internationalsupplements_part1_duediligencequestionnaire"] = "No Supplement",
-			["none_entity_internationalsupplements_part1_duediligencequestionnaire"] = "No Supplement",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Nominee_Intermediary_c
-	{
-		target = "sfAccountSubscriptionInvestorNomineeIntermediaryC",
-		sources = {
-			{ ns = "master", field = "nomineePart1Duediligencequestionnaire" },
-			{ ns = "master", field = "nomineePart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "nomineePart1Duediligencequestionnaire" },
-			{ ns = "feeder", field = "nomineePart2Duediligencequestionnaire" },
-		},
-		optionMap = {
-			["yes_nominee_part1_duediligencequestionnaire"] = "Yes",
-			["yes_nominee_part2_duediligencequestionnaire"] = "Yes",
-			["no_nominee_part1_duediligencequestionnaire"] = "No",
-			["no_nominee_part2_duediligencequestionnaire"] = "No",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_WLC_Subscribing_as_a_Representative_c
-	{
-		target = "sfAccountSubscriptionInvestorWLCSubscribingAsARepresentativeC",
-		sources = {
-			{ ns = "master", field = "categoryNomineePart1Duediligencequestionnaire" },
-			{ ns = "feeder", field = "categoryNomineePart1Duediligencequestionnaire" },
-		},
-		optionMap = {
-			["nominee_category_nominee_part1_duediligencequestionnaire"] = "Nominee",
-			["trustee_category_nominee_part1_duediligencequestionnaire"] = "Trustee",
-			["custodian_category_nominee_part1_duediligencequestionnaire"] = "Custodian",
-			["other_category_nominee_part1_duediligencequestionnaire"] = "Other representative for another investor",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Politically_Exposed_Person_PEP_c
-	{
-		target = "sfAccountSubscriptionInvestorPoliticallyExposedPersonPEPC",
-		sources = {
-			{ ns = "master", field = "asaPoliticallyexposedpersonsAmlquestionnaire" },
-			{ ns = "feeder", field = "asaPoliticallyexposedpersonsAmlquestionnaire" },
-		},
-		optionMap = {
-			["asa_yes_politicallyexposedpersons_amlquestionnaire"] = "true",
-			["asa_no_politicallyexposedpersons_amlquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Legal_Status_c
-	{
-		target = "sfAccountSubscriptionInvestorLegalStatusC",
-		sources = {
-			{ ns = "master", field = "legalformofentityPart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "legalformofentityPart2Duediligencequestionnaire" },
-		},
-		optionMap = {
-			["corporation_legalformofentity_part2_duediligencequestionnaire"] = "Corporation",
-			["partnership_legalformofentity_part2_duediligencequestionnaire"] = "Partnership",
-			["ltdcompany_legalformofentity_part2_duediligencequestionnaire"] = "Limited Liability Company",
-			["irrevocabletrust_legalformofentity_part2_duediligencequestionnaire"] = "Irrevocable Trust",
-			["revocabletrust_legalformofentity_part2_duediligencequestionnaire"] = "Revocable Trust",
-			["foundation_legalformofentity_part2_duediligencequestionnaire"] = "Foundation",
-			["endowment_legalformofentity_part2_duediligencequestionnaire"] = "Endowment",
-			["govpensinoplan_legalformofentity_part2_duediligencequestionnaire"] = "Government Pension Plan",
-			["ira_legalformofentity_part2_duediligencequestionnaire"] = "Individual Retirement Account",
-			["other_legalformofentity_part2_duediligencequestionnaire"] = "Other",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_AML_Investor_Type_c
-	{
-		target = "sfAccountSubscriptionInvestorAMLInvestorTypeC",
-		sources = {
-			{ ns = "master", field = "asaFormpfFormpf" },
-			{ ns = "feeder", field = "asaFormpfFormpf" },
-		},
-		optionMap = {
-			["asa_usindividualortrust_formpf"] = "Individual/Trust – US",
-			["asa_nonusindividualortrust_formpf"] = "Individual/Trust - Non US",
-			["usbrokerordealer_formpf_part2_duediligencequestionnaire"] = "Broker Dealer – US",
-			["nonusbrokerdealer_formpf_part2_duediligencequestionnaire"] = "Broker Dealer - Non US",
-			["usinsurancecompanies_formpf_part2_duediligencequestionnaire"] = "Insurance Company – US",
-			["nonusinsurancecompanies_formpf_part2_duediligencequestionnaire"] = "Insurance Company - Non US",
-			["asa_investmentcompany_formpf"] = "Investment Company - SEC Registered",
-			["issuer_formpf_part2_duediligencequestionnaire"] = "Private Fund - 3c1 or 3c7",
-			["usnonprofit_formpf_part2_duediligencequestionnaire"] = "Non Profit – US",
-			["nonusnonprofit_formpf_part2_duediligencequestionnaire"] = "Non Profit - Non US",
-			["uspensionplan_formpf_part2_duediligencequestionnaire"] = "Pension Plan - US (ex gov)",
-			["nonuspensionplan_formpf_part2_duediligencequestionnaire"] = "Pension Plan - Non US (ex gov)",
-			["usbanking_formpf_part2_duediligencequestionnaire"] = "Bank or Thrift - US",
-			["nonusbanking_formpf_part2_duediligencequestionnaire"] = "Bank or Thrift - Non US",
-			["asa_stateormunicipalgovernmententity_formpf"] = "Government Entity - US (ex pension)",
-			["asa_governmentalpensionplan_formpf"] = "Pension Plan - US State or Municipal Government",
-			["asa_sovereignwealthfundorforeigninstitution_formpf"] = "Sovereign Wealth Fund - Non US (ex pension)",
-			["asa_nonusentities_formpf"] = "Subscriber - Non US Unknown Ownership",
-			["asa_other_formpf"] = "Other",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Regulated_Entity_c
-	{
-		target = "sfAccountSubscriptionInvestorRegulatedEntityC",
-		sources = {
-			{ ns = "master", field = "financialinstitutionRegulatedstatusPart2Duediligencequestionnaire" },
-			{ ns = "feeder", field = "financialinstitutionRegulatedstatusPart2Duediligencequestionnaire" },
-		},
-		optionMap = {
-			["yes_financialinstitution_regulatedstatus_part2_duediligencequestionnaireregulatedstatus_part2_duediligencequestionnaire"] = "true",
-			["no_financialinstitution_regulatedstatus_part2_duediligencequestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Qualified_Purchaser_c
-	{
-		target = "sfAccountSubscriptionInvestorQualifiedPurchaserC",
-		sources = {
-			{ ns = "master", field = "qualifiedpurchaserIndividualsInvestorquestionnaire" },
-			{ ns = "feeder", field = "qualifiedpurchaserIndividualsInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_qualifiedpurchaser_individuals_investorquestionnaire"] = "Yes",
-			["no_qualifiedpurchaser_individuals_investorquestionnaire"] = "No",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Qualified_Client_Status_c
-	{
-		target = "sfAccountSubscriptionInvestorQualifiedClientStatusC",
-		sources = {
-			{ ns = "master", field = "notinvest1100IndividualsInvestorquestionnaire" },
-			{ ns = "master", field = "qualifiedclientEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "notinvest1100IndividualsInvestorquestionnaire" },
-			{ ns = "feeder", field = "qualifiedclientEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_notinvest1100_individuals_investorquestionnaire"] = "Yes",
-			["no_notinvest1100_individuals_investorquestionnaire"] = "No",
-			["yes_qualifiedclient_entity_investorquestionnaire"] = "Yes",
-			["no_qualifiedclient_entity_investorquestionnaire"] = "No",
-		},
-	},
-	-- // radioGroup: sf_Agreement_null_Receive_Unapplied_Balance_Reduction_Amt_c
-	{
-		target = "sfAgreementNullReceiveUnappliedBalanceReductionAmtC",
-		sources = {
-			{ ns = "master", field = "electingfeepartnerIndividualsInvestorquestionnaire" },
-			{ ns = "master", field = "electingfeepartnerEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "electingfeepartnerIndividualsInvestorquestionnaire" },
-			{ ns = "feeder", field = "electingfeepartnerEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_electingfeepartner_individuals_investorquestionnaire"] = "true",
-			["yes_electingfeepartner_entity_investorquestionnaire"] = "true",
-			["no_electingfeepartner_individuals_investorquestionnaire"] = "false",
-			["no_electingfeepartner_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Is_Indiv_Retirement_Benefit_Plan_c
-	{
-		target = "sfAccountSubscriptionInvestorIsIndivRetirementBenefitPlanC",
-		sources = {
-			{ ns = "master", field = "voluntaryEmployeebenefitplanEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "voluntaryEmployeebenefitplanEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_voluntary_employeebenefitplan_entity_investorquestionnaire"] = "true",
-			["no_voluntary_employeebenefitplan_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Is_US_Tax_Exempt_c
-	{
-		target = "sfAccountSubscriptionInvestorIsUSTaxExemptC",
-		sources = {
-			{ ns = "master", field = "exemptTaxmatterEntityInvestorquestionnaire" },
-			{ ns = "master", field = "s511TaxexemptEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "exemptTaxmatterEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "s511TaxexemptEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_taxstatus_taxmatter_entity_investorquestionnaire"] = "true",
-			["yes_s511_taxexempt_entity_investorquestionnaire"] = "true",
-			["no_taxstatus_taxmatter_entity_investorquestionnaire"] = "false",
-			["no_s511_taxexempt_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Exempt_from_State_and_Local_Income_Tax_c
-	{
-		target = "sfAccountSubscriptionInvestorExemptFromStateAndLocalIncomeTaxC",
-		sources = {
-			{ ns = "master", field = "entitledTaxexemptEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "entitledTaxexemptEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_entitled_taxexempt_entity_investorquestionnaire"] = "true",
-			["no_entitled_taxexempt_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Tax_Exempt_Subtype_c
-	{
-		target = "sfAccountSubscriptionInvestorTaxExemptSubtypeC",
-		sources = {
-			{ ns = "master", field = "subtypeEntitledTaxexemptEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "subtypeEntitledTaxexemptEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["trust_subtype_entitled_taxexempt_entity_investorquestionnaire"] = "Exempt Organization - Trust",
-			["corporation_subtype_entitled_taxexempt_entity_investorquestionnaire"] = "Exempt Organization - Corporation",
-			["super_subtype_entitled_taxexempt_entity_investorquestionnaire"] = "Exempt Organization - Super Tax Exempt (I.R.C. section 115)",
-			["insurancecompany_subtype_entitled_taxexempt_entity_investorquestionnaire"] = "Exempt Organization - Insurance Company",
-		},
-	},
-	-- // radioGroup: sf_Agreement_null_ECI_c
-	{
-		target = "sfAgreementNullECIC",
-		sources = {
-			{ ns = "master", field = "electeciinvestmentsNonustaxstatusEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "electeciinvestmentsNonustaxstatusEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["direct_electeciinvestments_nonustaxstatus_entity_investorquestionnaire"] = "Direct",
-			["blocked_electeciinvestments_nonustaxstatus_entity_investorquestionnaire"] = "Blocked",
-		},
-	},
-	-- // radioGroup: sf_Agreement_null_USRPHC_c
-	{
-		target = "sfAgreementNullUSRPHCC",
-		sources = {
-			{ ns = "master", field = "electusrphcinvestmentsNonustaxstatusEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "electusrphcinvestmentsNonustaxstatusEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["direct_electusrphcinvestments_nonustaxstatus_entity_investorquestionnaire"] = "Direct",
-			["blocked_electusrphcinvestments_nonustaxstatus_entity_investorquestionnaire"] = "Blocked",
-		},
-	},
-	-- // radioGroup: sf_Agreement_Onboarding_SI_Investing_assets_of_any_retirement_pl_c
-	{
-		target = "sfAgreementOnboardingSIInvestingAssetsOfAnyRetirementPlC",
-		sources = {
-			{ ns = "master", field = "planassetsErisaEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "planassetsErisaEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_planassets_erisa_entity_investorquestionnaire"] = "true",
-			["no_planassets_erisa_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Agreement_Onboarding_Is_Investor_Controlling_c
-	{
-		target = "sfAgreementOnboardingIsInvestorControllingC",
-		sources = {
-			{ ns = "master", field = "controllinginfluenceCheckyesornoEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "controllinginfluenceCheckyesornoEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_controllinginfluence_checkyesorno_entity_investorquestionnaire"] = "true",
-			["no_controllinginfluence_checkyesorno_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Agreement_Onboarding_Is_ERISA_FOIA_c
-	{
-		target = "sfAgreementOnboardingIsERISAFOIAC",
-		sources = {
-			{ ns = "master", field = "publicaccesslawmattersEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "publicaccesslawmattersEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_publicaccesslawmatters_entity_investorquestionnaire"] = "true",
-			["no_publicaccesslawmatters_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Is_BHC_c
-	{
-		target = "sfAccountSubscriptionInvestorIsBHCC",
-		sources = {
-			{ ns = "master", field = "asaBhcSpecialentities" },
-			{ ns = "feeder", field = "asaBhcSpecialentities" },
-		},
-		optionMap = {
-			["asa_yes_bhc_specialentities"] = "true",
-			["asa_no_bhc_specialentities"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Eligible_Introducer_Letter_Certificate_c
-	{
-		target = "sfAccountSubscriptionInvestorEligibleIntroducerLetterCertificateC",
-		sources = {
-			{ ns = "master", field = "beenrefferedThirdpartyreferralsEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "beenrefferedThirdpartyreferralsEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_beenreffered_thirdpartyreferrals_entity_investorquestionnaire"] = "true",
-			["no_beenreffered_thirdpartyreferrals_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Agreement_null_UBTI_c
-	{
-		target = "sfAgreementNullUBTIC",
-		sources = {
-			{ ns = "master", field = "blockedTaxexemptlpTaxexemptEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "blockedTaxexemptlpTaxexemptEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_blocked_taxexemptlp_taxexempt_entity_investorquestionnaire"] = "Blocked",
-			["no_blocked_taxexemptlp_taxexempt_entity_investorquestionnaire"] = "Direct",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Is_Section_115_Entity
-	{
-		target = "sfAccountSubscriptionInvestorIsSection115Entity",
-		sources = {
-			{ ns = "master", field = "onwerexemptS511TaxexemptEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "onwerexemptS511TaxexemptEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_onwerexempt_s511_taxexempt_entity_investorquestionnaire"] = "true",
-			["no_onwerexempt_s511_taxexempt_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Owner_Is_US_Tax_Exempt
-	{
-		target = "sfAccountSubscriptionInvestorOwnerIsUSTaxExempt",
-		sources = {
-			{ ns = "master", field = "partnershiporflowthroughvehicleTaxexemptEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "partnershiporflowthroughvehicleTaxexemptEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_partnershiporflowthroughvehicle_taxexempt_entity_investorquestionnaire"] = "true",
-			["no_partnershiporflowthroughvehicle_taxexempt_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Account_SubscriptionInvestor_Treated_as_Tax_Exempt_LP
-	{
-		target = "sfAccountSubscriptionInvestorTreatedAsTaxExemptLP",
-		sources = {
-			{ ns = "master", field = "taxexemptlpTaxexemptEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "taxexemptlpTaxexemptEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_taxexemptlp_taxexempt_entity_investorquestionnaire"] = "true",
-			["no_taxexemptlp_taxexempt_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Agreement_null_Is_not_IRC_US_Person
-	{
-		target = "sfAgreementNullIsNotIRCUSPerson",
-		sources = {
-			{ ns = "master", field = "nonusNonustaxstatusEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "nonusNonustaxstatusEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_nonus_nonustaxstatus_entity_investorquestionnaire"] = "true",
-			["no_nonus_nonustaxstatus_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Agreement_null_Owner_Is_not_IRC_US_Person
-	{
-		target = "sfAgreementNullOwnerIsNotIRCUSPerson",
-		sources = {
-			{ ns = "master", field = "partnershiporflowthroughNonustaxstatusEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "partnershiporflowthroughNonustaxstatusEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_partnershiporflowthrough_nonustaxstatus_entity_investorquestionnaire"] = "true",
-			["no_partnershiporflowthrough_nonustaxstatus_entity_investorquestionnaire"] = "false",
-		},
-	},
-	-- // radioGroup: sf_Agreement_null_Treated_as_NonUS_LP
-	{
-		target = "sfAgreementNullTreatedAsNonUSLP",
-		sources = {
-			{ ns = "master", field = "nonuslimitedpartnerNonustaxstatusEntityInvestorquestionnaire" },
-			{ ns = "feeder", field = "nonuslimitedpartnerNonustaxstatusEntityInvestorquestionnaire" },
-		},
-		optionMap = {
-			["yes_nonuslimitedpartner_nonustaxstatus_entity_investorquestionnaire"] = "true",
-			["no_nonuslimitedpartner_nonustaxstatus_entity_investorquestionnaire"] = "false",
-		},
-	},
-}
-
 -- checkboxGroup rules (standard multi-select with option mapping)
 local checkboxGroupRules: { RadioGroupRule } = {
 	-- // checkboxGroup: sf_Account_SubscriptionInvestor_Source_of_Wealth_Category_c
@@ -1721,11 +1312,459 @@ function CarlyleMappings.transformScalars(
 		end
 	end
 
-	-- RadioGroup rules (produces MultipleCheckboxType)
-	for _, rule in radioGroupRules do
-		local result = applyRadioGroup(sources, rule)
-		if result ~= nil then
-			(output :: any)[rule.target] = result
+	-- RadioGroup rules (inline typed)
+	-- // radioGroup: sf_Account_SubscriptionInvestor_WLC_Publicly_Listed_On_A_Stock_Exchange_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.luxsentityRegulatedstatusPart2Duediligencequestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.luxsentityRegulatedstatusPart2Duediligencequestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_luxsentity_regulatedstatus_part2_duediligencequestionnaire"] = "true",
+			["no_luxsentity_regulatedstatus_part2_duediligencequestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorWLCPubliclyListedOnAStockExchangeC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_null_WLC_International_Supplements_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then
+			table.insert(keys, master.indiInternationalsupplementsPart1Duediligencequestionnaire)
+			table.insert(keys, master.entityInternationalsupplementsPart1Duediligencequestionnaire)
+		end
+		if feeder ~= nil then
+			table.insert(keys, feeder.indiInternationalsupplementsPart1Duediligencequestionnaire)
+			table.insert(keys, feeder.entityInternationalsupplementsPart1Duediligencequestionnaire)
+		end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["eea_indi_internationalsupplements_part1_duediligencequestionnaire"] = "European Economic Area - Supplement",
+			["eea_entity_internationalsupplements_part1_duediligencequestionnaire"] = "European Economic Area - Supplement",
+			["uk_indi_internationalsupplements_part1_duediligencequestionnaire"] = "United Kingdom - Supplement",
+			["uk_entity_internationalsupplements_part1_duediligencequestionnaire"] = "United Kingdom - Supplement",
+			["swiss_indi_internationalsupplements_part1_duediligencequestionnaire"] = "Swiss - Supplement",
+			["swiss_entity_internationalsupplements_part1_duediligencequestionnaire"] = "Swiss - Supplement",
+			["canada_indi_internationalsupplements_part1_duediligencequestionnaire"] = "Canadian - Supplement",
+			["canada_entity_internationalsupplements_part1_duediligencequestionnaire"] = "Canadian - Supplement",
+			["japan_indi_internationalsupplements_part1_duediligencequestionnaire"] = "Japanese - Supplement",
+			["japan_entity_internationalsupplements_part1_duediligencequestionnaire"] = "Japanese - Supplement",
+			["none_indi_internationalsupplements_part1_duediligencequestionnaire"] = "No Supplement",
+			["none_entity_internationalsupplements_part1_duediligencequestionnaire"] = "No Supplement",
+		})
+		if #mapped > 0 then
+			output.sfAgreementNullWLCInternationalSupplementsC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Nominee_Intermediary_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then
+			table.insert(keys, master.nomineePart1Duediligencequestionnaire)
+			table.insert(keys, master.nomineePart2Duediligencequestionnaire)
+		end
+		if feeder ~= nil then
+			table.insert(keys, feeder.nomineePart1Duediligencequestionnaire)
+			table.insert(keys, feeder.nomineePart2Duediligencequestionnaire)
+		end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_nominee_part1_duediligencequestionnaire"] = "Yes",
+			["yes_nominee_part2_duediligencequestionnaire"] = "Yes",
+			["no_nominee_part1_duediligencequestionnaire"] = "No",
+			["no_nominee_part2_duediligencequestionnaire"] = "No",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorNomineeIntermediaryC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_WLC_Subscribing_as_a_Representative_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.categoryNomineePart1Duediligencequestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.categoryNomineePart1Duediligencequestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["nominee_category_nominee_part1_duediligencequestionnaire"] = "Nominee",
+			["trustee_category_nominee_part1_duediligencequestionnaire"] = "Trustee",
+			["custodian_category_nominee_part1_duediligencequestionnaire"] = "Custodian",
+			["other_category_nominee_part1_duediligencequestionnaire"] = "Other representative for another investor",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorWLCSubscribingAsARepresentativeC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Politically_Exposed_Person_PEP_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.asaPoliticallyexposedpersonsAmlquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.asaPoliticallyexposedpersonsAmlquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["asa_yes_politicallyexposedpersons_amlquestionnaire"] = "true",
+			["asa_no_politicallyexposedpersons_amlquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorPoliticallyExposedPersonPEPC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Legal_Status_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.legalformofentityPart2Duediligencequestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.legalformofentityPart2Duediligencequestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["corporation_legalformofentity_part2_duediligencequestionnaire"] = "Corporation",
+			["partnership_legalformofentity_part2_duediligencequestionnaire"] = "Partnership",
+			["ltdcompany_legalformofentity_part2_duediligencequestionnaire"] = "Limited Liability Company",
+			["irrevocabletrust_legalformofentity_part2_duediligencequestionnaire"] = "Irrevocable Trust",
+			["revocabletrust_legalformofentity_part2_duediligencequestionnaire"] = "Revocable Trust",
+			["foundation_legalformofentity_part2_duediligencequestionnaire"] = "Foundation",
+			["endowment_legalformofentity_part2_duediligencequestionnaire"] = "Endowment",
+			["govpensinoplan_legalformofentity_part2_duediligencequestionnaire"] = "Government Pension Plan",
+			["ira_legalformofentity_part2_duediligencequestionnaire"] = "Individual Retirement Account",
+			["other_legalformofentity_part2_duediligencequestionnaire"] = "Other",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorLegalStatusC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_AML_Investor_Type_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.asaFormpfFormpf) end
+		if feeder ~= nil then table.insert(keys, feeder.asaFormpfFormpf) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["asa_usindividualortrust_formpf"] = "Individual/Trust – US",
+			["asa_nonusindividualortrust_formpf"] = "Individual/Trust - Non US",
+			["usbrokerordealer_formpf_part2_duediligencequestionnaire"] = "Broker Dealer – US",
+			["nonusbrokerdealer_formpf_part2_duediligencequestionnaire"] = "Broker Dealer - Non US",
+			["usinsurancecompanies_formpf_part2_duediligencequestionnaire"] = "Insurance Company – US",
+			["nonusinsurancecompanies_formpf_part2_duediligencequestionnaire"] = "Insurance Company - Non US",
+			["asa_investmentcompany_formpf"] = "Investment Company - SEC Registered",
+			["issuer_formpf_part2_duediligencequestionnaire"] = "Private Fund - 3c1 or 3c7",
+			["usnonprofit_formpf_part2_duediligencequestionnaire"] = "Non Profit – US",
+			["nonusnonprofit_formpf_part2_duediligencequestionnaire"] = "Non Profit - Non US",
+			["uspensionplan_formpf_part2_duediligencequestionnaire"] = "Pension Plan - US (ex gov)",
+			["nonuspensionplan_formpf_part2_duediligencequestionnaire"] = "Pension Plan - Non US (ex gov)",
+			["usbanking_formpf_part2_duediligencequestionnaire"] = "Bank or Thrift - US",
+			["nonusbanking_formpf_part2_duediligencequestionnaire"] = "Bank or Thrift - Non US",
+			["asa_stateormunicipalgovernmententity_formpf"] = "Government Entity - US (ex pension)",
+			["asa_governmentalpensionplan_formpf"] = "Pension Plan - US State or Municipal Government",
+			["asa_sovereignwealthfundorforeigninstitution_formpf"] = "Sovereign Wealth Fund - Non US (ex pension)",
+			["asa_nonusentities_formpf"] = "Subscriber - Non US Unknown Ownership",
+			["asa_other_formpf"] = "Other",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorAMLInvestorTypeC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Regulated_Entity_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.financialinstitutionRegulatedstatusPart2Duediligencequestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.financialinstitutionRegulatedstatusPart2Duediligencequestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_financialinstitution_regulatedstatus_part2_duediligencequestionnaireregulatedstatus_part2_duediligencequestionnaire"] = "true",
+			["no_financialinstitution_regulatedstatus_part2_duediligencequestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorRegulatedEntityC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Qualified_Purchaser_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.qualifiedpurchaserIndividualsInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.qualifiedpurchaserIndividualsInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_qualifiedpurchaser_individuals_investorquestionnaire"] = "Yes",
+			["no_qualifiedpurchaser_individuals_investorquestionnaire"] = "No",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorQualifiedPurchaserC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Qualified_Client_Status_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then
+			table.insert(keys, master.notinvest1100IndividualsInvestorquestionnaire)
+			table.insert(keys, master.qualifiedclientEntityInvestorquestionnaire)
+		end
+		if feeder ~= nil then
+			table.insert(keys, feeder.notinvest1100IndividualsInvestorquestionnaire)
+			table.insert(keys, feeder.qualifiedclientEntityInvestorquestionnaire)
+		end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_notinvest1100_individuals_investorquestionnaire"] = "Yes",
+			["no_notinvest1100_individuals_investorquestionnaire"] = "No",
+			["yes_qualifiedclient_entity_investorquestionnaire"] = "Yes",
+			["no_qualifiedclient_entity_investorquestionnaire"] = "No",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorQualifiedClientStatusC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_null_Receive_Unapplied_Balance_Reduction_Amt_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then
+			table.insert(keys, master.electingfeepartnerIndividualsInvestorquestionnaire)
+			table.insert(keys, master.electingfeepartnerEntityInvestorquestionnaire)
+		end
+		if feeder ~= nil then
+			table.insert(keys, feeder.electingfeepartnerIndividualsInvestorquestionnaire)
+			table.insert(keys, feeder.electingfeepartnerEntityInvestorquestionnaire)
+		end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_electingfeepartner_individuals_investorquestionnaire"] = "true",
+			["yes_electingfeepartner_entity_investorquestionnaire"] = "true",
+			["no_electingfeepartner_individuals_investorquestionnaire"] = "false",
+			["no_electingfeepartner_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAgreementNullReceiveUnappliedBalanceReductionAmtC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Is_Indiv_Retirement_Benefit_Plan_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.voluntaryEmployeebenefitplanEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.voluntaryEmployeebenefitplanEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_voluntary_employeebenefitplan_entity_investorquestionnaire"] = "true",
+			["no_voluntary_employeebenefitplan_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorIsIndivRetirementBenefitPlanC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Is_US_Tax_Exempt_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then
+			table.insert(keys, master.exemptTaxmatterEntityInvestorquestionnaire)
+			table.insert(keys, master.s511TaxexemptEntityInvestorquestionnaire)
+		end
+		if feeder ~= nil then
+			table.insert(keys, feeder.exemptTaxmatterEntityInvestorquestionnaire)
+			table.insert(keys, feeder.s511TaxexemptEntityInvestorquestionnaire)
+		end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_taxstatus_taxmatter_entity_investorquestionnaire"] = "true",
+			["yes_s511_taxexempt_entity_investorquestionnaire"] = "true",
+			["no_taxstatus_taxmatter_entity_investorquestionnaire"] = "false",
+			["no_s511_taxexempt_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorIsUSTaxExemptC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Exempt_from_State_and_Local_Income_Tax_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.entitledTaxexemptEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.entitledTaxexemptEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_entitled_taxexempt_entity_investorquestionnaire"] = "true",
+			["no_entitled_taxexempt_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorExemptFromStateAndLocalIncomeTaxC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Tax_Exempt_Subtype_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.subtypeEntitledTaxexemptEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.subtypeEntitledTaxexemptEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["trust_subtype_entitled_taxexempt_entity_investorquestionnaire"] = "Exempt Organization - Trust",
+			["corporation_subtype_entitled_taxexempt_entity_investorquestionnaire"] = "Exempt Organization - Corporation",
+			["super_subtype_entitled_taxexempt_entity_investorquestionnaire"] = "Exempt Organization - Super Tax Exempt (I.R.C. section 115)",
+			["insurancecompany_subtype_entitled_taxexempt_entity_investorquestionnaire"] = "Exempt Organization - Insurance Company",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorTaxExemptSubtypeC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_null_ECI_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.electeciinvestmentsNonustaxstatusEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.electeciinvestmentsNonustaxstatusEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["direct_electeciinvestments_nonustaxstatus_entity_investorquestionnaire"] = "Direct",
+			["blocked_electeciinvestments_nonustaxstatus_entity_investorquestionnaire"] = "Blocked",
+		})
+		if #mapped > 0 then
+			output.sfAgreementNullECIC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_null_USRPHC_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.electusrphcinvestmentsNonustaxstatusEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.electusrphcinvestmentsNonustaxstatusEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["direct_electusrphcinvestments_nonustaxstatus_entity_investorquestionnaire"] = "Direct",
+			["blocked_electusrphcinvestments_nonustaxstatus_entity_investorquestionnaire"] = "Blocked",
+		})
+		if #mapped > 0 then
+			output.sfAgreementNullUSRPHCC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_Onboarding_SI_Investing_assets_of_any_retirement_pl_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.planassetsErisaEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.planassetsErisaEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_planassets_erisa_entity_investorquestionnaire"] = "true",
+			["no_planassets_erisa_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAgreementOnboardingSIInvestingAssetsOfAnyRetirementPlC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_Onboarding_Is_Investor_Controlling_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.controllinginfluenceCheckyesornoEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.controllinginfluenceCheckyesornoEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_controllinginfluence_checkyesorno_entity_investorquestionnaire"] = "true",
+			["no_controllinginfluence_checkyesorno_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAgreementOnboardingIsInvestorControllingC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_Onboarding_Is_ERISA_FOIA_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.publicaccesslawmattersEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.publicaccesslawmattersEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_publicaccesslawmatters_entity_investorquestionnaire"] = "true",
+			["no_publicaccesslawmatters_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAgreementOnboardingIsERISAFOIAC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Is_BHC_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.asaBhcSpecialentities) end
+		if feeder ~= nil then table.insert(keys, feeder.asaBhcSpecialentities) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["asa_yes_bhc_specialentities"] = "true",
+			["asa_no_bhc_specialentities"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorIsBHCC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Eligible_Introducer_Letter_Certificate_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.beenrefferedThirdpartyreferralsEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.beenrefferedThirdpartyreferralsEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_beenreffered_thirdpartyreferrals_entity_investorquestionnaire"] = "true",
+			["no_beenreffered_thirdpartyreferrals_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorEligibleIntroducerLetterCertificateC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_null_UBTI_c
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.blockedTaxexemptlpTaxexemptEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.blockedTaxexemptlpTaxexemptEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_blocked_taxexemptlp_taxexempt_entity_investorquestionnaire"] = "Blocked",
+			["no_blocked_taxexemptlp_taxexempt_entity_investorquestionnaire"] = "Direct",
+		})
+		if #mapped > 0 then
+			output.sfAgreementNullUBTIC = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Is_Section_115_Entity
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.onwerexemptS511TaxexemptEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.onwerexemptS511TaxexemptEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_onwerexempt_s511_taxexempt_entity_investorquestionnaire"] = "true",
+			["no_onwerexempt_s511_taxexempt_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorIsSection115Entity = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Owner_Is_US_Tax_Exempt
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.partnershiporflowthroughvehicleTaxexemptEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.partnershiporflowthroughvehicleTaxexemptEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_partnershiporflowthroughvehicle_taxexempt_entity_investorquestionnaire"] = "true",
+			["no_partnershiporflowthroughvehicle_taxexempt_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorOwnerIsUSTaxExempt = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Account_SubscriptionInvestor_Treated_as_Tax_Exempt_LP
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.taxexemptlpTaxexemptEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.taxexemptlpTaxexemptEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_taxexemptlp_taxexempt_entity_investorquestionnaire"] = "true",
+			["no_taxexemptlp_taxexempt_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAccountSubscriptionInvestorTreatedAsTaxExemptLP = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_null_Is_not_IRC_US_Person
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.nonusNonustaxstatusEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.nonusNonustaxstatusEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_nonus_nonustaxstatus_entity_investorquestionnaire"] = "true",
+			["no_nonus_nonustaxstatus_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAgreementNullIsNotIRCUSPerson = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_null_Owner_Is_not_IRC_US_Person
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.partnershiporflowthroughNonustaxstatusEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.partnershiporflowthroughNonustaxstatusEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_partnershiporflowthrough_nonustaxstatus_entity_investorquestionnaire"] = "true",
+			["no_partnershiporflowthrough_nonustaxstatus_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAgreementNullOwnerIsNotIRCUSPerson = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
+		end
+	end
+	-- // radioGroup: sf_Agreement_null_Treated_as_NonUS_LP
+	do
+		local keys: { DataTypes.MultipleCheckboxType? } = {}
+		if master ~= nil then table.insert(keys, master.nonuslimitedpartnerNonustaxstatusEntityInvestorquestionnaire) end
+		if feeder ~= nil then table.insert(keys, feeder.nonuslimitedpartnerNonustaxstatusEntityInvestorquestionnaire) end
+		local mapped = mapAndDedup(collectKeysTyped(keys), {
+			["yes_nonuslimitedpartner_nonustaxstatus_entity_investorquestionnaire"] = "true",
+			["no_nonuslimitedpartner_nonustaxstatus_entity_investorquestionnaire"] = "false",
+		})
+		if #mapped > 0 then
+			output.sfAgreementNullTreatedAsNonUSLP = DataTypes.makeMultipleCheckboxType({ typeId = "MultipleCheckbox", selectedKeys = mapped })
 		end
 	end
 
